@@ -1,6 +1,6 @@
 package tfm.alzi.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +20,7 @@ public class Diario {
     private Participante participante;
 
     @Column(name = "fecha")
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
     @Column(name = "anotacion")
     private String anotacion;
@@ -37,11 +37,11 @@ public class Diario {
         this.participante = participante;
     }
 
-    public LocalDateTime getFecha(){
+    public LocalDate getFecha(){
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha){
+    public void setFecha(LocalDate fecha){
         this.fecha = fecha;
     }
 
