@@ -57,7 +57,7 @@ CREATE TABLE programa (
     especialista_id     INTEGER NOT NULL,
     titulo              VARCHAR(50) NOT NULL,
     area                VARCHAR(50) NOT NULL,
-    descrcipcion        VARCHAR(200) NOT NULL,
+    descripcion        VARCHAR(200) NOT NULL,
     duracion            INTEGER NOT NULL,
     tipo_duracion       VARCHAR(50) NOT NULL,
     puntuacion          INTEGER NOT NULL,
