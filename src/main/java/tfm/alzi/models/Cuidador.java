@@ -26,6 +26,9 @@ public class Cuidador {
     @Column(name = "dni")
     private String DNI;
 
+    @Column(name = "pass")
+    private String pass;
+
     @Column(name = "direccion")
     private String direccion;
 
@@ -75,6 +78,14 @@ public class Cuidador {
 
     public void setDNI(String DNI){
         this.DNI = DNI;
+    }
+
+    public String getPass(){
+        return pass;
+    }
+
+    public void setPass(String pass){
+        this.pass = pass;
     }
 
     public String getDireccion(){

@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Alzi</title>
+    </head>
+    <body>
+        <div class="contenedor">
+            <div class="cuadro">
+                <h1>Inicia sesión</h1>
+                    <div class="modal-content" style="padding-top: 50px;padding-bottom: 50px;max-width: 400px;margin: 0 auto;">
+                        <form class="col-12" th:action="@{crear-usuario}"
+                            th:object="${usuario}" method="post">
+
+                            <input type="hidden" th:field="*{id}" />
+                            <div class="form-group" id="nombre-group">
+                                <input th:field="*{nombre}" type="text" class="form-control"
+                                    placeholder="Nombre" name="nombre" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
+                            </div>
+                            <div class="form-group" id="apellidos-group">
+                                <input th:field="*{apellidos}" type="text" class="form-control"
+                                    placeholder="Apellidos" name="apellidos" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{apellidos}"></p>
+                            </div>
+                            <div class="form-group" id="fechaNacimiento-group">
+                                <input th:field="*{fechaNacimiento}" type="date" class="form-control" name="fechaNacimiento" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{fechaNacimiento}"></p>
+                            </div>
+                            <div class="form-group" id="dni-group">
+                                <input th:field="*{dni}" type="text" class="form-control"
+                                    placeholder="DNI" name="dni" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{dni}"></p>
+                            </div>
+                            <div class="form-group" id="pass-group">
+                                <input th:field="*{pass}" type="text" class="form-control"
+                                    placeholder="Contraseña" name="pass"/>
+                            </div>
+                            <div class="form-group" id="direccion-group">
+                                <input th:field="*{direccion}" type="text" class="form-control"
+                                    placeholder="Dirección" name="direccion" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{direccion}"></p>
+                            </div>
+                            <div class="form-group" id="telefono-group">
+                                <input th:field="*{telefono}" type="text" class="form-control"
+                                    placeholder="Teléfono" name="telefono" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{telefono}"></p>
+                            </div>
+                            <div class="form-group" id="email-group">
+                                <input th:field="*{email}" type="text" class="form-control"
+                                    placeholder="Email" name="email" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
+                            </div>
+                            <div class="form-group" id="bio-group">
+                                <input th:field="*{bio}" type="text" class="form-control"
+                                    placeholder="Bio" name="bio" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{bio}"></p>
+                            </div>
+                            <div class="form-group" id="roles-group">
+                                <input th:field="*{roles}" type="text" class="form-control"
+                                    placeholder="Tipo de Perfil" name="roles" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{roles}"></p>
+                            </div>
+                            <div class="form-group" id="PRelacionCuidador-group">
+                                <input th:field="*{PRelacionCuidador}" type="text" class="form-control"
+                                    placeholder="Relación con Cuidador" name="PRelacionCuidador" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{PRelacionCuidador}"></p>
+                            </div>
+                            <div class="form-group" id="CTipo-group">
+                                <input th:field="*{CTipo}" type="text" class="form-control"
+                                    placeholder="Tipo de Cuidador" name="CTipo" />
+                                <p class="alert alert-danger" role="alert" th:errors="*{CTipo}"></p>
+                            </div>
+                            <div class="form-group" id="EEspecialidad-group">
+                                <input th:field="*{EEspecialidad}" type="text" class="form-control"
+                                    placeholder="Especialidad" name="EEspecialidad"/>
+                                <p class="alert alert-danger" role="alert" th:errors="*{EEspecialidad}"></p>
+                            </div>
+                            <div class="form-group" id="ECentro-group">
+                                <input th:field="*{ECentro}" type="text" class="form-control"
+                                    placeholder="Centro" name="ECentro"/>
+                                <p class="alert alert-danger" role="alert" th:errors="*{ECentro}"></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Registrar Usuario
+                            </button>
+                        </form>
+                        <div class="col-12 forgot">
+                            <a th:href="@{/login}">¿Ya tienes una cuenta?</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </body>
+</html>
