@@ -3,6 +3,7 @@
     <head>
         <title>Alzi</title>
     </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <body>
         <div class="contenedor">
             <div class="cuadro">
@@ -10,7 +11,14 @@
                     <div class="modal-content" style="padding-top: 50px;padding-bottom: 50px;max-width: 400px;margin: 0 auto;">
                         <form class="col-12" th:action="@{crear-usuario}"
                             th:object="${usuario}" method="post">
-
+                            <div class="form-group" id="roles-group">
+                                <select th:field="*{roles}" name="roles" id="roles">
+                                    <option th:value="'PARTICIPANTE'" th:text="Participante"></option>
+                                    <option th:value="'CUIDADOR'" th:text="Cuidador"></option>
+                                    <option th:value="'ESPECIALISTA'" th:text="Especialista"></option>
+                                </select>
+                                <p class="alert alert-danger" role="alert" th:errors="*{roles}"></p>
+                            </div>
                             <input type="hidden" th:field="*{id}" />
                             <div class="form-group" id="nombre-group">
                                 <input th:field="*{nombre}" type="text" class="form-control"
@@ -55,11 +63,6 @@
                                     placeholder="Bio" name="bio" />
                                 <p class="alert alert-danger" role="alert" th:errors="*{bio}"></p>
                             </div>
-                            <div class="form-group" id="roles-group">
-                                <input th:field="*{roles}" type="text" class="form-control"
-                                    placeholder="Tipo de Perfil" name="roles" />
-                                <p class="alert alert-danger" role="alert" th:errors="*{roles}"></p>
-                            </div>
                             <div class="form-group" id="PRelacionCuidador-group">
                                 <input th:field="*{PRelacionCuidador}" type="text" class="form-control"
                                     placeholder="Relación con Cuidador" name="PRelacionCuidador" />
@@ -91,4 +94,29 @@
             </div>
         </div>
     </body>
+    <script>
+        $("#roles").change(function () {
+            var selected_option = $('#roles').val();
+            if (selected_option === 'PARTICIPANTE') {
+                $('#PRelacionCuidador').show();
+                $("#CTipo").hide();
+                $("#EEspecialidad").hide();
+                $("#ECentro").hide();
+            }
+            if (selected_option === 'CUIDADOR') {
+                $('#CTipo').show();
+                $("#PRelacionCuidador").hide();
+                $("#EEspecialidad").hide();
+                $("#ECentro").hide();
+            }
+            if (selected_option === 'ESPECIALISTA') {
+                $('#EEspecialidad').show();
+                $('#ECentro').show();
+                $("#PRelacionCuidador").hide();
+                $("#CTipo").hide();
+            }
+        })
+
+        $("#roles").change();
+    </script>
 </html>

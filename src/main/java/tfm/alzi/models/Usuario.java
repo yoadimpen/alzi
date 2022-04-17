@@ -138,7 +138,7 @@ public class Usuario implements UserDetails{
     }
     public void setPRelacionCuidador(String PRelacionCuidador) {
         this.PRelacionCuidador = PRelacionCuidador;
-    }
+    } 
 
     @Column(name = "c_tipo")
     @Getter @Setter private String CTipo;
