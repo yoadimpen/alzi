@@ -12,7 +12,7 @@ CREATE TABLE usuario (
     usuario_id          INTEGER PRIMARY KEY,
     nombre              VARCHAR(50) NOT NULL,
     apellidos           VARCHAR(50) NOT NULL,
-    fecha_nacimiento    DATETIME NOT NULL,
+    fecha_nacimiento    DATE NOT NULL,
     dni                 VARCHAR(9) NOT NULL,
     pass                VARCHAR(250) NOT NULL,
     direccion           VARCHAR(50) NOT NULL,

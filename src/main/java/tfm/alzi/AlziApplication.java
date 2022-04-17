@@ -10,6 +10,6 @@ public class AlziApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AlziApplication.class, args);
-	}
+	} 
 
 }

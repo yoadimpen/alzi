@@ -43,7 +43,6 @@ public class UsuarioController {
 		}
 		Usuario usuario = new Usuario();
 		model.addAttribute("usuario", usuario);
-        model.addAttribute("fechaNacimiento", LocalDate.now());
 
 		return "formNewUsuario";
 	}

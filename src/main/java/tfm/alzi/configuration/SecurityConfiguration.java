@@ -48,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.anonymous().and().authorizeRequests()
 				.antMatchers("/")
 				.authenticated()
+				//.antMatchers("/entrenamiento").hasAuthority("PARTICIPANTE")
 				.and()
 				.formLogin().loginPage("/login")
 				.permitAll().defaultSuccessUrl("/")
