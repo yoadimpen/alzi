@@ -4,6 +4,11 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -101,7 +106,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "email")
-    @Getter @Setter private String email;
+    @Getter @Setter private String email; //que sea @gmail.com se comprobará en el controlador correspondiente
 
     public String getEmail() {
         return this.email;

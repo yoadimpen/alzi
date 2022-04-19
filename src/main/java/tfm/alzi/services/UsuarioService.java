@@ -36,5 +36,13 @@ public class UsuarioService implements UserDetailsService {
         usuario.setPass(this.passw.encode(usuario.getPass()));
         this.usuarioRepository.save(usuario);
     }
+
+    public long getNumUsuariosByDNI(final String dni) {
+        return this.usuarioRepository.numUsuariosByDNI(dni);
+    }
+
+    public long getNumUsuariosByEmail(final String email){
+        return this.usuarioRepository.numUsuariosByEmail(email);
+    }
     
 }

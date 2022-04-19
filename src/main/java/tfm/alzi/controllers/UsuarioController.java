@@ -1,22 +1,23 @@
 package tfm.alzi.controllers;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.hibernate.type.LocalDateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import tfm.alzi.models.Usuario;
@@ -48,37 +49,102 @@ public class UsuarioController {
 	}
 
     @PostMapping(value = "/crear-usuario")
-    public String crearusuario(@Valid @ModelAttribute("usuario") final Usuario usuario, final BindingResult result, final Model model) {
+    public String crearusuario(@ModelAttribute("usuario") @Valid final Usuario usuario, final BindingResult result, final Model model) {
 
-		//this.validarUsuario(usuario, result);
+		this.validarUsuario(usuario, result);
 
 		if (result.hasErrors()) {
 			model.addAttribute("usuario", usuario);
-			return "usuarios/formNewUsuario";
+			return "formNewUsuario";
 		} else {
 			this.usuarioService.creaUsuario(usuario);
 		}
 		return "redirect:/";
 	}
 
-    /*
+    public void validarUsuario(final Usuario usuario, final BindingResult result) {
 
-    public void validarUsuario(final Usuario usuario, final BindingResult result, String confirmPassword) {
+		String dniPattern = "^([A-Z]?[0-9]{7}[A-Z]{1})$";
+		String passPattern = "^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$";
+		String telefonoPattern = "^([0-9]{9})$";
+		String emailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+		String rolesPattern = "^(PARTICIPANTE|CUIDADOR|ESPECIALISTA)$";
+		String cuidadorPattern = "^(INFORMAL|FORMAL)$";
 
-		// validar que el username es único
-		if (this.usuarioService.numeroUsuariosByUsername(usuario.getUsername()) != 0) {
-			result.rejectValue("username", "username", "El usuario introducido ya existe");
+		if(usuario.getNombre() == null | usuario.getNombre().isEmpty() | usuario.getNombre().isBlank()) {
+			result.rejectValue("nombre", "nombre","Debes introducir tu nombre.");
 		}
-		if (this.usuarioService.numeroUsuariosByEmail(usuario.getEmail()) != 0) {
-			result.rejectValue("email", "email", "El email introducido ya existe");
+		if(usuario.getApellidos() == null | usuario.getApellidos().isEmpty() | usuario.getNombre().isBlank()) {
+			result.rejectValue("apellidos", "apellidos","Debes introducir tus apellidos.");
 		}
+		if(usuario.getFechaNacimiento() == null){
+			result.rejectValue("fechaNacimiento", "fechaNacimiento","Debes introducir tu fecha de nacimiento.");
+		}
+		if(usuario.getFechaNacimiento() != null && usuario.getFechaNacimiento().isAfter(LocalDate.now())) {
+			result.rejectValue("fechaNacimiento", "fechaNacimiento", "La fecha de nacimiento introducida debe ser anterior a la actual.");
+		}
+		if(usuario.getDni() == null | usuario.getDni().isEmpty() | usuario.getDni().isBlank()) {
+			result.rejectValue("dni", "dni", "Debes introducir tu DNI/NIE.");
+		}
+		if(!usuario.getDni().matches(dniPattern)) {
+			result.rejectValue("dni", "dni", "El DNI/NIE introducido debe ser válido.");
+		}
+		if (this.usuarioService.getNumUsuariosByDNI(usuario.getDni()) != 0) {
+			result.rejectValue("dni", "dni", "El usuario introducido ya existe.");
+		}
+		if (usuario.getPass() == null | usuario.getPass().isEmpty() | usuario.getPass().isBlank()){
+			result.rejectValue("pass", "pass", "Debes introducir una contraseña.");
+		}
+		if (usuario.getPass() != null & !usuario.getPass().matches(passPattern)) {
+			result.rejectValue("pass", "pass", "La contraseña debe tener mínimo 6 caracteres, un dígito, una minúscula y una mayúscula.");
+		}
+		if (usuario.getDireccion() == null | usuario.getDireccion().isEmpty() | usuario.getDireccion().isBlank()){
+			result.rejectValue("direccion", "direccion", "Debes introducir una dirección.");
+		}
+		if (usuario.getTelefono() == null){
+			result.rejectValue("telefono", "telefono", "Debes introducir un número de teléfono.");
+		}
+		if (usuario.getTelefono() != null && !usuario.getTelefono().toString().matches(telefonoPattern)) {
+			result.rejectValue("telefono", "telefono", "El número de teléfono introducido debe ser válido.");
+		}
+		if (usuario.getEmail() == null | usuario.getEmail().isEmpty() | usuario.getEmail().isBlank()) {
+			result.rejectValue("email", "email", "Debes introducir un correo electrónico.");
+		}
+		if (!usuario.getEmail().matches(emailPattern)) {
+			result.rejectValue("email", "email", "El correo electrónico introducido debe ser válido.");
+		}
+		if (this.usuarioService.getNumUsuariosByEmail(usuario.getEmail()) != 0) {
+			result.rejectValue("email", "email", "El email introducido ya existe.");
+		}
+		if (!usuario.getEmail().contains("@gmail.com")) {
+			result.rejectValue("email", "email", "El email introducido debe ser de Gmail.");
+		}
+		if (usuario.getRoles() == null | usuario.getRoles().isEmpty() | usuario.getRoles().isBlank()) {
+			result.rejectValue("roles", "roles", "Deber elegir un tipo de perfil.");
+		}
+		if (!usuario.getRoles().matches(rolesPattern)) {
+			result.rejectValue("roles", "roles", "Los perfiles disponibles son PARTICIPANTE, CUIDADOR y ESPECIALISTA.");
+		}
+		if (usuario.getRoles().contains("PARTICIPANTE") & (usuario.getPRelacionCuidador() == null | usuario.getPRelacionCuidador().isEmpty() | usuario.getPRelacionCuidador().isBlank())) {
+			result.rejectValue("PRelacionCuidador", "PRelacionCuidador", "Debes introducir la relación con el cuidador.");
+		}
+		if (usuario.getRoles().contains("CUIDADOR") & (usuario.getCTipo()) == null | usuario.getCTipo().isEmpty() | usuario.getCTipo().isBlank() | !usuario.getCTipo().matches(cuidadorPattern)) {
+			result.rejectValue("CTipo", "CTipo", "Debes introducir el tipo de cuidador (INFORMAL o FORMAL).");
+		}
+		if (usuario.getRoles().contains("ESPECIALISTA") & (usuario.getEEspecialidad() == null | usuario.getEEspecialidad().isEmpty() | usuario.getEEspecialidad().isBlank())) {
+			result.rejectValue("EEspecialidad", "EEspecialidad", "Debes introducir la especialidad que tienes.");
+		}
+		if (usuario.getRoles().contains("ESPECIALISTA") & (usuario.getECentro() == null | usuario.getECentro().isEmpty() | usuario.getECentro().isBlank())) {
+			result.rejectValue("ECentro", "ECentro", "Debes introducir el centro en el que trabajas.");
+		}
+
+		/*
 		//validar que las contraseñas coinciden
         if(!confirmPassword.equals(usuario.getPassword())){
             result.rejectValue("password","password","Las contraseñas no coinciden");
         }
+		*/
 	}
-
-    */
 
     public Usuario getUsuario() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -89,5 +155,16 @@ public class UsuarioController {
         }
         return us;
     }
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+	Map<String, String> errors = new HashMap<>();
+	
+	ex.getBindingResult().getFieldErrors().forEach(error ->
+			errors.put(error.getField(), error.getDefaultMessage()));
+	
+	System.out.println("-----------------------------------------------------------------" + errors);
+	return errors;
+	}
     
 }
