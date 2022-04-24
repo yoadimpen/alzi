@@ -1,5 +1,7 @@
 package tfm.alzi.services;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,6 +38,12 @@ public class UsuarioService implements UserDetailsService {
         usuario.setPass(this.passw.encode(usuario.getPass()));
         this.usuarioRepository.save(usuario);
     }
+    
+    @Transactional
+    public void editarUsuario(final Usuario usuario) {
+        usuario.setPass(this.passw.encode(usuario.getPass()));
+        this.usuarioRepository.save(usuario);
+    }
 
     public long getNumUsuariosByDNI(final String dni) {
         return this.usuarioRepository.numUsuariosByDNI(dni);
@@ -43,6 +51,15 @@ public class UsuarioService implements UserDetailsService {
 
     public long getNumUsuariosByEmail(final String email){
         return this.usuarioRepository.numUsuariosByEmail(email);
+    }
+
+    public Usuario getUsuarioByDNI(final String dni){
+        return this.usuarioRepository.findByDNI(dni);
+    }
+
+    public void deleteUsuario(final String dni) {
+        Usuario usuario = this.usuarioRepository.findByDNI(dni);
+        this.usuarioRepository.deleteById(usuario.getId());
     }
     
 }

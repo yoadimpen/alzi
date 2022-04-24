@@ -36,6 +36,7 @@ CREATE TABLE programa (
     tipo_duracion       VARCHAR(50) NOT NULL,
     puntuacion          INTEGER NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuario
+    ON DELETE CASCADE
 );
 
 CREATE TABLE ejercicio (
@@ -53,6 +54,7 @@ CREATE TABLE recordatorio (
     etiqueta            VARCHAR(50),
     descripcion         VARCHAR(50),
     FOREIGN KEY (usuario_id) REFERENCES usuario
+    ON DELETE CASCADE
 );
 
 CREATE TABLE alarma (
@@ -61,6 +63,7 @@ CREATE TABLE alarma (
     fecha               DATETIME NOT NULL,
     etiqueta            VARCHAR(50), 
     FOREIGN KEY (usuario_id) REFERENCES usuario
+    ON DELETE CASCADE
 );
 
 CREATE TABLE diario (
@@ -69,6 +72,7 @@ CREATE TABLE diario (
     fecha               DATE NOT NULL,
     anotacion           VARCHAR(50),
     FOREIGN KEY (usuario_id) REFERENCES usuario
+    ON DELETE CASCADE
 );
 
 CREATE TABLE informe (
@@ -79,20 +83,25 @@ CREATE TABLE informe (
     diagnostico         VARCHAR(50) NOT NULL,
     observaciones       VARCHAR(50) NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuario
+    ON DELETE CASCADE
 );
 
 CREATE TABLE participante_programa (
     partpro_id          INTEGER PRIMARY KEY,
     usuario_id          INTEGER NOT NULL,
     programa_id         INTEGER NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuario,
+    FOREIGN KEY (usuario_id) REFERENCES usuario
+    ON DELETE CASCADE,
     FOREIGN KEY (programa_id) REFERENCES programa
+    ON DELETE CASCADE
 );
 
 CREATE TABLE programa_ejercicio (
     pej_id              INTEGER PRIMARY KEY,
     programa_id         INTEGER NOT NULL,
     ejercicio_id        INTEGER NOT NULL,
-    FOREIGN KEY (programa_id) REFERENCES programa,
+    FOREIGN KEY (programa_id) REFERENCES programa
+    ON DELETE CASCADE,
     FOREIGN KEY (ejercicio_id) REFERENCES ejercicio
+    ON DELETE CASCADE
 );

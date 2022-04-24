@@ -6,6 +6,7 @@
     <body>
         <div class="contenedor">
             <div class="cuadro">
+                    <p th:if="${usuarioEliminado != null}" th:text="${usuarioEliminado}"></p>
                 <h1>Inicia sesión</h1>
                     <div class="modal-content" style="padding-top: 50px;padding-bottom: 50px;max-width: 400px;margin: 0 auto;">
                         <form class="col-12" th:action="@{/login}" method="post">

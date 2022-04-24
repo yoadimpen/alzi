@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import tfm.alzi.models.Usuario;
@@ -27,7 +28,7 @@ import tfm.alzi.services.UsuarioService;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioService usuarioService; 
 
     @RequestMapping(value = "/login")
 	public String login(final Model model, final HttpServletRequest request) {
@@ -40,7 +41,7 @@ public class UsuarioController {
     @GetMapping(value = "/crear-usuario")
     public String crearUsuarioForm(final Model model, final HttpServletRequest request) {
 		if (request.getUserPrincipal() != null) {
-			return "home";
+			return "index";
 		}
 		Usuario usuario = new Usuario();
 		model.addAttribute("usuario", usuario);
@@ -49,9 +50,9 @@ public class UsuarioController {
 	}
 
     @PostMapping(value = "/crear-usuario")
-    public String crearusuario(@ModelAttribute("usuario") @Valid final Usuario usuario, final BindingResult result, final Model model) {
+    public String crearUsuario(@ModelAttribute("usuario") @Valid final Usuario usuario, final BindingResult result, final Model model) {
 
-		this.validarUsuario(usuario, result);
+		this.validarUsuario(usuario, result, true, null);
 
 		if (result.hasErrors()) {
 			model.addAttribute("usuario", usuario);
@@ -62,7 +63,7 @@ public class UsuarioController {
 		return "redirect:/";
 	}
 
-    public void validarUsuario(final Usuario usuario, final BindingResult result) {
+    public void validarUsuario(final Usuario usuario, final BindingResult result, Boolean nuevo, String passCheck) {
 
 		String dniPattern = "^([A-Z]?[0-9]{7}[A-Z]{1})$";
 		String passPattern = "^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$";
@@ -89,14 +90,21 @@ public class UsuarioController {
 		if(!usuario.getDni().matches(dniPattern)) {
 			result.rejectValue("dni", "dni", "El DNI/NIE introducido debe ser válido.");
 		}
-		if (this.usuarioService.getNumUsuariosByDNI(usuario.getDni()) != 0) {
-			result.rejectValue("dni", "dni", "El usuario introducido ya existe.");
+		if(nuevo == true) {
+			if (this.usuarioService.getNumUsuariosByDNI(usuario.getDni()) != 0) {
+				result.rejectValue("dni", "dni", "El usuario introducido ya existe.");
+			}
 		}
 		if (usuario.getPass() == null | usuario.getPass().isEmpty() | usuario.getPass().isBlank()){
 			result.rejectValue("pass", "pass", "Debes introducir una contraseña.");
 		}
 		if (usuario.getPass() != null & !usuario.getPass().matches(passPattern)) {
 			result.rejectValue("pass", "pass", "La contraseña debe tener mínimo 6 caracteres, un dígito, una minúscula y una mayúscula.");
+		}
+		if (nuevo == false){
+			if (!usuario.getPass().equals(passCheck)) {
+				result.rejectValue("pass", "pass", "Las contraseñas no coinciden.");
+			}
 		}
 		if (usuario.getDireccion() == null | usuario.getDireccion().isEmpty() | usuario.getDireccion().isBlank()){
 			result.rejectValue("direccion", "direccion", "Debes introducir una dirección.");
@@ -113,8 +121,10 @@ public class UsuarioController {
 		if (!usuario.getEmail().matches(emailPattern)) {
 			result.rejectValue("email", "email", "El correo electrónico introducido debe ser válido.");
 		}
-		if (this.usuarioService.getNumUsuariosByEmail(usuario.getEmail()) != 0) {
-			result.rejectValue("email", "email", "El email introducido ya existe.");
+		if(nuevo == true){
+			if (this.usuarioService.getNumUsuariosByEmail(usuario.getEmail()) != 0) {
+				result.rejectValue("email", "email", "El email introducido ya existe.");
+			}
 		}
 		if (!usuario.getEmail().contains("@gmail.com")) {
 			result.rejectValue("email", "email", "El email introducido debe ser de Gmail.");
@@ -137,13 +147,44 @@ public class UsuarioController {
 		if (usuario.getRoles().contains("ESPECIALISTA") & (usuario.getECentro() == null | usuario.getECentro().isEmpty() | usuario.getECentro().isBlank())) {
 			result.rejectValue("ECentro", "ECentro", "Debes introducir el centro en el que trabajas.");
 		}
+	}
 
-		/*
-		//validar que las contraseñas coinciden
-        if(!confirmPassword.equals(usuario.getPassword())){
-            result.rejectValue("password","password","Las contraseñas no coinciden");
-        }
-		*/
+	@GetMapping(value = "/editar-usuario")
+    public String editarUsuarioForm(final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "index";
+		} else {
+			Usuario usuario = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName());
+			usuario.setPass("");
+			model.addAttribute("usuario", usuario);
+			return "formEditUsuario";
+		} 
+	}
+
+	@PostMapping(value = "/editar-usuario")
+    public String editarUsuario(@ModelAttribute("usuario") @Valid final Usuario usuario, final BindingResult result, @RequestParam(value = "passCheck") String passCheck, final Model model) {
+
+		this.validarUsuario(usuario, result, false, passCheck);
+
+		if (result.hasErrors()) {
+			model.addAttribute("usuario", usuario);
+			return "formEditUsuario"; 
+		} else {
+			usuario.setPass((String) model.getAttribute("pass"));
+			this.usuarioService.editarUsuario(usuario);
+			return "areaPersonal";
+		}
+	}
+
+	@RequestMapping(value = "/eliminar-usuario")
+    public String eliminarUsuario(final HttpServletRequest request, final Model model) {
+		if (request.getUserPrincipal() != null) {
+			this.usuarioService.deleteUsuario(request.getUserPrincipal().getName());
+			model.addAttribute("usuarioEliminado", "Cuenta eliminada con éxito.");
+			return "login";
+		} else {
+			return "index";
+		}
 	}
 
     public Usuario getUsuario() {
