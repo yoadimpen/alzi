@@ -3,6 +3,27 @@
     <head>
         <title>Área Personal</title>
     </head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: [
+                { // this object will be "parsed" into an Event Object
+                    title: 'The Title', // a property!
+                    start: '2022-05-06', // a property!
+                    end: '2022-05-06' // a property! ** see important note below about 'end' **
+                }
+            ]
+          });
+          calendar.setOption('locale', 'es');
+          calendar.render();
+        });
+  
+    </script>
     <body>
         <a th:href="@{alzi}">Alzi</a>
         <a th:href="@{area-personal}">Área Personal</a>
@@ -10,27 +31,8 @@
         <a th:href="@{perfil}">Perfil</a>
         <a th:href="@{ajustes}">Ajustes</a>
 
-        <p th:text="${usuario.nombre}"></p>
-        <p th:text="${usuario.apellidos}"></p>
-        <p th:text="${usuario.fechaNacimiento}"></p>
-        <p th:text="${usuario.dni}"></p>
-        <p>********</p>
-        <p th:text="${usuario.direccion}"></p>
-        <p th:text="${usuario.telefono}"></p>
-        <p th:text="${usuario.email}"></p>
-        <p th:text="${usuario.bio}"></p>
-        <p th:text="${usuario.roles}"></p>
-        <div th:if="${usuario.roles == 'PARTICIPANTE'}">
-            <p th:text="${usuario.PRelacionCuidador}"></p>
-        </div>
-        <div th:if="${usuario.roles == 'CUIDADOR'}">
-            <p th:text="${usuario.CTipo}"></p>
-        </div>
-        <div th:if="${usuario.roles == 'ESPECIALISTA'}">
-            <p th:text="${usuario.EEspecialidad}"></p>
-            <p th:text="${usuario.ECentro}"></p>
-        </div>
-        <a th:href="@{editar-usuario}">Editar cuenta</a>
-        <a th:href="@{eliminar-usuario}">Eliminar cuenta</a>
+        
+
+        <div id='calendar'></div>
     </body>
 </html>
