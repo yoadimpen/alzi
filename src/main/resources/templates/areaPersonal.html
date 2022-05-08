@@ -6,18 +6,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.js"></script>
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
+          /*var data = eval('('+'${jsonRecordatorios}'+')');
+          console.log("este es el dato" + data);*/
+          json = document.getElementById("jR").innerHTML;
+          console.log(json);
+          try {
+            var jsonData = JSON.parse(json); // Uncaught SyntaxError: Unexpected token o in JSON at position 1
+          } catch(err) {
+            console.log(err.message)
+          }
           var calendarEl = document.getElementById('calendar');
           var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: [
+            events: //[{ title: 'Etiqueta', start: '2022-05-12', end: '2022-05-12' }]
+            /*[
                 { // this object will be "parsed" into an Event Object
                     title: 'The Title', // a property!
-                    start: '2022-05-06', // a property!
-                    end: '2022-05-06' // a property! ** see important note below about 'end' **
+                    start: '2022-05-06'// a property! ** see important note below about 'end' **
                 }
-            ]
+            ]*/
+            jsonData
           });
           calendar.setOption('locale', 'es');
           calendar.render();
@@ -25,14 +34,28 @@
   
     </script>
     <body>
-        <a th:href="@{alzi}">Alzi</a>
-        <a th:href="@{area-personal}">Área Personal</a>
-        <a th:href="@{entrenamiento}">Entrenamiento</a>
-        <a th:href="@{perfil}">Perfil</a>
-        <a th:href="@{ajustes}">Ajustes</a>
+        <a th:href="@{/alzi}">Alzi</a>
+        <a th:href="@{/area-personal}">Área Personal</a>
+        <a th:href="@{/entrenamiento}">Entrenamiento</a>
+        <a th:href="@{/perfil}">Perfil</a>
+        <a th:href="@{/ajustes}">Ajustes</a>
 
+        <a th:href="@{logout}">Cerrar Sesión</a>
+
+        <h3>Recordatorios</h3>
+
+        <p th:if="${recordatorioEliminado != null}" th:text="${recordatorioEliminado}"></p>
         
+        <a th:href="@{/crear-recordatorio}">Nuevo</a>
 
+        <ul th:each="recordatorio: ${recordatorios}">
+            <li th:text="${recordatorio.fecha}"></li>
+            <li th:text="${recordatorio.etiqueta}"></li>
+            <li th:text="${recordatorio.descripcion}"></li>
+            <a th:href="@{'/editar-recordatorio/' + ${recordatorio.id}}">Editar</a>
+            <a th:href="@{'/borrar-recordatorio/' + ${recordatorio.id}}">Borrar</a>
+        </ul>
         <div id='calendar'></div>
+        <p id="jR" th:if="${jsonRecordatorios != null}" th:text="${jsonRecordatorios}" style="display: none;"></p>
     </body>
 </html>

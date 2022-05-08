@@ -9,7 +9,7 @@
             <div class="cuadro">
                 <h1>Inicia sesión</h1>
                     <div class="modal-content" style="padding-top: 50px;padding-bottom: 50px;max-width: 400px;margin: 0 auto;">
-                        <form class="col-12" th:action="@{crear-usuario}"
+                        <form class="col-12" th:action="@{/crear-usuario}"
                             th:object="${usuario}" method="post">
                             <div class="form-group" id="roles-group">
                                 <select th:field="*{roles}" name="roles" id="roles">

@@ -9,7 +9,7 @@
             <div class="cuadro">
                 <h1>Editar cuenta</h1>
                     <div class="modal-content" style="padding-top: 50px;padding-bottom: 50px;max-width: 400px;margin: 0 auto;">
-                        <form class="col-12" th:action="@{editar-usuario}"
+                        <form class="col-12" th:action="@{/editar-usuario}"
                             th:object="${usuario}" method="post">
                             <input type="hidden" th:field="*{id}" />
                             <div class="form-group" id="nombre-group">
@@ -102,7 +102,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-sign-in-alt"></i> Editar Usuario
                             </button>
-                            <a th:href="@{area-personal}">Cancelar</a>
+                            <a th:href="@{/area-personal}">Cancelar</a>
                         </form>
                     </div>
             </div>

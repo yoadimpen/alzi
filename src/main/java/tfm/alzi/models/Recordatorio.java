@@ -2,24 +2,28 @@ package tfm.alzi.models;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+@Entity
 public class Recordatorio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "recordatorio_id")
     private long id;
 
-    @OneToOne
-    @Column(name = "participante")
-    private Participante participante;
+    @Column(name = "usuario_id")
+    private long usuarioId;
     
     @Column(name = "fecha")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fecha;
 
     @Column(name = "etiqueta")
@@ -32,12 +36,16 @@ public class Recordatorio {
         return id;
     }
 
-    public Participante getParticipante(){
-        return participante;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setParticipante(Participante participante){
-        this.participante = participante;
+    public Long getUsuarioId(){
+        return usuarioId;
+    }
+
+    public void setUsuarioId(long usuarioId){
+        this.usuarioId = usuarioId;
     }
 
     public LocalDateTime getFecha(){

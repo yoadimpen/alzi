@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Alzi</title>
+    </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <body>
+        <div class="contenedor">
+            <div class="cuadro">
+                <h1>Editar Recordatorio</h1>
+                    <div class="modal-content" style="padding-top: 50px;padding-bottom: 50px;max-width: 400px;margin: 0 auto;">
+                        <form class="col-12" th:action="@{/editar-recordatorio}"
+                            th:object="${recordatorio}" method="post">
+                            <input type="hidden" th:field="*{id}" /> 
+                            <input type="hidden" th:field="*{usuarioId}" />
+                            <div class="form-group" id="fecha-group">
+                                <input th:field="*{fecha}" type="datetime-local" class="form-control" name="fecha" />
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></p>
+                            </div>
+                            <div class="form-group" id="etiqueta-group">
+                                <input th:field="*{etiqueta}" type="text" class="form-control"
+                                    placeholder="Etiqueta" name="etiqueta" />
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('etiqueta')}" th:errors="*{etiqueta}"></p>
+                            </div>
+                            <div class="form-group" id="descripcion-group">
+                                <input th:field="*{descripcion}" type="text" class="form-control"
+                                    placeholder="Descripcion" name="descripcion" />
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Editar
+                            </button>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </body>
+</html>
