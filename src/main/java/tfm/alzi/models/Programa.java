@@ -1,10 +1,12 @@
 package tfm.alzi.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Entity
 public class Programa {
     
     @Id
@@ -12,8 +14,8 @@ public class Programa {
     @Column(name = "programa_id")
     private long id;
 
-    @Column(name = "especialista")
-    private Especialista especialista;
+    @Column(name = "usuario_id")
+    private Long usuarioId;
 
     @Column(name = "titulo")
     private String titulo;
@@ -27,9 +29,6 @@ public class Programa {
     @Column(name = "duracion")
     private Integer duracion;
 
-    @Column(name = "tipo_duracion")
-    private String tipoDuracion;
-
     @Column(name = "puntuacion")
     private Integer puntuacion;
 
@@ -37,12 +36,12 @@ public class Programa {
         return id;
     }
 
-    public Especialista getEspecialista(){
-        return especialista;
+    public Long getUsuarioId(){
+        return usuarioId;
     }
 
-    public void setEspecialista(Especialista especialista){
-        this.especialista = especialista;
+    public void setUsuarioId(Long usuarioId){
+        this.usuarioId = usuarioId;
     }
 
     public String getTitulo(){
@@ -75,14 +74,6 @@ public class Programa {
 
     public void setDuracion(Integer duracion){
         this.duracion = duracion;
-    }
-
-    public String getTipoDuracion(){
-        return tipoDuracion;
-    }
-
-    public void setTipoDuracion(String tipoDuracion){
-        this.tipoDuracion = tipoDuracion;
     }
 
     public Integer getPuntuacion(){

@@ -1,10 +1,12 @@
 package tfm.alzi.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Entity
 public class Ejercicio {
     
     @Id
@@ -20,9 +22,6 @@ public class Ejercicio {
 
     @Column(name = "duracion")
     private Integer duracion;
-
-    @Column(name = "tipo_duracion")
-    private String tipoDuracion;
 
     public Long getId(){
         return id;
@@ -50,14 +49,6 @@ public class Ejercicio {
 
     public void setDuracion(Integer duracion){
         this.duracion = duracion;
-    }
-
-    public String getTipoDuracion(){
-        return tipoDuracion;
-    }
-
-    public void setTipoDuracion(String tipoDuracion){
-        this.tipoDuracion = tipoDuracion;
     }
 
 }

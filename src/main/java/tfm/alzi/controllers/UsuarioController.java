@@ -3,6 +3,7 @@ package tfm.alzi.controllers;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import tfm.alzi.models.Usuario;
 import tfm.alzi.services.UsuarioService;
@@ -35,9 +37,10 @@ public class UsuarioController {
 		if (request.getUserPrincipal() != null) {
 			return "index";
 		}
+
 		return "login";
 	}
-
+ 
     @GetMapping(value = "/crear-usuario")
     public String crearUsuarioForm(final Model model, final HttpServletRequest request) {
 		if (request.getUserPrincipal() != null) {
@@ -54,16 +57,21 @@ public class UsuarioController {
 
 		this.validarUsuario(usuario, result, true, null);
 
+		//System.out.println(result.getAllErrors());
+
 		if (result.hasErrors()) {
 			model.addAttribute("usuario", usuario);
 			return "formNewUsuario";
 		} else {
 			this.usuarioService.creaUsuario(usuario);
+			model.addAttribute("usuarioCreado", "El usuario se ha creado con éxito!");
 		}
-		return "redirect:/";
+		return "login"; 
 	}
 
     public void validarUsuario(final Usuario usuario, final BindingResult result, Boolean nuevo, String passCheck) {
+
+		System.out.println(usuario.getRoles());
 
 		String dniPattern = "^([A-Z]?[0-9]{7}[A-Z]{1})$";
 		String passPattern = "^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$";
@@ -135,17 +143,25 @@ public class UsuarioController {
 		if (!usuario.getRoles().matches(rolesPattern)) {
 			result.rejectValue("roles", "roles", "Los perfiles disponibles son PARTICIPANTE, CUIDADOR y ESPECIALISTA.");
 		}
-		if (usuario.getRoles().contains("PARTICIPANTE") & (usuario.getPRelacionCuidador() == null | usuario.getPRelacionCuidador().isEmpty() | usuario.getPRelacionCuidador().isBlank())) {
-			result.rejectValue("PRelacionCuidador", "PRelacionCuidador", "Debes introducir la relación con el cuidador.");
+		if (usuario.getRoles().contains("PARTICIPANTE")) {
+			if (usuario.getPRelacionCuidador() == null | usuario.getPRelacionCuidador().isEmpty() | usuario.getPRelacionCuidador().isBlank()) {
+				result.rejectValue("PRelacionCuidador", "PRelacionCuidador", "Debes introducir la relación con el cuidador.");
+			}
 		}
-		if (usuario.getRoles().contains("CUIDADOR") & (usuario.getCTipo()) == null | usuario.getCTipo().isEmpty() | usuario.getCTipo().isBlank() | !usuario.getCTipo().matches(cuidadorPattern)) {
-			result.rejectValue("CTipo", "CTipo", "Debes introducir el tipo de cuidador (INFORMAL o FORMAL).");
+		if (usuario.getRoles().contains("CUIDADOR")) {
+			if ((usuario.getCTipo()) == null | usuario.getCTipo().isEmpty() | usuario.getCTipo().isBlank() | !usuario.getCTipo().matches(cuidadorPattern)) {
+				result.rejectValue("CTipo", "CTipo", "Debes introducir el tipo de cuidador (INFORMAL o FORMAL).");
+			}
 		}
-		if (usuario.getRoles().contains("ESPECIALISTA") & (usuario.getEEspecialidad() == null | usuario.getEEspecialidad().isEmpty() | usuario.getEEspecialidad().isBlank())) {
-			result.rejectValue("EEspecialidad", "EEspecialidad", "Debes introducir la especialidad que tienes.");
+		if (usuario.getRoles().contains("ESPECIALISTA")) {
+			if (usuario.getEEspecialidad() == null | usuario.getEEspecialidad().isEmpty() | usuario.getEEspecialidad().isBlank()) {
+				result.rejectValue("EEspecialidad", "EEspecialidad", "Debes introducir la especialidad que tienes.");
+			}
 		}
-		if (usuario.getRoles().contains("ESPECIALISTA") & (usuario.getECentro() == null | usuario.getECentro().isEmpty() | usuario.getECentro().isBlank())) {
-			result.rejectValue("ECentro", "ECentro", "Debes introducir el centro en el que trabajas.");
+		if (usuario.getRoles().contains("ESPECIALISTA")) {
+			if (usuario.getECentro() == null | usuario.getECentro().isEmpty() | usuario.getECentro().isBlank()) {
+				result.rejectValue("ECentro", "ECentro", "Debes introducir el centro en el que trabajas.");
+			}
 		}
 	}
 
@@ -157,22 +173,28 @@ public class UsuarioController {
 			Usuario usuario = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName());
 			usuario.setPass("");
 			model.addAttribute("usuario", usuario);
+			//System.out.println(usuario.getRoles());
 			return "formEditUsuario";
 		} 
 	}
 
 	@PostMapping(value = "/editar-usuario")
-    public String editarUsuario(@ModelAttribute("usuario") @Valid final Usuario usuario, final BindingResult result, @RequestParam(value = "passCheck") String passCheck, final Model model) {
+    public String editarUsuario(@ModelAttribute("usuario") @Valid final Usuario usuario, final BindingResult result, @RequestParam(value = "passCheck") String passCheck, @RequestParam(value = "pass") String pass, final Model model) {
 
 		this.validarUsuario(usuario, result, false, passCheck);
+
+		//System.out.println(usuario.getCTipo());
+		//System.out.println(result.getAllErrors());
 
 		if (result.hasErrors()) {
 			model.addAttribute("usuario", usuario);
 			return "formEditUsuario"; 
 		} else {
-			usuario.setPass((String) model.getAttribute("pass"));
+			//System.out.println(pass);
+			usuario.setPass(pass);
 			this.usuarioService.editarUsuario(usuario);
-			return "areaPersonal";
+			model.addAttribute("successEdit", "Cuenta actualizada con éxito!");
+			return "perfil";
 		}
 	}
 
@@ -180,6 +202,12 @@ public class UsuarioController {
     public String eliminarUsuario(final HttpServletRequest request, final Model model) {
 		if (request.getUserPrincipal() != null) {
 			this.usuarioService.deleteUsuario(request.getUserPrincipal().getName());
+			try {
+				request.logout();
+			} catch (ServletException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			model.addAttribute("usuarioEliminado", "Cuenta eliminada con éxito.");
 			return "login";
 		} else {

@@ -1,7 +1,7 @@
 package tfm.alzi.controllers;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -33,6 +33,35 @@ public class RecordatorioController {
 	@GetMapping(value = "/crear-recordatorio")
     public String crearRecordatorioForm(final Model model, final HttpServletRequest request) {
 		if (request.getUserPrincipal() != null) {
+
+			long id = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId();
+            List<Recordatorio> recordatorios = this.recordatorioService.getRecordatoriosByID(id);
+			model.addAttribute("recordatorios", recordatorios);
+            String jsonRecordatorios = "[";
+            for (int i=0; i<recordatorios.size(); i++) {
+                /*Map jo = new HashMap();
+                jo.put("title", recordatorios.get(i).getEtiqueta());
+                jo.put("start", recordatorios.get(i).getFecha().getYear() +
+                "-" + recordatorios.get(i).getFecha().getMonthValue() +
+                "-" + recordatorios.get(i).getFecha().getDayOfMonth());
+                //jsonRecordatorios.concat(jo.toString()).concat(",");
+                System.out.println(jo.toString());*/
+                jsonRecordatorios = jsonRecordatorios.concat("{\"title\": \"" + recordatorios.get(i).getEtiqueta() +
+                "\", \"start\": \"" + recordatorios.get(i).getFecha().getYear() +
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) +
+                "\", \"end\": \"" + recordatorios.get(i).getFecha().getYear() + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) + "\"}");
+                if(i < recordatorios.size() - 1) {
+                    jsonRecordatorios = jsonRecordatorios.concat(",");
+                } 
+            }
+            jsonRecordatorios = jsonRecordatorios.concat("]");
+            System.out.println(jsonRecordatorios);
+            //System.out.println(jsonRecordatorios.substring(1, jsonRecordatorios.length()-1));
+            model.addAttribute("jsonRecordatorios", jsonRecordatorios);
+
 			Recordatorio recordatorio = new Recordatorio();
 			model.addAttribute("recordatorio", recordatorio); 
 			return "formNewRecordatorio";
@@ -49,6 +78,35 @@ public class RecordatorioController {
 		this.validarRecordatorio(recordatorio, result);
 
 		if (result.hasErrors()) {
+
+			long id = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId();
+            List<Recordatorio> recordatorios = this.recordatorioService.getRecordatoriosByID(id);
+			model.addAttribute("recordatorios", recordatorios);
+            String jsonRecordatorios = "[";
+            for (int i=0; i<recordatorios.size(); i++) {
+                /*Map jo = new HashMap();
+                jo.put("title", recordatorios.get(i).getEtiqueta());
+                jo.put("start", recordatorios.get(i).getFecha().getYear() +
+                "-" + recordatorios.get(i).getFecha().getMonthValue() +
+                "-" + recordatorios.get(i).getFecha().getDayOfMonth());
+                //jsonRecordatorios.concat(jo.toString()).concat(",");
+                System.out.println(jo.toString());*/
+                jsonRecordatorios = jsonRecordatorios.concat("{\"title\": \"" + recordatorios.get(i).getEtiqueta() +
+                "\", \"start\": \"" + recordatorios.get(i).getFecha().getYear() +
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) +
+                "\", \"end\": \"" + recordatorios.get(i).getFecha().getYear() + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) + "\"}");
+                if(i < recordatorios.size() - 1) {
+                    jsonRecordatorios = jsonRecordatorios.concat(",");
+                } 
+            }
+            jsonRecordatorios = jsonRecordatorios.concat("]");
+            System.out.println(jsonRecordatorios);
+            //System.out.println(jsonRecordatorios.substring(1, jsonRecordatorios.length()-1));
+            model.addAttribute("jsonRecordatorios", jsonRecordatorios);
+
 			model.addAttribute("recordatorio", recordatorio);
 			return "formNewRecordatorio";
 		} else {
@@ -74,15 +132,44 @@ public class RecordatorioController {
 		}
 	}
 
-	@GetMapping(value = "/editar-recordatorio/{recordatorioId}")
-    public String editarRecordatorioForm(@PathVariable("recordatorioId") final long recordatorioId, 
+	@GetMapping(value = "/editar-recordatorio")
+    public String editarRecordatorioForm(@RequestParam(value = "id")  Integer recordatorioId, 
 	final Model model, final HttpServletRequest request) {
 		if (request.getUserPrincipal() == null) {
 			return "index";
 		} else {
+			
+			long id = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId();
+            List<Recordatorio> recordatorios = this.recordatorioService.getRecordatoriosByID(id);
+			model.addAttribute("recordatorios", recordatorios);
+            String jsonRecordatorios = "[";
+            for (int i=0; i<recordatorios.size(); i++) {
+                /*Map jo = new HashMap();
+                jo.put("title", recordatorios.get(i).getEtiqueta());
+                jo.put("start", recordatorios.get(i).getFecha().getYear() +
+                "-" + recordatorios.get(i).getFecha().getMonthValue() +
+                "-" + recordatorios.get(i).getFecha().getDayOfMonth());
+                //jsonRecordatorios.concat(jo.toString()).concat(",");
+                System.out.println(jo.toString());*/
+                jsonRecordatorios = jsonRecordatorios.concat("{\"title\": \"" + recordatorios.get(i).getEtiqueta() +
+                "\", \"start\": \"" + recordatorios.get(i).getFecha().getYear() +
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) +
+                "\", \"end\": \"" + recordatorios.get(i).getFecha().getYear() + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) + "\"}");
+                if(i < recordatorios.size() - 1) {
+                    jsonRecordatorios = jsonRecordatorios.concat(",");
+                } 
+            }
+            jsonRecordatorios = jsonRecordatorios.concat("]");
+            System.out.println(jsonRecordatorios);
+            //System.out.println(jsonRecordatorios.substring(1, jsonRecordatorios.length()-1));
+            model.addAttribute("jsonRecordatorios", jsonRecordatorios);
+			
 			Recordatorio recordatorio = this.recordatorioService.getRecordatorioById(recordatorioId);
 			model.addAttribute("recordatorio", recordatorio);
-			//model.addAttribute("id", recordatorio.getId());
+
 			return "formEditRecordatorio";
 		} 
 	}
@@ -95,7 +182,35 @@ public class RecordatorioController {
 		//System.out.println(recordatorioId);
 
 		if (result.hasErrors()) {
-			//recordatorio.setId(recordatorioId);
+			
+			long id = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId();
+            List<Recordatorio> recordatorios = this.recordatorioService.getRecordatoriosByID(id);
+			model.addAttribute("recordatorios", recordatorios);
+            String jsonRecordatorios = "[";
+            for (int i=0; i<recordatorios.size(); i++) {
+                /*Map jo = new HashMap();
+                jo.put("title", recordatorios.get(i).getEtiqueta());
+                jo.put("start", recordatorios.get(i).getFecha().getYear() +
+                "-" + recordatorios.get(i).getFecha().getMonthValue() +
+                "-" + recordatorios.get(i).getFecha().getDayOfMonth());
+                //jsonRecordatorios.concat(jo.toString()).concat(",");
+                System.out.println(jo.toString());*/
+                jsonRecordatorios = jsonRecordatorios.concat("{\"title\": \"" + recordatorios.get(i).getEtiqueta() +
+                "\", \"start\": \"" + recordatorios.get(i).getFecha().getYear() +
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) +
+                "\", \"end\": \"" + recordatorios.get(i).getFecha().getYear() + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
+                "-" + String.format("%02d", recordatorios.get(i).getFecha().getDayOfMonth()) + "\"}");
+                if(i < recordatorios.size() - 1) {
+                    jsonRecordatorios = jsonRecordatorios.concat(",");
+                } 
+            }
+            jsonRecordatorios = jsonRecordatorios.concat("]");
+            System.out.println(jsonRecordatorios);
+            //System.out.println(jsonRecordatorios.substring(1, jsonRecordatorios.length()-1));
+            model.addAttribute("jsonRecordatorios", jsonRecordatorios);
+
 			model.addAttribute("recordatorio", recordatorio);
 			return "formEditRecordatorio"; 
 		} else {
@@ -112,9 +227,9 @@ public class RecordatorioController {
 		if (request.getUserPrincipal() != null) {
             recordatorioService.deleteRecordatorio(recordatorioId);
             model.addAttribute("recordatorioEliminado", "Recordatorio eliminado con éxito.");
-			return "areaPersonal";
+			return "redirect:/area-personal";
 		}
-		return "login";
+		return "login"; 
 	}
 
 }

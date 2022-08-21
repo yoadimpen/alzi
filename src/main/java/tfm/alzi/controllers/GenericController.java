@@ -1,11 +1,9 @@
 package tfm.alzi.controllers;
 
 import java.security.Principal;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,19 +11,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
+import tfm.alzi.models.Informe;
+import tfm.alzi.models.ParticipantePrograma;
+import tfm.alzi.models.Programa;
 import tfm.alzi.models.Recordatorio;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.services.InformeService;
+import tfm.alzi.services.ParticipanteProgramaService;
+import tfm.alzi.services.ProgramaService;
 import tfm.alzi.services.RecordatorioService;
 import tfm.alzi.services.UsuarioService;
 
 @Controller
-public class GenericController {
+public class GenericController { 
 
     @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
-    private RecordatorioService repositorioService;
+    private RecordatorioService recordatorioService;
+
+    @Autowired
+    private ParticipanteProgramaService participanteProgramaService;
+
+    @Autowired
+    private ProgramaService programaService;
+
+    @Autowired
+    private InformeService informeService;
 
     @GetMapping(value = "/alzi")
     public String getAlzi(final Model model, final HttpServletRequest request) {
@@ -40,7 +53,7 @@ public class GenericController {
     public String goToAreaPersonal(final Model model, final HttpServletRequest request) {
         if (request.getUserPrincipal() != null) {
             long id = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId();
-            List<Recordatorio> recordatorios = this.repositorioService.getRecordatoriosByID(id);
+            List<Recordatorio> recordatorios = this.recordatorioService.getRecordatoriosByID(id);
 			model.addAttribute("recordatorios", recordatorios);
             String jsonRecordatorios = "[";
             for (int i=0; i<recordatorios.size(); i++) {
@@ -76,10 +89,24 @@ public class GenericController {
     @RequestMapping("/entrenamiento")
     public String goToEntrenamiento(final Model model, final HttpServletRequest request) {
         if (request.getUserPrincipal() != null) {
-			return "entrenamiento";
+            Usuario usuario = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName());
+            System.out.println(usuario.getRoles());
+            if(usuario.getRoles().equals("PARTICIPANTE")){
+                System.out.println("holi");
+                List<ParticipantePrograma> suscripciones = this.participanteProgramaService.getSuscripcionesByID(usuario.getId());
+                List<Programa> programas = new ArrayList<Programa>();
+                for (ParticipantePrograma s:suscripciones){
+                    programas.add(this.programaService.getProgramaById(s.getProgramaId()));
+                } 
+                model.addAttribute("programas", programas);
+
+                List<Informe> informes = this.informeService.getInformesByUsuarioId(usuario.getId());
+                model.addAttribute("informes", informes);
+            }
+            return "entrenamiento";
 		} else {
             return "login";
-        } 
+        }
     }
 
     @RequestMapping("/perfil")
@@ -89,6 +116,7 @@ public class GenericController {
             String dni = principal.getName();
             Usuario usuario = this.usuarioService.getUsuarioByDNI(dni);
             model.addAttribute("usuario", usuario);
+            model.addAttribute("isEdited", false);
 			return "perfil";
 		} else {
             return "login";

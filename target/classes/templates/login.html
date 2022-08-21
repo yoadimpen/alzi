@@ -1,28 +1,140 @@
 <!doctype html>
 <html>
     <head>
-        <title>Alzi</title>
-    </head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Alzi - Login</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Favicons -->
+        <link href="assets/img/favicon.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i">
+      
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+        <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+        <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+      
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      
+        <!-- =======================================================
+        * Template Name: NiceAdmin - v2.2.2
+        * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
+      </head>
     <body>
-        <div class="contenedor">
-            <div class="cuadro">
-                    <p th:if="${usuarioEliminado != null}" th:text="${usuarioEliminado}"></p>
-                <h1>Inicia sesión</h1>
-                    <div class="modal-content" style="padding-top: 50px;padding-bottom: 50px;max-width: 400px;margin: 0 auto;">
-                        <form class="col-12" th:action="@{/login}" method="post">
-                            <div class="form-group" id="user-group">
-                                <input type="text" class="form-control" placeholder="Nombre de usuario" name="dni"/>
+        <main>
+            <div class="container">
+
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                    <div class="d-flex justify-content-center py-4">
+                        <a href="index.html" class="logo d-flex align-items-center w-auto">
+                        <img src="assets/img/logo.png" alt="">
+                        <span class="d-none d-lg-block">ALZI</span>
+                        </a>
+                    </div><!-- End Logo -->
+
+                    <div class="card mb-3">
+
+                        <div class="card-body">
+
+                        <div class="pt-4 pb-2">
+                            <h5 class="card-title text-center pb-0 fs-4">Inicia Sesión</h5>
+                            <p class="text-center small">Introduce tu DNI y contraseña</p>
+                        </div>
+
+                        <div th:if="${param.error != null && session['SPRING_SECURITY_LAST_EXCEPTION'].message == 'Bad credentials'}" class="alert alert-danger" role="alert">
+                            Usuario o contraseña incorrecto.
+                        </div>
+
+                        <div th:if="${param.logout != null}">
+                            <div class="alert alert-success">
+                                Ha cerrado sesión.
                             </div>
-                            <div class="form-group" id="contrasena-group">
-                                <input type="password" class="form-control" placeholder="Contrasena" name="pass"/>
+                        </div>
+
+                        <div th:if="${usuarioEliminado != null}">
+                            <div class="alert alert-success" role="alert" th:text="${usuarioEliminado}"></div>
+                        </div>
+
+                        <div th:if="${usuarioCreado != null}">
+                            <div class="alert alert-success" role="alert" th:text="${usuarioCreado}"></div>
+                        </div>
+
+                        <form class="row g-3 needs-validation" th:action="@{/login}" method="post" novalidate>
+
+                            <div class="col-12">
+                                <label for="dni" class="form-label">DNI</label>
+                                <div class="input-group has-validation">
+                                    <input type="text" name="dni" class="form-control" id="dni" required>
+                                    <div class="invalid-feedback">Introduzca su DNI.</div>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Ingresar </button>
+
+                            <div class="col-12">
+                                <label for="pass" class="form-label">Contraseña</label>
+                                <input type="password" name="pass" class="form-control" id="pass" required>
+                                <div class="invalid-feedback">Introduzca su contraseña.</div>
+                            </div>
+
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100" type="submit">Acceder</button>
+                            </div>
+
+                            <div class="col-12">
+                                <p class="small mb-0">¿No tienes cuenta? <a th:href="@{/crear-usuario}">Regístrate!</a></p>
+                            </div>
+
                         </form>
-                        <div class="col-12 forgot">
-                            <a th:href="@{/crear-usuario}">Registrarse</a>
+
                         </div>
                     </div>
+
+                    <div class="credits">
+                        <!-- All the links in the footer should remain intact. -->
+                        <!-- You can delete the links only if you purchased the pro version. -->
+                        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                        Diseñado por <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+
+                    </div>
+                </div>
+                </div>
+
+            </section>
+
             </div>
-        </div>
+        </main><!-- End #main -->
+
+        <!-- Vendor JS Files -->
+        <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/vendor/chart.js/chart.min.js"></script>
+        <script src="assets/vendor/echarts/echarts.min.js"></script>
+        <script src="assets/vendor/quill/quill.min.js"></script>
+        <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+        <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+
+        <!-- Template Main JS File -->
+        <script src="assets/js/main.js"></script>
     </body>
 </html>

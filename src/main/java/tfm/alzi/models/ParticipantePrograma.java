@@ -1,11 +1,12 @@
 package tfm.alzi.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 
+@Entity
 public class ParticipantePrograma {
     
     @Id
@@ -13,32 +14,30 @@ public class ParticipantePrograma {
     @Column(name = "partpro_id")
     private long id;
 
-    @OneToOne
-    @Column(name = "participante")
-    private Participante participante;
+    @Column(name = "usuario_id")
+    private long usuarioId;
 
-    @OneToOne
-    @Column(name = "programa")
-    private Programa programa;
+    @Column(name = "programa_id")
+    private long programaId;
 
     public Long getId(){
         return id;
     }
 
-    public Participante getParticipante(){
-        return participante;
+    public Long getUsuarioId(){
+        return usuarioId;
     }
 
-    public void setParticipante(Participante participante){
-        this.participante = participante;
+    public void setUsuarioId(Long usuarioId){
+        this.usuarioId = usuarioId;
     }
 
-    public Programa getPrograma(){
-        return programa;
+    public Long getProgramaId(){
+        return programaId;
     }
 
-    public void setPrograma(Programa programa){
-        this.programa = programa;
+    public void setProgramaId(Long programaId){
+        this.programaId = programaId;
     }
 
 }

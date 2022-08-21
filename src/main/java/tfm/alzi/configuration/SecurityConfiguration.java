@@ -53,7 +53,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.formLogin().loginPage("/login")
 				.permitAll().defaultSuccessUrl("/")
 				.usernameParameter("dni").passwordParameter("pass")
-				.and().logout().logoutSuccessUrl("/");
+				.and().logout()                                               
+				.logoutSuccessUrl("/login?logout=true");
 
 		http.csrf().disable();
 		http.headers().frameOptions().sameOrigin();
