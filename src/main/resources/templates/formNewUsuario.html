@@ -66,7 +66,7 @@
                                 <label class="form-label">Tipo de perfil</label>
                                 <div>
                                   <select class="form-select" th:field="*{roles}" name="roles" id="roles" aria-label="Default select example">
-                                    <option value="PARTICIPANTE">Participante</option>
+                                    <option value="USUARIO">Usuario</option>
                                     <option value="CUIDADOR">Cuidador</option>
                                     <option value="ESPECIALISTA">Especialista</option>
                                   </select>
@@ -274,7 +274,7 @@
             $("#roles").change(function () {
                 var selected_option = $('#roles').val();
 
-                if (selected_option === "PARTICIPANTE") {
+                if (selected_option === "USUARIO") {
                     $('#PRelacionCuidador').removeClass("d-none");
                     $("#CTipo").addClass("d-none");
                     $("#EEspecialidad").addClass("d-none");

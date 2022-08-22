@@ -101,7 +101,7 @@ public class EjercicioController {
             model.addAttribute("programaId", programaId);
             model.addAttribute("ejercicioId", ejercicioId);
 
-            return "doEjercicio";
+            return "usuario/doEjercicio";
         }
         return "login";
     }
@@ -148,7 +148,7 @@ public class EjercicioController {
             actualizarInformeEjercicio(informeEjercicio, informes);
             actualizarInformePrograma(informePrograma, informesEjs);
 
-            return "entrenamiento";
+            return "redirect:/show-programa?id=" + programaId;
         }
         return "login";
     }

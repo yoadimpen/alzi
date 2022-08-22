@@ -1,6 +1,7 @@
 package tfm.alzi.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,6 +59,10 @@ public class UsuarioService implements UserDetailsService {
     public void deleteUsuario(final String dni) {
         Usuario usuario = this.usuarioRepository.findByDNI(dni);
         this.usuarioRepository.deleteById(usuario.getId());
+    }
+
+    public String getAuth(){
+        return this.usuarioRepository.findByDNI(SecurityContextHolder.getContext().getAuthentication().getName()).getRoles();
     }
     
 }

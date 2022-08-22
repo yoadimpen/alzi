@@ -304,7 +304,7 @@
 
                     <input type="hidden" th:field="*{roles}" />
 
-                    <div th:if="${usuario.roles == 'PARTICIPANTE'}">
+                    <div th:if="${usuario.roles == 'USUARIO'}">
                       <div class="row mb-3">
                         <label for="PRelacionCuidador" class="col-md-4 col-lg-3 col-form-label">Relación con el cuidador</label>
                         <div class="col-md-8 col-lg-9">
@@ -317,7 +317,7 @@
                       </div>
                     </div>
 
-                    <div th:if="${usuario.roles != 'PARTICIPANTE'}">
+                    <div th:if="${usuario.roles != 'USUARIO'}">
                         <input type="hidden" th:field="*{PRelacionCuidador}" />
                     </div>
 

@@ -52,13 +52,6 @@ public class GenericController {
 			model.addAttribute("recordatorios", recordatorios);
             String jsonRecordatorios = "[";
             for (int i=0; i<recordatorios.size(); i++) {
-                /*Map jo = new HashMap();
-                jo.put("title", recordatorios.get(i).getEtiqueta());
-                jo.put("start", recordatorios.get(i).getFecha().getYear() +
-                "-" + recordatorios.get(i).getFecha().getMonthValue() +
-                "-" + recordatorios.get(i).getFecha().getDayOfMonth());
-                //jsonRecordatorios.concat(jo.toString()).concat(",");
-                System.out.println(jo.toString());*/
                 jsonRecordatorios = jsonRecordatorios.concat("{\"title\": \"" + recordatorios.get(i).getEtiqueta() +
                 "\", \"start\": \"" + recordatorios.get(i).getFecha().getYear() +
                 "-" + String.format("%02d", recordatorios.get(i).getFecha().getMonthValue()) + 
@@ -71,8 +64,6 @@ public class GenericController {
                 } 
             }
             jsonRecordatorios = jsonRecordatorios.concat("]");
-            System.out.println(jsonRecordatorios);
-            //System.out.println(jsonRecordatorios.substring(1, jsonRecordatorios.length()-1));
             model.addAttribute("jsonRecordatorios", jsonRecordatorios);
             
             return "areaPersonal";
@@ -85,9 +76,7 @@ public class GenericController {
     public String goToEntrenamiento(final Model model, final HttpServletRequest request) {
         if (request.getUserPrincipal() != null) {
             Usuario usuario = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName());
-            System.out.println(usuario.getRoles());
-            if(usuario.getRoles().equals("PARTICIPANTE")){
-                System.out.println("holi");
+            if(usuario.getRoles().equals("USUARIO")){
                 List<ParticipantePrograma> suscripciones = this.participanteProgramaService.getSuscripcionesByID(usuario.getId());
                 List<Programa> programas = new ArrayList<Programa>();
                 for (ParticipantePrograma s:suscripciones){
@@ -95,7 +84,7 @@ public class GenericController {
                 } 
                 model.addAttribute("programas", programas);
             }
-            return "entrenamiento";
+            return "usuario/showPlan";
 		} else {
             return "login";
         }

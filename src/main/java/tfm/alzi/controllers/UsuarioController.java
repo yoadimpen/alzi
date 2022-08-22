@@ -77,7 +77,7 @@ public class UsuarioController {
 		String passPattern = "^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$";
 		String telefonoPattern = "^([0-9]{9})$";
 		String emailPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
-		String rolesPattern = "^(PARTICIPANTE|CUIDADOR|ESPECIALISTA)$";
+		String rolesPattern = "^(USUARIO|CUIDADOR|ESPECIALISTA)$";
 		String cuidadorPattern = "^(INFORMAL|FORMAL)$";
 
 		if(usuario.getNombre() == null | usuario.getNombre().isEmpty() | usuario.getNombre().isBlank()) {
@@ -141,9 +141,9 @@ public class UsuarioController {
 			result.rejectValue("roles", "roles", "Deber elegir un tipo de perfil.");
 		}
 		if (!usuario.getRoles().matches(rolesPattern)) {
-			result.rejectValue("roles", "roles", "Los perfiles disponibles son PARTICIPANTE, CUIDADOR y ESPECIALISTA.");
+			result.rejectValue("roles", "roles", "Los perfiles disponibles son USUARIO, CUIDADOR y ESPECIALISTA.");
 		}
-		if (usuario.getRoles().contains("PARTICIPANTE")) {
+		if (usuario.getRoles().contains("USUARIO")) {
 			if (usuario.getPRelacionCuidador() == null | usuario.getPRelacionCuidador().isEmpty() | usuario.getPRelacionCuidador().isBlank()) {
 				result.rejectValue("PRelacionCuidador", "PRelacionCuidador", "Debes introducir la relación con el cuidador.");
 			}

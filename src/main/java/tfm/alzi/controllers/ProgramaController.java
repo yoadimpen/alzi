@@ -54,7 +54,7 @@ public class ProgramaController {
 
             model.addAttribute("uId",usuario.getId());
 
-            return "showPrograma";
+            return "usuario/showPrograma";
         }
         return "login";
     }

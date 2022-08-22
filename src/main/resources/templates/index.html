@@ -37,34 +37,21 @@
   ======================================================== -->
 </head>
 
-<body onload="checkResponses()">
+<body>
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a th:href="@{/alzi}" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">ALZI</span>
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <i class="bi bi-list toggle-sidebar-btn" th:if="${@usuarioService.getAuth() != 'USUARIO'}"></i>
     </div><!-- End Logo -->
-
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
 
         <li class="nav-item dropdown pe-3">
 
@@ -117,51 +104,55 @@
 
   </header><!-- End Header -->
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+  <div th:if="${@usuarioService.getAuth() != 'USUARIO'}">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
 
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/alzi}">
-          <i class="bi bi-chat"></i>
-          <span>Alzi</span>
-        </a>
-      </li><!-- End Alzi Page Nav -->
+      <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" th:href="@{/area-personal}">
-          <i class="bi bi-journal"></i>
-          <span>Área Personal</span>
-        </a>
-      </li><!-- End Área Personal Page Nav -->
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/alzi}">
+            <i class="bi bi-chat"></i>
+            <span>Alzi</span>
+          </a>
+        </li><!-- End Alzi Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" th:href="@{/entrenamiento}">
-          <i class="bi bi-puzzle"></i>
-          <span>Entrenamiento</span>
-        </a>
-      </li><!-- End Entrenamiento Page Nav -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" th:href="@{/area-personal}">
+            <i class="bi bi-journal"></i>
+            <span>Área Personal</span>
+          </a>
+        </li><!-- End Área Personal Page Nav -->
 
-    </ul>
+        <li class="nav-item">
+          <a class="nav-link collapsed" th:href="@{/entrenamiento}">
+            <i class="bi bi-puzzle"></i>
+            <span>Entrenamiento</span>
+          </a>
+        </li><!-- End Entrenamiento Page Nav -->
 
-  </aside><!-- End Sidebar-->
+      </ul>
 
-  <main id="main" class="main">
+    </aside><!-- End Sidebar-->
+  
+  </div>
+
+  <main id="main" class="main" style="margin-left: 0px;">
 
     <div class="pagetitle">
-      <h1>Alzi</h1>
+      <h1>Área Personal</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/alzi}">Alzi</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/alzi}">Mi Plan</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section settings">
+    <section>
       <div class="row">
 
-        <div class="col-xl-12">
+        <div class="col-xl-4">
 
           <div class="card">
             <div class="card-body pt-3">
@@ -169,8 +160,8 @@
 
                 <iframe id="chatbot"
                     allow="microphone;"
-                    width="350"
-                    height="430"
+                    width="100%"
+                    height="400px"
                     src="https://console.dialogflow.com/api-client/demo/embedded/668017e1-b7d5-4611-8bb9-74423666fd01">
                 </iframe>
 
@@ -178,7 +169,36 @@
 
             </div>
           </div>
+        </div>
+        <div class="col-xl-8">
 
+          <div class="alert alert-info  alert-dismissible fade show" role="alert">
+            <div class="d-flex w-100 justify-content-between">
+              <h4 class="alert-heading" th:text="${@recordatorioService.getMyRecentRecordatorio().getEtiqueta()}"></h4>
+              <small th:text="${@recordatorioService.getMyRecentRecordatorio().getFecha()}"></small>
+            </div>
+            <p class="mb-0" th:text="${@recordatorioService.getMyRecentRecordatorio().getDescripcion()}"></p>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Mi Plan</h5>
+                <!-- List group with Advanced Contents -->
+                <div th:each="p: ${@programaService.getMyProgramas()}">
+                  <div class="list-group">
+                    <a th:href="@{'/show-programa?id=' + ${p.id}}" class="list-group-item list-group-item-action" aria-current="true">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:text="${p.titulo}"></h5>
+                        <small th:text="${p.duracion} + ' semanas'"></small>
+                      </div>
+                      <p class="mb-1" th:text="${p.descripcion}"></p>
+                      <span class="badge bg-info text-dark" th:text="${p.area}"></span>
+                    </a>
+                  </div><!-- End List group Advanced Content -->
+                  <br/>
+                </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

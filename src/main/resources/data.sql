@@ -4,7 +4,7 @@ INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass,
 
 -------------------------------------------------
 -- USUARIOS/USUARIO
-INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10002,'Mary','Jane','1969-04-04','Y1234568W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Calle Riverdale 4',600000002,'maryjane.usuario@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.', 'PARTICIPANTE', 'Hijo',NULL,NULL,NULL);
+INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10002,'Mary','Jane','1969-04-04','Y1234568W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Calle Riverdale 4',600000002,'maryjane.usuario@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.', 'USUARIO', 'Hijo',NULL,NULL,NULL);
 
 -------------------------------------------------
 -- USUARIOS/ESPECIALISTA

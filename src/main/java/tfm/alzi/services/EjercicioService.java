@@ -24,8 +24,4 @@ public class EjercicioService {
         return this.informeEjercicioRepository.findCustom(programaId, ejercicioId, usuarioId).esFinalizado();
     }
 
-    public String prueba(){
-        return "funciona";
-    }
-
 }

@@ -230,7 +230,7 @@
                     <div class="col-lg-9 col-md-8" th:text="${usuario.email}"></div>
                   </div>
 
-                  <div th:if="${usuario.roles == 'PARTICIPANTE'}">
+                  <div th:if="${usuario.roles == 'USUARIO'}">
                     <div class="row">
                         <div class="col-lg-3 col-md-4 label">Relación con el cuidador</div>
                         <div class="col-lg-9 col-md-8" th:text="${usuario.PRelacionCuidador}"></div>
