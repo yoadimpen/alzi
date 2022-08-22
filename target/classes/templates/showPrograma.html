@@ -176,14 +176,17 @@
                     <small th:text="${e.duracion} + ' minutos'"></small>
                     <div th:attr="id='fc'+${e.id}, aria-labelledby='fh'+${e.id}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body" th:text="${e.descripcion}"></div>
+                      <div th:if="${!@ejercicioService.checkIfFinished(programa.id,e.id,uId)}">
+                        <a th:href="@{'/do-ejercicio?programaId=' + ${programa.id} + '&ejercicioId=' + ${e.id}}" class="btn btn-primary">Completar</a>
+                      </div>
+                      <div th:if="${@ejercicioService.checkIfFinished(programa.id,e.id,uId)}" class="alert border-primary alert-dismissible fade show" role="alert">
+                        Este ejercicio ya ha sido completado!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div><!-- End Accordion without outline borders -->
-              <div>
-                <br>
-                <a href="#" class="btn btn-primary">Comenzar</a>
-              </div>
             </div>
           </div>
 

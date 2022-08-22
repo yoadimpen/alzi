@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
-import tfm.alzi.models.Informe;
 import tfm.alzi.models.ParticipantePrograma;
 import tfm.alzi.models.Programa;
 import tfm.alzi.models.Recordatorio;
 import tfm.alzi.models.Usuario;
-import tfm.alzi.services.InformeService;
 import tfm.alzi.services.ParticipanteProgramaService;
 import tfm.alzi.services.ProgramaService;
 import tfm.alzi.services.RecordatorioService;
@@ -36,9 +34,6 @@ public class GenericController {
 
     @Autowired
     private ProgramaService programaService;
-
-    @Autowired
-    private InformeService informeService;
 
     @GetMapping(value = "/alzi")
     public String getAlzi(final Model model, final HttpServletRequest request) {
@@ -99,9 +94,6 @@ public class GenericController {
                     programas.add(this.programaService.getProgramaById(s.getProgramaId()));
                 } 
                 model.addAttribute("programas", programas);
-
-                List<Informe> informes = this.informeService.getInformesByUsuarioId(usuario.getId());
-                model.addAttribute("informes", informes);
             }
             return "entrenamiento";
 		} else {

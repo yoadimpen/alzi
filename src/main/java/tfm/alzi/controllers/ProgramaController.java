@@ -1,5 +1,6 @@
 package tfm.alzi.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +14,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import tfm.alzi.models.Ejercicio;
 import tfm.alzi.models.Programa;
 import tfm.alzi.models.ProgramaEjercicio;
+import tfm.alzi.models.Usuario;
 import tfm.alzi.services.EjercicioService;
 import tfm.alzi.services.ProgramaEjercicioService;
 import tfm.alzi.services.ProgramaService;
+import tfm.alzi.services.UsuarioService;
 
 @Controller
 public class ProgramaController {
@@ -29,6 +32,9 @@ public class ProgramaController {
     @Autowired
     private EjercicioService ejercicioService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping(value = "/show-programa") 
     public String showPrograma(@RequestParam(value = "id") final long programaId,
     Model model, HttpServletRequest request){
@@ -41,6 +47,13 @@ public class ProgramaController {
                 ejercicios.add(this.ejercicioService.getEjercicioById(pe.getEjercicioId()));
             }
             model.addAttribute("ejercicios", ejercicios);
+
+            Principal principal = request.getUserPrincipal();
+            String dni = principal.getName();
+            Usuario usuario = this.usuarioService.getUsuarioByDNI(dni);
+
+            model.addAttribute("uId",usuario.getId());
+
             return "showPrograma";
         }
         return "login";

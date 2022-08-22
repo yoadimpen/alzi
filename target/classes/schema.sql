@@ -2,10 +2,13 @@ DROP TABLE usuario IF EXISTS;
 DROP TABLE programa IF EXISTS;
 DROP TABLE ejercicio IF EXISTS;
 DROP TABLE recordatorio IF EXISTS;
-DROP TABLE informe IF EXISTS;
 DROP TABLE participante_programa IF EXISTS;
 DROP TABLE programa_ejercicio IF EXISTS;
+DROP TABLE pregunta IF EXISTS;
 DROP TABLE ejercicio_pregunta IF EXISTS;
+DROP TABLE informe_programa IF EXISTS;
+DROP TABLE informe_ejercicio IF EXISTS;
+DROP TABLE informe_pregunta IF EXISTS;
 
 CREATE TABLE usuario (
     usuario_id          INTEGER PRIMARY KEY,
@@ -54,16 +57,6 @@ CREATE TABLE recordatorio (
     ON DELETE CASCADE
 );
 
-CREATE TABLE informe (
-    informe_id          INTEGER PRIMARY KEY,
-    usuario_id          INTEGER NOT NULL,
-    fecha               DATE NOT NULL,
-    link       VARCHAR(50) NOT NULL,
-    observaciones       VARCHAR(50) NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuario
-    ON DELETE CASCADE
-);
-
 CREATE TABLE participante_programa (
     partpro_id          INTEGER PRIMARY KEY,
     usuario_id          INTEGER NOT NULL,
@@ -86,7 +79,7 @@ CREATE TABLE programa_ejercicio (
 
 CREATE TABLE pregunta (
     pregunta_id         INTEGER PRIMARY KEY,
-    multi               BOOLEAN NOT NULL,
+    tipo                VARCHAR NOT NULL,
     descripcion         VARCHAR,
     question            VARCHAR NOT NULL,
     link_question       VARCHAR,
@@ -113,4 +106,44 @@ CREATE TABLE ejercicio_pregunta (
     ON DELETE CASCADE,
     FOREIGN KEY (pregunta_id) REFERENCES pregunta
     ON DELETE CASCADE
+);
+
+CREATE TABLE informe_programa (
+    informe_programa_id     INTEGER PRIMARY KEY,
+    programa_id             INTEGER NOT NULL,
+    usuario_id              INTEGER NOT NULL,
+    progreso                INTEGER NOT NULL,
+    aciertos                INTEGER NOT NULL,
+    fallos                  INTEGER NOT NULL,
+    observaciones           VARCHAR,
+    FOREIGN KEY (programa_id) REFERENCES programa,
+    FOREIGN KEY (usuario_id) REFERENCES usuario
+);
+
+CREATE TABLE informe_ejercicio (
+    informe_ejercicio_id    INTEGER PRIMARY KEY,
+    programa_id             INTEGER NOT NULL,
+    ejercicio_id            INTEGER NOT NULL,
+    usuario_id              INTEGER NOT NULL,
+    aciertos                INTEGER NOT NULL,
+    fallos                  INTEGER NOT NULL,
+    observaciones           VARCHAR,
+    finalizado              BOOLEAN,
+    FOREIGN KEY (programa_id) REFERENCES programa,
+    FOREIGN KEY (ejercicio_id) REFERENCES ejercicio,
+    FOREIGN KEY (usuario_id) REFERENCES usuario
+);
+
+CREATE TABLE informe_pregunta (
+    informe_pregunta_id    INTEGER PRIMARY KEY,
+    programa_id             INTEGER NOT NULL,
+    ejercicio_id            INTEGER NOT NULL,
+    pregunta_id             INTEGER NOT NULL,
+    usuario_id              INTEGER NOT NULL,
+    respuesta               VARCHAR,
+    resultado               BOOLEAN,
+    FOREIGN KEY (programa_id) REFERENCES programa,
+    FOREIGN KEY (ejercicio_id) REFERENCES ejercicio,
+    FOREIGN KEY (pregunta_id) REFERENCES pregunta,
+    FOREIGN KEY (usuario_id) REFERENCES usuario
 );

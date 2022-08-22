@@ -1,10 +1,12 @@
 package tfm.alzi.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Entity
 public class Pregunta {
     
     @Id
@@ -12,8 +14,8 @@ public class Pregunta {
     @Column(name = "pregunta_id")
     private long id;
 
-    @Column(name = "multi")
-    private Boolean esMulti;
+    @Column(name = "tipo")
+    private String tipo;
 
     // common
 
@@ -73,12 +75,12 @@ public class Pregunta {
         return id;
     }
 
-    public Boolean esMulti(){
-        return esMulti;
+    public String getTipo(){
+        return tipo;
     }
 
-    public void esMulti(Boolean esMulti){
-        this.esMulti = esMulti;
+    public void setTipo(String tipo){
+        this.tipo = tipo;
     }
 
     public String getDescripcion(){

@@ -182,36 +182,6 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Resultados</h5>
-                <!-- Table with stripped rows -->
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th class="col-2">#</th>
-                    <th class="col-9">Fecha</th>
-                    <th class="col-1">PDF</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <div th:each="i:${informes}">
-                    <tr>
-                      <th scope="row" th:text="${i.id}"></th>
-                      <td th:text="${i.fecha}"></td>
-                      <td>
-                        <a th:href="${i.link}">
-                          <i class="bi bi-file-earmark-text"></i>
-                        </a>
-                      </td>
-                    </tr>
-                  </div>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
-            </div>
-          </div>
-
         </div>
       </div>
     </section>
