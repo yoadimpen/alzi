@@ -14,8 +14,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 public class Usuario implements UserDetails{
@@ -23,14 +21,14 @@ public class Usuario implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "usuario_id")
-    @Getter private long id;
+    private long id;
 
     public long getId() {
         return this.id;
     }
 
     @Column(name = "nombre")
-    @Getter @Setter private String nombre;
+    private String nombre;
 
     public String getNombre() {
         return this.nombre;
@@ -40,7 +38,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "apellidos")
-    @Getter @Setter private String apellidos;
+    private String apellidos;
 
     public String getApellidos() {
         return this.apellidos;
@@ -51,7 +49,7 @@ public class Usuario implements UserDetails{
 
     @Column(name = "fecha_nacimiento")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Getter @Setter private LocalDate fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
     public LocalDate getFechaNacimiento() {
         return this.fechaNacimiento;
@@ -61,7 +59,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "dni")
-    @Getter @Setter private String dni;
+    private String dni;
 
     public String getDni() {
         return this.dni;
@@ -71,7 +69,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "pass")
-    @Getter @Setter private String pass;
+    private String pass;
 
     public String getPass() {
         return this.pass;
@@ -81,7 +79,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "direccion")
-    @Getter @Setter private String direccion;
+    private String direccion;
 
     public String getDireccion() {
         return this.direccion;
@@ -91,7 +89,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "telefono")
-    @Getter @Setter private Integer telefono;
+    private Integer telefono;
 
     public Integer getTelefono() {
         return this.telefono;
@@ -101,7 +99,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "email")
-    @Getter @Setter private String email; //que sea @gmail.com se comprobará en el controlador correspondiente
+    private String email; //que sea @gmail.com se comprobará en el controlador correspondiente
 
     public String getEmail() {
         return this.email;
@@ -111,7 +109,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "bio")
-    @Getter @Setter private String bio;
+    private String bio;
 
     public String getBio() {
         return this.bio;
@@ -121,7 +119,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "roles")
-    @Getter @Setter private String roles;
+    private String roles;
 
     public String getRoles() {
         return this.roles;
@@ -131,7 +129,7 @@ public class Usuario implements UserDetails{
     }
     
     @Column(name = "p_relacion_cuidador")
-    @Getter @Setter private String PRelacionCuidador;
+    private String PRelacionCuidador;
 
     public String getPRelacionCuidador() {
         return this.PRelacionCuidador;
@@ -141,7 +139,7 @@ public class Usuario implements UserDetails{
     } 
 
     @Column(name = "c_tipo")
-    @Getter @Setter private String CTipo;
+    private String CTipo;
 
     public String getCTipo() {
         return this.CTipo;
@@ -151,7 +149,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "e_especialidad")
-    @Getter @Setter private String EEspecialidad;
+    private String EEspecialidad;
 
     public String getEEspecialidad() {
         return this.EEspecialidad;
@@ -161,7 +159,7 @@ public class Usuario implements UserDetails{
     }
 
     @Column(name = "e_centro")
-    @Getter @Setter private String ECentro;
+    private String ECentro;
 
     public String getECentro() {
         return this.ECentro; 

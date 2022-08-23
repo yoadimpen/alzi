@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Users / Profile - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.2.2
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <div id="header" th:replace="../static/includes/header :: header"></div>
+
+  <div th:if="${@usuarioService.getAuth() != 'USUARIO'}">
+
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+
+      <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'CUIDADOR'}">
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/alzi}">
+            <i class="bi bi-chat"></i>
+            <span>Usuarios</span>
+          </a>
+        </li><!-- End Usuarios Page Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" th:href="@{/programas}">
+            <i class="bi bi-journal"></i>
+            <span>Programas</span>
+          </a>
+        </li><!-- End Área Personal Page Nav -->
+
+      </ul>
+
+      <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'ESPECIALISTA'}">
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/alzi}">
+            <i class="bi bi-chat"></i>
+            <span>Usuarios</span>
+          </a>
+        </li><!-- End Usuarios Page Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" th:href="@{/programas}">
+            <i class="bi bi-journal"></i>
+            <span>Programas</span>
+          </a>
+        </li><!-- End Programas Page Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" th:href="@{/area-personal}">
+            <i class="bi bi-journal"></i>
+            <span>Área Programas</span>
+          </a>
+        </li><!-- End Área Personal Page Nav -->
+
+      </ul>
+
+    </aside><!-- End Sidebar-->
+  
+  </div>
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Perfil</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/alzi}">Usuarios</a></li>
+          <li class="breadcrumb-item active">Perfil</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+              <h2 th:text="${usuario.nombre} + ' ' + ${usuario.apellidos}"></h2>
+              <h3 th:text="${usuario.roles}"></h3>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Su Plan</h5>
+                <!-- List group with Advanced Contents -->
+                <div th:each="p: ${programas}">
+                  <div class="list-group">
+                    <div class="list-group-item list-group-item-action">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:text="${p.titulo}"></h5>
+                        <small th:text="${p.duracion} + ' semanas'"></small>
+                      </div>
+                      <span class="badge bg-primary" th:if="${p.area == 'Memoria'}" style="margin-bottom: 5px;">Memoria</span>
+                      <span class="badge bg-secondary" th:if="${p.area == 'Percepción'}" style="margin-bottom: 5px;">Percepción</span>
+                      <span class="badge bg-success" th:if="${p.area == 'Atención'}" style="margin-bottom: 5px;">Atención</span>
+                      <span class="badge bg-danger" th:if="${p.area == 'Comprensión'}" style="margin-bottom: 5px;">Comprensión</span>
+                      <span class="badge bg-warning text-dark" th:if="${p.area == 'Lenguaje'}" style="margin-bottom: 5px;">Lenguaje</span>
+                      <span class="badge bg-dark" th:if="${p.area == 'Razonamiento'}" style="margin-bottom: 5px;">Razonamiento</span>
+
+                      <div class="progress mt-3" style="height: 15px;">
+                        <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar"
+                        th:attr="style = 'width: ' + ${@informeProgramaService.getProgramProgressByUserId(p.id,usuarioId)} + '%', aria-valuenow = ${@informeProgramaService.getProgramProgressByUserId(p.id,usuarioId)}" th:text = "${@informeProgramaService.getProgramProgressByUserId(p.id,usuarioId).toString()} + '%'" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div><!-- End List group Advanced Content -->
+                  <br/>
+                </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Información general</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                  <h5 class="card-title">Bio</h5>
+                  <p class="small fst-italic" th:text="${usuario.bio}"></p>
+
+                  <h5 class="card-title">Datos personales</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Nombre y Apellidos</div>
+                    <div class="col-lg-9 col-md-8" th:text="${usuario.nombre} + ' ' + ${usuario.apellidos}"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">DNI/NIE</div>
+                    <div class="col-lg-9 col-md-8" th:text="${usuario.dni}"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Fecha de Nacimiento</div>
+                    <div class="col-lg-9 col-md-8" th:text="${usuario.fechaNacimiento}"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Dirección</div>
+                    <div class="col-lg-9 col-md-8" th:text="${usuario.direccion}"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Teléfono</div>
+                    <div class="col-lg-9 col-md-8" th:text="${usuario.telefono}"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8" th:text="${usuario.email}"></div>
+                  </div>
+
+                  <div th:if="${usuario.roles == 'USUARIO'}">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Relación con el cuidador</div>
+                        <div class="col-lg-9 col-md-8" th:text="${usuario.PRelacionCuidador}"></div>
+                    </div>
+                  </div>
+                  <div th:if="${usuario.roles == 'CUIDADOR'}">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Tipo de cuidador</div>
+                        <div class="col-lg-9 col-md-8" th:text="${usuario.CTipo}"></div>
+                    </div>
+                  </div>
+                  <div th:if="${usuario.roles == 'ESPECIALISTA'}">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Especialidad</div>
+                        <div class="col-lg-9 col-md-8" th:text="${usuario.EEspecialidad}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Centro</div>
+                        <div class="col-lg-9 col-md-8" th:text="${usuario.ECentro}"></div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.min.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

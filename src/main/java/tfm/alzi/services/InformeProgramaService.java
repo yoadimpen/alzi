@@ -34,5 +34,9 @@ public class InformeProgramaService {
         Usuario usuario = this.usuarioRepository.findByDNI(SecurityContextHolder.getContext().getAuthentication().getName());
         return this.getInformeProgramaCustom(programaId, usuario.getId()).getProgreso();
     }
+
+    public Integer getProgramProgressByUserId(long programaId, long usuarioId){
+        return this.getInformeProgramaCustom(programaId, usuarioId).getProgreso();
+    }
     
 }

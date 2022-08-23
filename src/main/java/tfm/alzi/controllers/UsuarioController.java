@@ -1,7 +1,9 @@
 package tfm.alzi.controllers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,14 +25,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import tfm.alzi.models.ParticipantePrograma;
+import tfm.alzi.models.Programa;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.services.ParticipanteProgramaService;
+import tfm.alzi.services.ProgramaService;
 import tfm.alzi.services.UsuarioService;
 
 @Controller
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService; 
+    private UsuarioService usuarioService;
+
+	@Autowired
+	private ParticipanteProgramaService participanteProgramaService;
+
+	@Autowired
+	private ProgramaService programaService;
 
     @RequestMapping(value = "/login")
 	public String login(final Model model, final HttpServletRequest request) {
@@ -213,6 +225,28 @@ public class UsuarioController {
 		} else {
 			return "index";
 		}
+	}
+
+	@GetMapping(value = "/show-perfil")
+    public String showPerfilProgramas(final Model model,
+	@RequestParam(value = "usuarioId") long usuarioId,final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "index";
+		} else {
+			model.addAttribute("usuario", this.usuarioService.getUsuarioById(usuarioId));
+
+			List<ParticipantePrograma> ls = this.participanteProgramaService.getSuscripcionesByID(usuarioId);
+			List<Programa> programas = new ArrayList<>();
+
+			for(ParticipantePrograma p:ls){
+				programas.add(this.programaService.getProgramaById(p.getProgramaId()));
+			}
+
+			model.addAttribute("programas", programas);
+			model.addAttribute("usuarioId", usuarioId);
+
+			return "showPerfil";
+		} 
 	}
 
     public Usuario getUsuario() {

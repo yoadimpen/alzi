@@ -5,6 +5,8 @@ INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass,
 -------------------------------------------------
 -- USUARIOS/USUARIO
 INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10002,'Mary','Jane','1969-04-04','Y1234568W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Calle Riverdale 4',600000002,'maryjane.usuario@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.', 'USUARIO', 'Hijo',NULL,NULL,NULL);
+INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10004,'Harry','Jane','1970-04-04','Y1234570W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Calle Riverdale 5',600000004,'maryjane.usuario@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.', 'USUARIO', 'Sobrino',NULL,NULL,NULL);
+INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10005,'Louis','Jane','1950-04-04','Y1234571W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Calle Riverdale 6',600000005,'maryjane.usuario@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.', 'USUARIO', 'Sobrino',NULL,NULL,NULL);
 
 -------------------------------------------------
 -- USUARIOS/ESPECIALISTA
@@ -166,6 +168,8 @@ INSERT INTO ejercicio_pregunta (ejpre_id, ejercicio_id, pregunta_id) VALUES (100
 -- USUARIO/CUIDADOR
 
 INSERT INTO usuario_cuidador (usuario_cuidador_id, usuario_id, cuidador_id) VALUES (10001,10002,10001);
+INSERT INTO usuario_cuidador (usuario_cuidador_id, usuario_id, cuidador_id) VALUES (10002,10004,10001);
+INSERT INTO usuario_cuidador (usuario_cuidador_id, usuario_id, cuidador_id) VALUES (10003,10005,10001);
 
 --------------------------------------------------
 -- USUARIO/ESPECIALISTA
