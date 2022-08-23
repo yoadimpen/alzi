@@ -90,6 +90,16 @@ public class GenericController {
         }
     }
 
+    @GetMapping(value = "/programas")
+    public String getProgramas(final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() != null) {
+            model.addAttribute("programas", this.programaService.getAllProgramas());
+			return "programas";
+		} else {
+            return "login";
+        } 
+	}
+
     @RequestMapping("/perfil")
     public String goToPerfil(final Model model, final HttpServletRequest request) {
         if (request.getUserPrincipal() != null) {

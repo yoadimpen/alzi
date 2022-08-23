@@ -41,4 +41,8 @@ public class ProgramaService {
         return res;
     }
 
+    public List<Programa> getAllProgramas(){
+        return this.programaRepository.findAll();
+    }
+
 }
