@@ -9,6 +9,8 @@ DROP TABLE ejercicio_pregunta IF EXISTS;
 DROP TABLE informe_programa IF EXISTS;
 DROP TABLE informe_ejercicio IF EXISTS;
 DROP TABLE informe_pregunta IF EXISTS;
+DROP TABLE usuario_cuidador IF EXISTS;
+DROP TABLE usuario_especialista IF EXISTS;
 
 CREATE TABLE usuario (
     usuario_id          INTEGER PRIMARY KEY,
@@ -146,4 +148,16 @@ CREATE TABLE informe_pregunta (
     FOREIGN KEY (ejercicio_id) REFERENCES ejercicio,
     FOREIGN KEY (pregunta_id) REFERENCES pregunta,
     FOREIGN KEY (usuario_id) REFERENCES usuario
+);
+
+CREATE TABLE usuario_cuidador (
+    usuario_cuidador_id     INTEGER PRIMARY KEY,
+    usuario_id              INTEGER NOT NULL,
+    cuidador_id             INTEGER NOT NULL
+);
+
+CREATE TABLE usuario_especialista (
+    usuario_especialista_id     INTEGER PRIMARY KEY,
+    usuario_id              INTEGER NOT NULL,
+    especialista_id             INTEGER NOT NULL
 );

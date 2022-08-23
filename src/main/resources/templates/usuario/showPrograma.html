@@ -175,6 +175,18 @@
           <div class="card">
             <div class="card-body">
                 <h5 class="card-title" th:text="${programa.titulo}"></h5>
+                <span class="badge bg-primary" th:if="${programa.area == 'Memoria'}" style="margin-bottom: 5px;">Memoria</span>
+                <span class="badge bg-secondary" th:if="${programa.area == 'Percepción'}" style="margin-bottom: 5px;">Percepción</span>
+                <span class="badge bg-success" th:if="${programa.area == 'Atención'}" style="margin-bottom: 5px;">Atención</span>
+                <span class="badge bg-danger" th:if="${programa.area == 'Comprensión'}" style="margin-bottom: 5px;">Comprensión</span>
+                <span class="badge bg-warning text-dark" th:if="${programa.area == 'Lenguaje'}" style="margin-bottom: 5px;">Lenguaje</span>
+                <span class="badge bg-dark" th:if="${programa.area == 'Razonamiento'}" style="margin-bottom: 5px;">Razonamiento</span>
+                
+                <div class="progress mt-3" style="height: 15px;">
+                  <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar"
+                  th:attr="style = 'width: ' + ${@informeProgramaService.getMyProgramProgress(programa.id)} + '%', aria-valuenow = ${@informeProgramaService.getMyProgramProgress(programa.id)}" th:text = "${@informeProgramaService.getMyProgramProgress(programa.id).toString()} + '%'" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
                 <!-- Accordion without outline borders -->
               <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div th:each="e: ${ejercicios}">

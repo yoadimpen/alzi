@@ -13,9 +13,9 @@ INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass,
 -------------------------------------------------
 -- PROGRAMAS
 INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10001,10003,'Memoria I','Memoria','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la memoria.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10002,10003,'Percepcion I','Percepcion','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la percepcion.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10003,10003,'Atencion I','Atencion','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la atencion.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10004,10003,'Comprension I','Comprension','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la comprension.',3,0);
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10002,10003,'Percepcion I',STRINGTOUTF8 (U&'Percepci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la percepcion.',3,0);
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10003,10003,'Atencion I',STRINGTOUTF8 (U&'Atenci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la atencion.',3,0);
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10004,10003,'Comprension I',STRINGTOUTF8 (U&'Comprensi\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la comprension.',3,0);
 INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10005,10003,'Lenguaje','Lenguaje','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva del lenguaje.',3,0);
 INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10006,10003,'Razonamiento','Razonamiento','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva del razonamiento.',3,0);
 
@@ -124,11 +124,12 @@ INSERT INTO pregunta (pregunta_id, tipo, descripcion, question, link_question, a
 
 -------------------------------------------------
 -- RECORDATORIOS
-INSERT INTO recordatorio (recordatorio_id, usuario_id, fecha, etiqueta, descripcion) VALUES (10001,10002,'2022-05-12 12:30:00',N'Etiquetá','Descripcion');
+INSERT INTO recordatorio (recordatorio_id, usuario_id, fecha, etiqueta, descripcion) VALUES (10001,10002,'2022-05-12 12:30:00','Etiqueta','Descripcion');
 
 -------------------------------------------------
 -- INFORMES PROGRAMA
-INSERT INTO informe_programa (informe_programa_id, programa_id, usuario_id, progreso, aciertos, fallos, observaciones) VALUES (10001,10002,10002,0,0,0,'Sin observaciones.');
+INSERT INTO informe_programa (informe_programa_id, programa_id, usuario_id, progreso, aciertos, fallos, observaciones) VALUES (10001,10001,10002,0,0,0,'Sin observaciones.');
+INSERT INTO informe_programa (informe_programa_id, programa_id, usuario_id, progreso, aciertos, fallos, observaciones) VALUES (10002,10002,10002,0,0,0,'Sin observaciones.');
 
 -- INFORMES EJERCICIO
 INSERT INTO informe_ejercicio (informe_ejercicio_id, programa_id, ejercicio_id, usuario_id, aciertos, fallos, observaciones, finalizado) VALUES (10001,10002,10001,10002,0,0,'Sin observaciones.','false');
@@ -160,3 +161,13 @@ INSERT INTO ejercicio_pregunta (ejpre_id, ejercicio_id, pregunta_id) VALUES (100
 INSERT INTO ejercicio_pregunta (ejpre_id, ejercicio_id, pregunta_id) VALUES (10004,10002,10005);
 INSERT INTO ejercicio_pregunta (ejpre_id, ejercicio_id, pregunta_id) VALUES (10005,10002,10006);
 INSERT INTO ejercicio_pregunta (ejpre_id, ejercicio_id, pregunta_id) VALUES (10006,10002,10069);
+
+--------------------------------------------------
+-- USUARIO/CUIDADOR
+
+INSERT INTO usuario_cuidador (usuario_cuidador_id, usuario_id, cuidador_id) VALUES (10001,10002,10001);
+
+--------------------------------------------------
+-- USUARIO/ESPECIALISTA
+
+INSERT INTO usuario_especialista (usuario_especialista_id, usuario_id, especialista_id) VALUES (10001,10002,10003);
