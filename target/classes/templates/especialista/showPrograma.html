@@ -105,84 +105,36 @@
 
             <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title"> Nuevo Programa</h5>
-                  <form th:action="@{/crear-programa}" th:object="${programa}" method="post" class="row g-3">
-    
-                    <input type="hidden" th:field="*{id}" />
-                    <input type="hidden" th:field="*{usuarioId}" />
-                    <input type="hidden" th:field="*{puntuacion}" />
-                    <input type="hidden" th:field="*{publico}" />
-                    <input id="ejsInput" type="hidden" name="ejerciciosArray" />
+                  <h5 class="card-title" th:text="${programa.titulo}"></h5>
+                  <span class="badge bg-primary" th:if="${programa.area == 'Memoria'}" style="margin-bottom: 5px;">Memoria</span>
+                  <span class="badge bg-secondary" th:if="${programa.area == 'Percepción'}" style="margin-bottom: 5px;">Percepción</span>
+                  <span class="badge bg-success" th:if="${programa.area == 'Atención'}" style="margin-bottom: 5px;">Atención</span>
+                  <span class="badge bg-danger" th:if="${programa.area == 'Comprensión'}" style="margin-bottom: 5px;">Comprensión</span>
+                  <span class="badge bg-warning text-dark" th:if="${programa.area == 'Lenguaje'}" style="margin-bottom: 5px;">Lenguaje</span>
+                  <span class="badge bg-dark" th:if="${programa.area == 'Razonamiento'}" style="margin-bottom: 5px;">Razonamiento</span>
 
-                    <div class="col-md-8">
-                        <label for="titulo" class="form-label">Título</label>
-                        <input th:field="*{titulo}" name="titulo" type="text" class="form-control col-6" id="titulo">
-                        <div th:if="${#fields.hasErrors('titulo')}">
-                            <br>
-                            <div class="alert alert-danger" role="alert" th:errors="*{titulo}"></div>
-                          </div>
-                    </div>
-    
-                    <div class="col-md-4">
-                        <label for="area" class="form-label">Área</label>
-                        <div>
-                          <select class="form-select" th:field="*{area}" name="area" id="area" aria-label="Default select example">
-                            <option selected value="Memoria">Memoria</option>
-                            <option value="Percepción">Percepción</option>
-                            <option value="Atención">Atención</option>
-                            <option value="Comprensión">Comprensión</option>
-                            <option value="Lenguaje">Lenguaje</option>
-                            <option value="Razonamiento">Razonamiento</option>
-                          </select>
-                          <div th:if="${#fields.hasErrors('area')}">
-                            <br>
-                            <div class="alert alert-danger" role="alert" th:errors="*{area}"></div>
+                  <p th:text="${programa.descripcion}"></p>
+
+                  <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div th:each="e: ${ejercicios}">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" th:attr="id='fh'+${e.id}">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:attr="data-bs-target='#fc'+${e.id}, aria-controls='fc'+${e.id}" aria-expanded="false" th:text="${e.titulo}"></button>
+                        </h2>
+                        <small th:text="${e.duracion} + ' minutos'"></small>
+                        <div th:attr="id='fc'+${e.id}, aria-labelledby='fh'+${e.id}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                          <div class="accordion-body" th:text="${e.descripcion}"></div>
+                          <div>
+                            <a th:href="@{'/eliminar-relacion-programa-ejercicio?programaId=' + ${programa.id} + '&ejercicioId=' + ${e.id}}" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
                           </div>
                         </div>
+                      </div>
                     </div>
-    
-                    <div class="col-md-12">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea name="descripcion" type="text" class="form-control" id="descripcion" th:field="*{descripcion}"></textarea>
-                        <div th:if="${#fields.hasErrors('descripcion')}">
-                          <br>
-                          <div class="alert alert-danger" role="alert" th:errors="*{descripcion}"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="duracion" class="form-label">Duración</label>
-                        <input name="duracion" type="text" class="form-control" id="duracion" th:field="*{duracion}">
-                        <div th:if="${#fields.hasErrors('duracion')}">
-                            <br>
-                            <div class="alert alert-danger" role="alert" th:errors="*{duracion}"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-8"></div>
-                    <div class="col-md-4">
-                        <select class="form-select" name="tipoDuracion" id="area" aria-label="Default select example">
-                            <option selected value="días">Días</option>
-                            <option value="semanas">Semanas</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label class="form-label">Ejercicios</label>
-                        <select id="ejercicios-select" class="form-select" multiple name="ejs" aria-label="multiple select example" size="4">
-                            <option th:each="e: ${ejercicios}" th:value="${e.id}" th:text="${e.titulo}"></option>
-                        </select>
-                    </div>
-
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        Un programa necesita un mínimo de 2 ejercicios para ser publicado. Puede añadir ejercicios más adelante desde la edición de cada programa.
-                    </div>
-    
-                    <div>
-                        <button id="crear-programa-btn" type="submit" class="btn btn-primary" onclick="showOptions()">Crear</button>
-                        <a th:href="@{/programas}" class="btn btn-danger">Cancelar</a>
-                    </div>
-                    
-                  </form><!-- End Profile Edit Form -->
+                  </div>
+                  <br>
+                  <a th:href="@{'/editar-programa-ej?programaId=' + ${programa.id}}" class="btn btn-primary">Añadir Ejercicios</a>
+                  <br><br>
+                  <h6 th:text="'Administrado por: ' + ${@usuarioService.getNameSurnameById(programa.usuarioId)}"></h6>
                 </div>
               </div>
 

@@ -167,7 +167,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label class="form-label">Ejercicio</label>
+                        <label class="form-label">Ejercicios</label>
                         <select id="ejercicios-select" class="form-select" multiple name="ejs" aria-label="multiple select example" size="4">
                             <option th:each="e: ${ejercicios}" th:value="${e.id}" th:text="${e.titulo}"></option>
                         </select>

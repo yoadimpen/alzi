@@ -37,4 +37,8 @@ public class InformePreguntaService {
         this.informePreguntaRepository.deleteAll(ls);
     }
 
+    public List<InformePregunta> findByProgramaIdEjercicioId(long programaId, long ejercicioId) {
+        return this.informePreguntaRepository.findByProgramaIdEjercicioId(programaId, ejercicioId);
+    }
+
 }

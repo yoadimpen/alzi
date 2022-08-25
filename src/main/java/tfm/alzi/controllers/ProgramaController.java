@@ -82,6 +82,26 @@ public class ProgramaController {
         return "login";
     }
 
+    @GetMapping(value = "/programa") 
+    public String showProgramaEspecialista(@RequestParam(value = "id") final long programaId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            Programa p = this.programaService.getProgramaById(programaId);
+            System.out.println(p.getId());
+            model.addAttribute("programa", p);
+
+            List<ProgramaEjercicio> programaEjercicio = this.programaEjercicioService.getEjerciciosByProgramaID(programaId);
+            List<Ejercicio> ejercicios = new ArrayList<Ejercicio>();
+            for (ProgramaEjercicio pe: programaEjercicio){
+                ejercicios.add(this.ejercicioService.getEjercicioById(pe.getEjercicioId()));
+            }
+            model.addAttribute("ejercicios", ejercicios);
+
+            return "especialista/showPrograma";
+        }
+        return "login";
+    }
+
     @GetMapping(value = "/ocultar-programa") 
     public String hidePrograma(@RequestParam(value = "id") final long programaId,
     Model model, HttpServletRequest request){
@@ -206,6 +226,49 @@ public class ProgramaController {
 
     }
 
+    @GetMapping(value = "/editar-programa") 
+    public String crearProgramaForm(@RequestParam(value = "id") final long programaId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            Programa p = this.programaService.getProgramaById(programaId);
+            System.out.println(p.getId());
+            model.addAttribute("programa", p);
+
+            return "especialista/formEditPrograma";
+        }
+        return "login";
+    }
+
+    @PostMapping(value = "/editar-programa")
+    public String editarPrograma(@RequestParam("tipoDuracion") String tipoDuracion,
+    @ModelAttribute("id") String programaId,
+    @ModelAttribute("programa") @Valid final Programa programa, final BindingResult result, 
+    final Model model, HttpServletRequest request) {
+
+        if(request.getUserPrincipal() != null){
+
+            programa.setId(Long.valueOf(programaId));
+
+            this.validarPrograma(result, programa);
+
+            if(result.hasErrors()) {
+                model.addAttribute("programa", programa);
+                return "especialista/formEditPrograma";
+            } else {
+                this.programaService.editarPrograma(programa);
+            }
+
+            model.addAttribute("programas", this.programaService.getAllPublicProgramas());
+            model.addAttribute("programasPriv", this.programaService.getMyPrivateProgramas(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+            model.addAttribute("programaEditar", "Programa editado con éxito.");
+
+            return "programas";
+        
+        }
+        return "login";
+		
+	}
+
     @RequestMapping(value = "/borrar-programa")
     public String eliminarPrograma(@RequestParam(value = "id") final long programaId,
     Model model, HttpServletRequest request) {
@@ -222,6 +285,26 @@ public class ProgramaController {
             model.addAttribute("programasPriv", this.programaService.getMyPrivateProgramas(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
 			model.addAttribute("programaEliminado", "Programa eliminado éxito.");
 			return "programas";
+		} else {
+			return "login";
+		}
+	}
+
+    @RequestMapping(value = "/eliminar-relacion-programa-ejercicio")
+    public String eliminarRelacionEjercicio(@RequestParam(value = "programaId") final long programaId,
+    @RequestParam(value = "ejercicioId") final long ejercicioId,
+    Model model, HttpServletRequest request) {
+		if (request.getUserPrincipal() != null) {
+			
+            this.informeEjercicioService.eliminarLista(this.informeEjercicioService.findByProgramaIdEjercicioId(programaId,ejercicioId));
+            this.informePreguntaService.eliminarLista(this.informePreguntaService.findByProgramaIdEjercicioId(programaId,ejercicioId));
+            ProgramaEjercicio pe = this.programaEjercicioService.findByProgramaIdEjercicioId(programaId, ejercicioId);
+            this.programaEjercicioService.eliminarRelacion(pe);
+
+            model.addAttribute("programas", this.programaService.getAllPublicProgramas());
+            model.addAttribute("programasPriv", this.programaService.getMyPrivateProgramas(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+			model.addAttribute("programaEliminado", "Programa eliminado éxito.");
+			return "redirect:/programa?id=" + programaId;
 		} else {
 			return "login";
 		}

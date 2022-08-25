@@ -29,4 +29,13 @@ public class ProgramaEjercicioService {
         this.programaEjercicioRepository.deleteAll(ls);;
     }
 
+    public ProgramaEjercicio findByProgramaIdEjercicioId(long programaId, long ejercicioId) {
+        return this.programaEjercicioRepository.findByProgramaIdEjercicioId(programaId, ejercicioId);
+    }
+
+    @Transactional
+    public void eliminarRelacion(ProgramaEjercicio pe) {
+        this.programaEjercicioRepository.delete(pe);
+    }
+
 }

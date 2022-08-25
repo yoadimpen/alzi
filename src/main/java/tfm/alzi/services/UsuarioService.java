@@ -87,6 +87,11 @@ public class UsuarioService implements UserDetailsService {
         return usuario.getNombre() + " " + usuario.getApellidos();
     }
 
+    public String getNameSurnameById(long id){
+        Usuario usuario = this.usuarioRepository.getById(id);
+        return usuario.getNombre() + " " + usuario.getApellidos();
+    }
+
     public String getNameSurnameAbrv(){
         Usuario usuario = this.usuarioRepository.findByDNI(SecurityContextHolder.getContext().getAuthentication().getName());
         return usuario.getNombre().substring(0, 1) + ". " + usuario.getApellidos();
