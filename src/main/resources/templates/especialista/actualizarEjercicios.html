@@ -103,39 +103,38 @@
       <div class="row">
         <div class="col-lg-12">
 
-            <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title" th:text="${programa.titulo}"></h5>
-                  <span class="badge bg-primary" th:if="${programa.area == 'Memoria'}" style="margin-bottom: 5px;">Memoria</span>
-                  <span class="badge bg-secondary" th:if="${programa.area == 'Percepción'}" style="margin-bottom: 5px;">Percepción</span>
-                  <span class="badge bg-success" th:if="${programa.area == 'Atención'}" style="margin-bottom: 5px;">Atención</span>
-                  <span class="badge bg-danger" th:if="${programa.area == 'Comprensión'}" style="margin-bottom: 5px;">Comprensión</span>
-                  <span class="badge bg-warning text-dark" th:if="${programa.area == 'Lenguaje'}" style="margin-bottom: 5px;">Lenguaje</span>
-                  <span class="badge bg-dark" th:if="${programa.area == 'Razonamiento'}" style="margin-bottom: 5px;">Razonamiento</span>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Ejercicios añadidos</h5>
 
-                  <p th:text="${programa.descripcion}"></p>
+              <!-- Default List group -->
+              <ul class="list-group">
+                <li th:each="ec: ${ejerciciosCurrent}" class="list-group-item" th:text="${ec.titulo}"></li>
+              </ul><!-- End Default List group -->
 
-                  <div class="accordion accordion-flush" id="accordionFlushExample">
-                    <div th:each="e: ${ejercicios}">
-                      <div class="accordion-item">
-                        <h2 class="accordion-header" th:attr="id='fh'+${e.id}">
-                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:attr="data-bs-target='#fc'+${e.id}, aria-controls='fc'+${e.id}" aria-expanded="false" th:text="${e.titulo}"></button>
-                        </h2>
-                        <small th:text="${e.duracion} + ' minutos'"></small>
-                        <div th:attr="id='fc'+${e.id}, aria-labelledby='fh'+${e.id}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                          <div class="accordion-body" th:text="${e.descripcion}"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <a th:href="@{'/actualizar-ejercicios?programaId=' + ${programa.id}}" class="btn btn-primary">Actualizar Ejercicios</a>
-                  <br><br>
-                  <h6 th:text="'Administrado por: ' + ${@usuarioService.getNameSurnameById(programa.usuarioId)}"></h6>
+              <h5 class="card-title">Nuevos ejercicios</h5>
+
+              <form th:action="@{/actualizar-ejercicios}" method="post" class="row g-3">
+    
+                <input type="hidden" name="programaId" th:value="${programaId}"/>
+                <input id="ejsInput" type="hidden" name="ejerciciosArray" />
+
+                <div class="col-md-12">
+                    <label class="form-label">Ejercicios</label>
+                    <select id="ejercicios-select" class="form-select" multiple name="ejs" aria-label="multiple select example" size="4">
+                        <option th:each="e: ${ejercicios}" th:value="${e.id}" th:text="${e.titulo}"></option>
+                    </select>
                 </div>
-              </div>
 
-        </div>
+                <div>
+                    <button id="crear-programa-btn" type="submit" class="btn btn-primary" onclick="showOptions()">Crear</button>
+                    <a th:href="@{'/programa?id=' + ${programaId}}" class="btn btn-danger">Cancelar</a>
+                </div>
+                
+              </form><!-- End Profile Edit Form -->
+
+            </div>
+          </div>
       </div>
     </section>
 

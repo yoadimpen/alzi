@@ -124,15 +124,12 @@
                         <small th:text="${e.duracion} + ' minutos'"></small>
                         <div th:attr="id='fc'+${e.id}, aria-labelledby='fh'+${e.id}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                           <div class="accordion-body" th:text="${e.descripcion}"></div>
-                          <div>
-                            <a th:href="@{'/eliminar-relacion-programa-ejercicio?programaId=' + ${programa.id} + '&ejercicioId=' + ${e.id}}" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
-                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <br>
-                  <a th:href="@{'/editar-programa-ej?programaId=' + ${programa.id}}" class="btn btn-primary">Añadir Ejercicios</a>
+                  <a th:href="@{'/actualizar-ejercicios?programaId=' + ${programa.id}}" class="btn btn-primary">Actualizar Ejercicios</a>
                   <br><br>
                   <h6 th:text="'Administrado por: ' + ${@usuarioService.getNameSurnameById(programa.usuarioId)}"></h6>
                 </div>

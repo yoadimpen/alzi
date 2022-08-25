@@ -290,6 +290,7 @@ public class ProgramaController {
 		}
 	}
 
+    /*
     @RequestMapping(value = "/eliminar-relacion-programa-ejercicio")
     public String eliminarRelacionEjercicio(@RequestParam(value = "programaId") final long programaId,
     @RequestParam(value = "ejercicioId") final long ejercicioId,
@@ -308,6 +309,86 @@ public class ProgramaController {
 		} else {
 			return "login";
 		}
+	}
+    */
+
+    @GetMapping(value = "/actualizar-ejercicios") 
+    public String actualizarEjerciciosForm(@RequestParam(value = "programaId") final long programaId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            List<ProgramaEjercicio> ls = this.programaEjercicioService.getEjerciciosByProgramaID(programaId);
+            List<Ejercicio> ejercicios = this.ejercicioService.getAllPublicEjercicios();
+
+            List<Ejercicio> ejerciciosCurrent = new ArrayList<Ejercicio>();
+            for (ProgramaEjercicio pe: ls){
+                ejerciciosCurrent.add(this.ejercicioService.getEjercicioById(pe.getEjercicioId()));
+            }
+            model.addAttribute("ejercicios", ejercicios);
+
+            model.addAttribute("ejerciciosCurrent", ejerciciosCurrent);
+            model.addAttribute("ejercicios", ejercicios);
+            model.addAttribute("programaId", programaId);
+
+            return "especialista/actualizarEjercicios";
+        }
+        return "login";
+    }
+
+    @PostMapping(value = "/actualizar-ejercicios")
+    public String actualizarEjercicios(@ModelAttribute("programaId") long programaId,
+    @ModelAttribute("ejerciciosArray") String ejercicios,
+    final Model model, HttpServletRequest request) {
+
+        if(request.getUserPrincipal() != null){
+
+            List<ProgramaEjercicio> ejerciciosCurrent = this.programaEjercicioService.getEjerciciosByProgramaID(programaId);
+            List<Long> ids = new ArrayList<>();
+            
+            for(ProgramaEjercicio pe: ejerciciosCurrent){
+                ids.add(pe.getEjercicioId());
+            }
+
+            String[] arrayEjercicio = ejercicios.split(",");
+            List<Long> idsNew = new ArrayList<>();
+            for(String s: arrayEjercicio){
+                idsNew.add(Long.valueOf(s.trim()));
+            }
+
+            List<Long> toRemove = new ArrayList<>();
+            List<Long> toCreate = new ArrayList<>();
+
+            for(long id: ids){
+                if(!idsNew.contains(id)){
+                    toRemove.add(id);
+                }
+            }
+
+            for(long id2: idsNew){
+                if(!ids.contains(id2)){
+                    toCreate.add(id2);
+                }
+            }
+
+            for (Long r:toRemove){
+                ProgramaEjercicio rel = this.programaEjercicioService.findByProgramaIdEjercicioId(programaId, r);
+                this.programaEjercicioService.eliminarRelacion(rel);
+            }
+            
+            for (Long c:toCreate){
+                ProgramaEjercicio rel = new ProgramaEjercicio();
+                rel.setProgramaId(programaId);
+                rel.setEjercicioId(c);
+                this.programaEjercicioService.crearRelacion(rel);
+            }
+
+            System.out.println(toRemove);
+            System.out.println(toCreate);
+
+            return "redirect:/programa?id=" + programaId;
+        
+        }
+        return "login";
+		
 	}
 
 }
