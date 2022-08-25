@@ -23,6 +23,9 @@ public class Ejercicio {
     @Column(name = "duracion")
     private Integer duracion;
 
+    @Column(name = "publico")
+    private Boolean publico;
+
     public Long getId(){
         return id;
     }
@@ -49,6 +52,14 @@ public class Ejercicio {
 
     public void setDuracion(Integer duracion){
         this.duracion = duracion;
+    }
+
+    public Boolean getPublico(){
+        return publico;
+    }
+
+    public void setPublico(Boolean publico){
+        this.publico = publico;
     }
 
 }

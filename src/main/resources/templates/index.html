@@ -157,7 +157,7 @@
                 <!-- List group with Advanced Contents -->
                 <div th:each="p: ${@programaService.getMyProgramas()}">
                   <div class="list-group">
-                    <a th:href="@{'/show-programa?id=' + ${p.id}}" class="list-group-item list-group-item-action" aria-current="true">
+                    <a th:if="${p.publico}" th:href="@{'/show-programa?id=' + ${p.id}}" class="list-group-item list-group-item-action" aria-current="true">
                       <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1" th:text="${p.titulo}"></h5>
                         <small th:text="${p.duracion} + ' semanas'"></small>

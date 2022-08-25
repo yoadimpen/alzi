@@ -23,9 +23,18 @@ public class InformePreguntaService {
         return this.informePreguntaRepository.findCustom(programaId, ejercicioId, usuarioId);
     }
 
+    public List<InformePregunta> findByProgramaId(long programaId){
+        return this.informePreguntaRepository.findByProgramaId(programaId);
+    }
+
     @Transactional
     public void editarInformePregunta(final InformePregunta informePregunta) {
         this.informePreguntaRepository.save(informePregunta);
+    }
+
+    @Transactional
+    public void eliminarLista(List<InformePregunta> ls) {
+        this.informePreguntaRepository.deleteAll(ls);
     }
 
 }

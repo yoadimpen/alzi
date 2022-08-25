@@ -1,5 +1,7 @@
 package tfm.alzi.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,10 @@ public class EjercicioService {
 
     public Boolean checkIfFinished(long programaId, long ejercicioId, long usuarioId){
         return this.informeEjercicioRepository.findCustom(programaId, ejercicioId, usuarioId).esFinalizado();
+    }
+
+    public List<Ejercicio> getAllPublicEjercicios(){
+        return this.ejercicioRepository.findAllPublicEjercicios();
     }
 
 }

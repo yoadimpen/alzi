@@ -11,20 +11,21 @@ INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass,
 -------------------------------------------------
 -- USUARIOS/ESPECIALISTA
 INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10003,'Isabel','Fire','1989-04-04','Y1234569W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Calle Playa Azul',600000003,'isabelfire.especialista@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.', 'ESPECIALISTA', NULL,NULL,'Neuropsicologia','Centro Laguna Verde');
+INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10006,'Carol','Bridge','1985-04-04','Y1234572W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Calle Playa Verde',600000006,'carolbridge.especialista@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.', 'ESPECIALISTA', NULL,NULL,'Neuropsicologia','Centro Laguna Azul');
 
 -------------------------------------------------
 -- PROGRAMAS
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10001,10003,'Memoria I','Memoria','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la memoria.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10002,10003,'Percepcion I',STRINGTOUTF8 (U&'Percepci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la percepcion.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10003,10003,'Atencion I',STRINGTOUTF8 (U&'Atenci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la atencion.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10004,10003,'Comprension I',STRINGTOUTF8 (U&'Comprensi\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la comprension.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10005,10003,'Lenguaje','Lenguaje','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva del lenguaje.',3,0);
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion) VALUES (10006,10003,'Razonamiento','Razonamiento','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva del razonamiento.',3,0);
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10001,10006,'Memoria I','Memoria','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la memoria.',3,0,'false');
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10002,10003,'Percepcion I',STRINGTOUTF8 (U&'Percepci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la percepcion.',3,0,'true');
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10003,10003,'Atencion I',STRINGTOUTF8 (U&'Atenci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la atencion.',3,0,'false');
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10004,10003,'Comprension I',STRINGTOUTF8 (U&'Comprensi\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la comprension.',3,0,'false');
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10005,10006,'Lenguaje','Lenguaje','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva del lenguaje.',3,0,'false');
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10006,10006,'Razonamiento','Razonamiento','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva del razonamiento.',3,0,'false');
 
 -------------------------------------------------
 -- EJERCICIOS
-INSERT INTO ejercicio (ejercicio_id, titulo, descripcion, duracion) VALUES (10001,'Identifica I','En este ejercicio tendras que responder a varias preguntas para entrenar tu percepcion.', 5);
-INSERT INTO ejercicio (ejercicio_id, titulo, descripcion, duracion) VALUES (10002,'Identifica II','En este ejercicio tendras que responder a varias preguntas para entrenar tu percepcion.', 5);
+INSERT INTO ejercicio (ejercicio_id, titulo, descripcion, duracion, publico) VALUES (10001,'Identifica I','En este ejercicio tendras que responder a varias preguntas para entrenar tu percepcion.', 5, 'true');
+INSERT INTO ejercicio (ejercicio_id, titulo, descripcion, duracion, publico) VALUES (10002,'Identifica II','En este ejercicio tendras que responder a varias preguntas para entrenar tu percepcion.', 5, 'true');
 
 -------------------------------------------------
 -- PREGUNTAS 

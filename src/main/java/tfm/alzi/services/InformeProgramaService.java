@@ -1,6 +1,7 @@
 package tfm.alzi.services;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,15 @@ public class InformeProgramaService {
     @Transactional
     public void editarInformePrograma(final InformePrograma informePrograma) {
         this.informeProgramaRepository.save(informePrograma);
+    }
+
+    @Transactional
+    public void eliminarLista(List<InformePrograma> ls) {
+        this.informeProgramaRepository.deleteAll(ls);
+    }
+
+    public List<InformePrograma> findByProgramaId(long programaId){
+        return this.informeProgramaRepository.findByProgramaId(programaId);
     }
 
     public Integer getMyProgramProgress(long programaId){

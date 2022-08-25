@@ -72,8 +72,7 @@ public class RecordatorioController {
 	@PostMapping(value = "/crear-recordatorio")
     public String crearUsuario(@ModelAttribute("recordatorio") @Valid final Recordatorio recordatorio,
 	//@RequestParam("fecha") LocalDateTime fecha,
-	final BindingResult result,
-	final Model model, HttpServletRequest request) {
+	final BindingResult result, final Model model, HttpServletRequest request) {
 
 		this.validarRecordatorio(recordatorio, result);
 

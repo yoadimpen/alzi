@@ -15,4 +15,7 @@ public interface InformeEjercicioRepository extends JpaRepository<InformeEjercic
     @Query("SELECT ie FROM InformeEjercicio ie WHERE ie.programaId = ?1 AND ie.usuarioId = ?2")
     List<InformeEjercicio> findInformesEjerciciosByProgramaUsuario(Long programaId, Long usuarioId);
 
+    @Query("SELECT ie FROM InformeEjercicio ie WHERE ie.programaId = ?1")
+    List<InformeEjercicio> findByProgramaId(long programaId);
+
 }

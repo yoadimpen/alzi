@@ -14,4 +14,7 @@ public interface ParticipanteProgramaRepository extends JpaRepository<Participan
     @Query("SELECT pp FROM ParticipantePrograma pp WHERE pp.usuarioId = ?1")
     List<ParticipantePrograma> findByUsuarioID(Long id);
 
+    @Query("SELECT pp FROM ParticipantePrograma pp WHERE pp.programaId = ?1")
+    List<ParticipantePrograma> findByProgramaId(Long programaId);
+
 }

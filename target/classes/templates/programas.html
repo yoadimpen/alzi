@@ -130,6 +130,34 @@
       <div class="row" th:if="${@usuarioService.getAuth() == 'ESPECIALISTA'}">
         <div class="col-lg-12">
 
+          <div th:if="${programaOcultado != null}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              Programa oculto con éxito.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <div th:if="${programaPublicado != null}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              Programa publicado con éxito.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <div th:if="${programaCreado != null}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              Programa creado con éxito.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <div th:if="${programaEliminado != null}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              Programa eliminado con éxito.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Programas</h5>
@@ -152,9 +180,14 @@
                     <td th:text="${p.area}"></td>
                     <td th:text="${p.puntuacion}"></td>
                     <td>
-                      <div>
-                        <a th:href="@{'/editar-programa?id=' + ${p.id}}" class="btn btn-primary">Editar</a>
-                        <a th:href="@{'/borrar-programa/' + ${p.id}}" class="btn btn-danger">Borrar</a>
+                      <div th:if="${@programaService.soyCreador(p.usuarioId)}">
+                        <a th:href="@{'/programa?id=' + ${p.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
+                        <a th:href="@{'/ocultar-programa?id=' + ${p.id}}" type="button" class="btn btn-warning"><i class="bi bi-eye-slash"></i></a>
+                        <a th:href="@{'/editar-programa?id=' + ${p.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
+                        <a th:href="@{'/borrar-programa?id=' + ${p.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
+                      </div>
+                      <div th:if="${!@programaService.soyCreador(p.usuarioId)}">
+                        <a th:href="@{'/programa?id=' + ${p.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
                       </div>
                     </td>
                   </tr>
@@ -163,6 +196,42 @@
               <!-- End Table with stripped rows -->
 
               <a th:href="@{/crear-programa}" class="btn btn-primary">Añadir Programa</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Programas no publicados</h5>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Área</th>
+                    <th scope="col">Puntuación</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="pp: ${programasPriv}">
+                    <th scope="row" th:text="${pp.id}"></th>
+                    <td th:text="${pp.titulo}"></td>
+                    <td th:text="${pp.area}"></td>
+                    <td th:text="${pp.puntuacion}"></td>
+                    <td>
+                      <div>
+                        <a th:href="@{'/programa?id=' + ${pp.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
+                        <a th:href="@{'/publicar-programa?id=' + ${pp.id}}" type="button" class="btn btn-success"><i class="bi bi-eye"></i></a>
+                        <a th:href="@{'/editar-programa?id=' + ${pp.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
+                        <a th:href="@{'/borrar-programa?id=' + ${pp.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
             </div>
           </div>
 

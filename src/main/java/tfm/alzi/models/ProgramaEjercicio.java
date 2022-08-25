@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class ProgramaEjercicio {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "pej_id")
     private long id;
 

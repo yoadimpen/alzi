@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.SystemProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -91,10 +93,13 @@ public class GenericController {
     }
 
     @GetMapping(value = "/programas")
-    public String getProgramas(final Model model, final HttpServletRequest request) {
+    public String getProgramas(final Model model,
+    final HttpServletRequest request) {
 		if (request.getUserPrincipal() != null) {
-            model.addAttribute("programas", this.programaService.getAllProgramas());
-			return "programas";
+            model.addAttribute("programas", this.programaService.getAllPublicProgramas());
+            model.addAttribute("programasPriv", this.programaService.getMyPrivateProgramas(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+
+            return "programas";
 		} else {
             return "login";
         } 

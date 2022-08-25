@@ -28,4 +28,13 @@ public class InformeEjercicioService {
         this.informeEjercicioRepository.save(informeEjercicio);
     }
 
+    @Transactional
+    public void eliminarLista(List<InformeEjercicio> ls) {
+        this.informeEjercicioRepository.deleteAll(ls);
+    }
+
+    public List<InformeEjercicio> findByProgramaId(long programaId){
+        return this.informeEjercicioRepository.findByProgramaId(programaId);
+    }
+
 }
