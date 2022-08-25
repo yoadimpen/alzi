@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import tfm.alzi.models.EjercicioPregunta;
 import tfm.alzi.repositories.EjercicioPreguntaRepository;
 
@@ -16,6 +17,11 @@ public class EjercicioPreguntaService {
 
     public List<EjercicioPregunta> getEjercicioPreguntaByEjercicioId(long ejercicioId) {
         return this.ejercicioPreguntaRepository.findByEjercicioId(ejercicioId);
+    }
+
+    @Transactional
+    public void crearRelacion(final EjercicioPregunta ejercicioPregunta) {
+        this.ejercicioPreguntaRepository.save(ejercicioPregunta);
     }
 
 }

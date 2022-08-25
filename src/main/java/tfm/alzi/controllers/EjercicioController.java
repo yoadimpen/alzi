@@ -4,10 +4,14 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -230,6 +234,86 @@ public class EjercicioController {
                 
                 informePreguntaService.editarInformePregunta(informePregunta);
         }
+    }
+
+    @GetMapping(value = "/crear-ejercicio") 
+    public String crearEjercicioForm(Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            Ejercicio e = new Ejercicio();
+
+            Usuario u = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName());
+            e.setUsuarioId(u.getId());
+            e.setPublico(false);
+
+            model.addAttribute("ejercicio", e);
+
+            List<Pregunta> preguntas = this.preguntaService.getAllPublicPreguntas();
+            model.addAttribute("preguntas", preguntas);
+
+            return "especialista/formNewEjercicio";
+        }
+        return "login";
+    }
+
+    @PostMapping(value = "/crear-ejercicio")
+    public String crearEjercicio(@ModelAttribute("ejercicio") @Valid final Ejercicio ejercicio,
+    final BindingResult result, @ModelAttribute("preguntasArray") String preguntas,
+    final Model model, HttpServletRequest request) {
+
+        if(request.getUserPrincipal() != null){
+
+            this.validarEjercicio(result, ejercicio);
+
+            if(result.hasErrors()) {
+                model.addAttribute("ejercicio", ejercicio);
+                List<Pregunta> pr = this.preguntaService.getAllPublicPreguntas();
+                model.addAttribute("preguntas", pr);
+
+                return "especialista/formNewEjercicio";
+            } else {
+                String[] arrayPreguntas = preguntas.split(",");
+                if(arrayPreguntas.length >= 2){
+                    ejercicio.setPublico(true);
+                }
+                this.ejercicioService.crearEjercicio(ejercicio);
+                for (String e:arrayPreguntas){
+                    EjercicioPregunta rel = new EjercicioPregunta();
+                    rel.setEjercicioId(ejercicio.getId());
+                    rel.setPreguntaId(Long.valueOf(e));
+                    this.ejercicioPreguntaService.crearRelacion(rel);
+                }
+            }
+
+            model.addAttribute("ejercicios", this.ejercicioService.getAllPublicEjercicios());
+            model.addAttribute("ejerciciosPriv", this.ejercicioService.getMyPrivateEjercicios(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+            model.addAttribute("ejercicioCreado", "Ejercicio creado con éxito!");
+
+            return "ejercicios";
+        
+        }
+        return "login";
+		
+	}
+
+    private void validarEjercicio(BindingResult result, final Ejercicio ejercicio) {
+
+        if(ejercicio.getTitulo().isEmpty() || ejercicio.getTitulo().isBlank()) {
+			result.rejectValue("titulo","titulo","Introduzca un título.");
+		}
+
+        if(ejercicio.getDescripcion().isEmpty() || ejercicio.getDescripcion().isBlank()) {
+			result.rejectValue("descripcion", "descripcion","Introduzca una descripción.");
+		}
+
+        if(ejercicio.getDuracion() == null){
+            result.rejectValue("duracion", "duracion", "Introduzca una duración.");
+        }
+
+        if(ejercicio.getDuracion() != null){
+            if(ejercicio.getDuracion() <= 0)
+            result.rejectValue("duracion", "duracion", "La duración debe ser mayor que 0 minutos.");
+        }
+
     }
 
 }

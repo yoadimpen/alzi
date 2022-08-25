@@ -84,7 +84,7 @@
               </a>
             </li>
             <li>
-              <a href="#">
+              <a th:href="@{/ejercicios}">
                 <i class="bi bi-circle"></i><span>Ejercicios</span>
               </a>
             </li>
@@ -115,7 +115,7 @@
       <h1>Entrenamiento</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/alzi}">Programas</a></li>
+          <li class="breadcrumb-item">Programas</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -132,7 +132,7 @@
 
           <div th:if="${programaOcultado != null}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              Programa oculto con éxito.
+              Programa ocultado con éxito.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </div>

@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.SystemProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +15,7 @@ import tfm.alzi.models.ParticipantePrograma;
 import tfm.alzi.models.Programa;
 import tfm.alzi.models.Recordatorio;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.services.EjercicioService;
 import tfm.alzi.services.ParticipanteProgramaService;
 import tfm.alzi.services.ProgramaService;
 import tfm.alzi.services.RecordatorioService;
@@ -36,6 +35,9 @@ public class GenericController {
 
     @Autowired
     private ProgramaService programaService;
+
+    @Autowired
+    private EjercicioService ejercicioService;
 
     @GetMapping(value = "/alzi")
     public String getAlzi(final Model model, final HttpServletRequest request) {
@@ -100,6 +102,19 @@ public class GenericController {
             model.addAttribute("programasPriv", this.programaService.getMyPrivateProgramas(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
 
             return "programas";
+		} else {
+            return "login";
+        } 
+	}
+
+    @GetMapping(value = "/ejercicios")
+    public String getEjercicios(final Model model,
+    final HttpServletRequest request) {
+		if (request.getUserPrincipal() != null) {
+            model.addAttribute("ejercicios", this.ejercicioService.getAllPublicEjercicios());
+            model.addAttribute("ejerciciosPriv", this.ejercicioService.getMyPrivateEjercicios(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+
+            return "ejercicios";
 		} else {
             return "login";
         } 
