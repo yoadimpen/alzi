@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import tfm.alzi.models.Ejercicio;
-import tfm.alzi.models.InformeEjercicio;
 import tfm.alzi.models.Programa;
 import tfm.alzi.models.ProgramaEjercicio;
 import tfm.alzi.models.Usuario;

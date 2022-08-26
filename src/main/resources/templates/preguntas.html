@@ -115,7 +115,7 @@
       <h1>Entrenamiento</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">Ejercicios</li>
+          <li class="breadcrumb-item">Preguntas</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -130,69 +130,69 @@
       <div class="row" th:if="${@usuarioService.getAuth() == 'ESPECIALISTA'}">
         <div class="col-lg-12">
 
-          <div th:if="${ejercicioOcultado != null}">
+          <div th:if="${preguntaCreada != null}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              Ejercicio ocultado con éxito.
+              Pregunta creada con éxito.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </div>
 
-          <div th:if="${ejercicioPublicado != null}">
+          <div th:if="${preguntaEditada != null}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              Ejercicio publicado con éxito.
+              Pregunta editada con éxito.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </div>
 
-          <div th:if="${ejercicioCreado != null}">
+          <div th:if="${preguntaOcultada != null}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              Ejercicio creado con éxito.
+              Pregunta ocultada con éxito.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </div>
 
-          <div th:if="${ejercicioEditado != null}">
+          <div th:if="${preguntaPublicada != null}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              Ejercicio editado con éxito.
+              Pregunta publicada con éxito.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </div>
 
-          <div th:if="${ejercicioEliminado != null}">
+          <div th:if="${preguntaEliminada != null}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              Ejercicio eliminado con éxito.
+              Pregunta eliminada con éxito.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </div>
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Ejercicios</h5>
+              <h5 class="card-title">Preguntas</h5>
 
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Título</th>
-                    <th scope="col">Duración</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Tipo</th>
                     <th scope="col">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="e: ${ejercicios}">
-                    <th scope="row" th:text="${e.id}"></th>
-                    <td th:text="${e.titulo}"></td>
-                    <td th:text="${e.duracion} + ' minutos'"></td>
+                  <tr th:each="p: ${preguntas}">
+                    <th scope="row" th:text="${p.id}"></th>
+                    <td th:text="${p.descripcion}"></td>
+                    <td th:text="${p.tipo}"></td>
                     <td>
-                      <div th:if="${@ejercicioService.soyCreador(e.usuarioId)}">
-                        <a th:href="@{'/ejercicio?id=' + ${e.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
-                        <a th:href="@{'/ocultar-ejercicio?id=' + ${e.id}}" type="button" class="btn btn-warning"><i class="bi bi-eye-slash"></i></a>
-                        <a th:href="@{'/editar-ejercicio?id=' + ${e.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
-                        <a th:href="@{'/borrar-ejercicio?id=' + ${e.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
+                      <div th:if="${@preguntaService.soyCreador(p.usuarioId)}">
+                        <a th:href="@{'/pregunta?id=' + ${p.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
+                        <a th:href="@{'/ocultar-pregunta?id=' + ${p.id}}" type="button" class="btn btn-warning"><i class="bi bi-eye-slash"></i></a>
+                        <a th:href="@{'/editar-pregunta?id=' + ${p.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
+                        <a th:href="@{'/borrar-pregunta?id=' + ${p.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
                       </div>
-                      <div th:if="${!@ejercicioService.soyCreador(e.usuarioId)}">
-                        <a th:href="@{'/ejercicio?id=' + ${e.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
+                      <div th:if="${!@preguntaService.soyCreador(p.usuarioId)}">
+                        <a th:href="@{'/pregunta?id=' + ${p.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
                       </div>
                     </td>
                   </tr>
@@ -200,39 +200,41 @@
               </table>
               <!-- End Table with stripped rows -->
 
-              <a th:href="@{/crear-ejercicio}" class="btn btn-primary">Añadir Ejercicio</a>
+              <a th:href="@{/crear-pregunta}" class="btn btn-primary">Añadir Pregunta</a>
             </div>
           </div>
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Ejercicios no publicados</h5>
+              <h5 class="card-title">Preguntas no publicadas</h5>
 
+              <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Título</th>
-                    <th scope="col">Duración</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Tipo</th>
                     <th scope="col">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="ee: ${ejerciciosPriv}">
-                    <th scope="row" th:text="${ee.id}"></th>
-                    <td th:text="${ee.titulo}"></td>
-                    <td th:text="${ee.duracion} + ' minutos'"></td>
+                  <tr th:each="pp: ${preguntasPriv}">
+                    <th scope="row" th:text="${pp.id}"></th>
+                    <td th:text="${pp.descripcion}"></td>
+                    <td th:text="${pp.tipo}"></td>
                     <td>
                       <div>
-                        <a th:href="@{'/ejercicio?id=' + ${ee.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
-                        <a th:href="@{'/publicar-ejercicio?id=' + ${ee.id}}" type="button" class="btn btn-success"><i class="bi bi-eye"></i></a>
-                        <a th:href="@{'/editar-ejercicio?id=' + ${ee.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
-                        <a th:href="@{'/borrar-ejercicio?id=' + ${ee.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
+                        <a th:href="@{'/pregunta?id=' + ${pp.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
+                        <a th:href="@{'/publicar-pregunta?id=' + ${pp.id}}" type="button" class="btn btn-success"><i class="bi bi-eye"></i></a>
+                        <a th:href="@{'/editar-pregunta?id=' + ${pp.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
+                        <a th:href="@{'/borrar-pregunta?id=' + ${pp.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
                       </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
+              <!-- End Table with stripped rows -->
             </div>
           </div>
 

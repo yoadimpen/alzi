@@ -23,4 +23,7 @@ public interface InformePreguntaRepository extends JpaRepository<InformePregunta
     @Query("SELECT ip FROM InformePregunta ip WHERE ip.ejercicioId = ?1")
     List<InformePregunta> findByEjercicioId(long ejercicioId);
 
+    @Query("SELECT ip FROM InformePregunta ip WHERE ip.preguntaId = ?1")
+    List<InformePregunta> findByPreguntaId(long preguntaId);
+
 }

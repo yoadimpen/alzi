@@ -14,4 +14,7 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
     @Query("SELECT p FROM Pregunta p WHERE p.publico = true")
     List<Pregunta> findAllPublicPreguntas();
 
+    @Query("SELECT p FROM Pregunta p WHERE p.publico = false AND p.usuarioId = ?1")
+    List<Pregunta> findMyPrivatePreguntas(Long usuarioId);
+
 }

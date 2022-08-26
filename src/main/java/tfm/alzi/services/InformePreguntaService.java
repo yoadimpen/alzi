@@ -45,4 +45,8 @@ public class InformePreguntaService {
         return this.informePreguntaRepository.findByEjercicioId(ejercicioId);
     }
 
+    public List<InformePregunta> getInformePreguntaByPreguntaId(long preguntaId) {
+        return this.informePreguntaRepository.findByPreguntaId(preguntaId);
+    }
+
 }

@@ -42,4 +42,8 @@ public class EjercicioPreguntaService {
         this.ejercicioPreguntaRepository.delete(rel);
     }
 
+    public List<EjercicioPregunta> getEjerciciosPreguntaByPreguntaId(long preguntaId) {
+        return this.ejercicioPreguntaRepository.findByPreguntaId(preguntaId);
+    }
+
 }
