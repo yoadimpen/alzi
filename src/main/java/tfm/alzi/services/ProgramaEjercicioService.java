@@ -38,4 +38,8 @@ public class ProgramaEjercicioService {
         this.programaEjercicioRepository.delete(pe);
     }
 
+    public List<ProgramaEjercicio> findByEjercicioId(long ejercicioId) {
+        return this.programaEjercicioRepository.findByEjercicioId(ejercicioId);
+    }
+
 }

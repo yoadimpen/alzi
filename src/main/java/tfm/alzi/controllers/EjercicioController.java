@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import tfm.alzi.models.InformeEjercicio;
 import tfm.alzi.models.InformePregunta;
 import tfm.alzi.models.InformePrograma;
 import tfm.alzi.models.Pregunta;
+import tfm.alzi.models.ProgramaEjercicio;
 import tfm.alzi.models.Usuario;
 import tfm.alzi.services.EjercicioPreguntaService;
 import tfm.alzi.services.EjercicioService;
@@ -29,6 +31,7 @@ import tfm.alzi.services.InformeEjercicioService;
 import tfm.alzi.services.InformePreguntaService;
 import tfm.alzi.services.InformeProgramaService;
 import tfm.alzi.services.PreguntaService;
+import tfm.alzi.services.ProgramaEjercicioService;
 import tfm.alzi.services.UsuarioService;
 
 @Controller
@@ -42,6 +45,9 @@ public class EjercicioController {
 
     @Autowired
     private EjercicioPreguntaService ejercicioPreguntaService;
+
+    @Autowired
+    private ProgramaEjercicioService programaEjercicioService;
 
     @Autowired
     private InformePreguntaService informePreguntaService;
@@ -255,6 +261,25 @@ public class EjercicioController {
         return "login";
     }
 
+    @GetMapping(value = "/ejercicio") 
+    public String showEjercicioEspecialista(@RequestParam(value = "id") final long ejercicioId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            Ejercicio e  = this.ejercicioService.getEjercicioById(ejercicioId);
+            model.addAttribute("ejercicio", e);
+
+            List<EjercicioPregunta> ejericioPreguntas = this.ejercicioPreguntaService.findByEjercicioId(ejercicioId);
+            List<Pregunta> preguntas = new ArrayList<>();
+            for (EjercicioPregunta ep: ejericioPreguntas){
+                preguntas.add(this.preguntaService.getPreguntaById(ep.getPreguntaId()));
+            }
+            model.addAttribute("preguntas", preguntas);
+
+            return "especialista/showEjercicio";
+        }
+        return "login";
+    }
+
     @PostMapping(value = "/crear-ejercicio")
     public String crearEjercicio(@ModelAttribute("ejercicio") @Valid final Ejercicio ejercicio,
     final BindingResult result, @ModelAttribute("preguntasArray") String preguntas,
@@ -315,5 +340,189 @@ public class EjercicioController {
         }
 
     }
+
+    @GetMapping(value = "/ocultar-ejercicio") 
+    public String hideEjercicio(@RequestParam(value = "id") final long ejercicioId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            Ejercicio e = ejercicioService.getEjercicioById(ejercicioId);
+            Usuario u = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName());
+
+            if(e.getUsuarioId() == u.getId()){
+                e.setPublico(false);
+                this.ejercicioService.editarEjercicio(e);
+            }
+
+            model.addAttribute("ejercicios", this.ejercicioService.getAllPublicEjercicios());
+            model.addAttribute("ejerciciosPriv", this.ejercicioService.getMyPrivateEjercicios(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+            model.addAttribute("ejercicioOcultado", "Ejercicio ocultado con éxito!");
+
+            return "ejercicios";
+        }
+        return "login";
+    }
+
+    @GetMapping(value = "/publicar-ejercicio") 
+    public String publishEjercicio(@RequestParam(value = "id") final long ejercicioId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            Ejercicio e = ejercicioService.getEjercicioById(ejercicioId);
+            Usuario u = this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName());
+
+            if(e.getUsuarioId() == u.getId()){
+                e.setPublico(true);
+                this.ejercicioService.editarEjercicio(e);
+            }
+
+            model.addAttribute("ejercicios", this.ejercicioService.getAllPublicEjercicios());
+            model.addAttribute("ejerciciosPriv", this.ejercicioService.getMyPrivateEjercicios(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+            model.addAttribute("ejercicioPublicado", "Ejercicio publicado con éxito!");
+
+            return "ejercicios";
+        }
+        return "login";
+    }
+
+    @GetMapping(value = "/editar-ejercicio") 
+    public String editarEjercicioForm(@RequestParam(value = "id") final long ejercicioId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            Ejercicio e = this.ejercicioService.getEjercicioById(ejercicioId);
+
+            model.addAttribute("ejercicio", e);
+
+            return "especialista/formEditEjercicio";
+        }
+        return "login";
+    }
+
+    @PostMapping(value = "/editar-ejercicio")
+    public String editarEjercicio(@ModelAttribute("id") String ejercicioId,
+    @ModelAttribute("ejercicio") @Valid final Ejercicio ejercicio, final BindingResult result, 
+    final Model model, HttpServletRequest request) {
+
+        if(request.getUserPrincipal() != null){
+
+            ejercicio.setId(Long.valueOf(ejercicioId));
+
+            this.validarEjercicio(result, ejercicio);
+
+            if(result.hasErrors()) {
+                model.addAttribute("ejercicio", ejercicio);
+                return "especialista/formEditEjercicio";
+            } else {
+                this.ejercicioService.editarEjercicio(ejercicio);
+            }
+
+            model.addAttribute("ejercicios", this.ejercicioService.getAllPublicEjercicios());
+            model.addAttribute("ejerciciosPriv", this.ejercicioService.getMyPrivateEjercicios(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+            model.addAttribute("ejercicioEditado", "Ejercicio editado con éxito!");
+
+            return "ejercicios";
+        
+        }
+        return "login";
+		
+	}
+
+    @GetMapping(value = "/actualizar-preguntas") 
+    public String actualizarPreguntasForm(@RequestParam(value = "ejercicioId") final long ejercicioId,
+    Model model, HttpServletRequest request){
+        if(request.getUserPrincipal() != null){
+            List<EjercicioPregunta> ls = this.ejercicioPreguntaService.getEjercicioPreguntaByEjercicioId(ejercicioId);
+            List<Pregunta> preguntas = this.preguntaService.getAllPublicPreguntas();
+
+            List<Pregunta> preguntasCurrent = new ArrayList<>();
+            for (EjercicioPregunta ep: ls){
+                preguntasCurrent.add(this.preguntaService.getPreguntaById(ep.getPreguntaId()));
+            }
+            model.addAttribute("preguntas", preguntas);
+
+            model.addAttribute("preguntasCurrent", preguntasCurrent);
+            model.addAttribute("preguntas", preguntas);
+            model.addAttribute("ejercicioId", ejercicioId);
+
+            return "especialista/actualizarPreguntas";
+        }
+        return "login";
+    }
+
+    @PostMapping(value = "/actualizar-preguntas")
+    public String actualizarPreguntas(@ModelAttribute("ejercicioId") long ejercicioId,
+    @ModelAttribute("preguntasArray") String preguntas,
+    final Model model, HttpServletRequest request) {
+
+        if(request.getUserPrincipal() != null){
+
+            List<EjercicioPregunta> preguntasCurrent = this.ejercicioPreguntaService.getEjercicioPreguntaByEjercicioId(ejercicioId);
+            List<Long> ids = new ArrayList<>();
+            
+            for(EjercicioPregunta ep: preguntasCurrent){
+                ids.add(ep.getPreguntaId());
+            }
+
+            String[] arrayPregunta = preguntas.split(",");
+            List<Long> idsNew = new ArrayList<>();
+            for(String s: arrayPregunta){
+                idsNew.add(Long.valueOf(s.trim()));
+            }
+
+            List<Long> toRemove = new ArrayList<>();
+            List<Long> toCreate = new ArrayList<>();
+
+            for(long id: ids){
+                if(!idsNew.contains(id)){
+                    toRemove.add(id);
+                }
+            }
+
+            for(long id2: idsNew){
+                if(!ids.contains(id2)){
+                    toCreate.add(id2);
+                }
+            }
+
+            for (Long r:toRemove){
+                EjercicioPregunta rel = this.ejercicioPreguntaService.findByEjercicioIdPreguntaId(ejercicioId, r);
+                this.ejercicioPreguntaService.eliminarRelacion(rel);
+            }
+            
+            for (Long c:toCreate){
+                EjercicioPregunta rel = new EjercicioPregunta();
+                rel.setEjercicioId(ejercicioId);
+                rel.setPreguntaId(c);
+                this.ejercicioPreguntaService.crearRelacion(rel);
+            }
+
+            System.out.println(toRemove);
+            System.out.println(toCreate);
+
+            return "redirect:/ejercicio?id=" + ejercicioId;
+        
+        }
+        return "login";
+		
+	}
+
+    @RequestMapping(value = "/borrar-ejercicio")
+    public String eliminarPrograma(@RequestParam(value = "id") final long ejercicioId,
+    Model model, HttpServletRequest request) {
+		if (request.getUserPrincipal() != null) {
+
+            this.ejercicioPreguntaService.eliminarLista(this.ejercicioPreguntaService.findByEjercicioId(ejercicioId));
+            this.informeEjercicioService.eliminarLista(this.informeEjercicioService.findByEjercicioId(ejercicioId));
+            this.informePreguntaService.eliminarLista(this.informePreguntaService.findByEjercicioId(ejercicioId));
+            this.programaEjercicioService.eliminarLista(this.programaEjercicioService.findByEjercicioId(ejercicioId));
+            this.ejercicioService.eliminarEjercicio(ejercicioId);
+
+            model.addAttribute("ejercicios", this.ejercicioService.getAllPublicEjercicios());
+            model.addAttribute("ejerciciosPriv", this.ejercicioService.getMyPrivateEjercicios(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
+            model.addAttribute("ejercicioEliminado", "Ejercicio eliminado con éxito!");
+
+			return "ejercicios";
+		} else {
+			return "login";
+		}
+	}
 
 }

@@ -24,4 +24,22 @@ public class EjercicioPreguntaService {
         this.ejercicioPreguntaRepository.save(ejercicioPregunta);
     }
 
+    @Transactional
+    public void eliminarLista(List<EjercicioPregunta> ejercicioPreguntas) {
+        this.ejercicioPreguntaRepository.deleteAll(ejercicioPreguntas);
+    }
+
+    public List<EjercicioPregunta> findByEjercicioId(long ejercicioId) {
+        return this.ejercicioPreguntaRepository.findByEjercicioId(ejercicioId);
+    }
+
+    public EjercicioPregunta findByEjercicioIdPreguntaId(long ejercicioId, Long preguntaId) {
+        return this.ejercicioPreguntaRepository.findByEjercicioIdPreguntaId(ejercicioId,preguntaId);
+    }
+
+    @Transactional
+    public void eliminarRelacion(EjercicioPregunta rel) {
+        this.ejercicioPreguntaRepository.delete(rel);
+    }
+
 }

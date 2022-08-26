@@ -93,7 +93,7 @@
       <h1>Entrenamiento</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/alzi}">Programas</a></li>
+          <li class="breadcrumb-item">Ejercicios</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -105,30 +105,30 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Ejercicios añadidos</h5>
+              <h5 class="card-title">Preguntas añadidas</h5>
 
               <!-- Default List group -->
               <ul class="list-group">
-                <li th:each="ec: ${ejerciciosCurrent}" class="list-group-item" th:text="${ec.titulo}"></li>
+                <li th:each="pc: ${preguntasCurrent}" class="list-group-item" th:text="${pc.id} + ' - ' + ${pc.descripcion}"></li>
               </ul><!-- End Default List group -->
 
-              <h5 class="card-title">Nuevos ejercicios</h5>
+              <h5 class="card-title">Nuevas preguntas</h5>
 
-              <form th:action="@{/actualizar-ejercicios}" method="post" class="row g-3">
+              <form th:action="@{/actualizar-preguntas}" method="post" class="row g-3">
     
-                <input type="hidden" name="programaId" th:value="${programaId}"/>
-                <input id="ejsInput" type="hidden" name="ejerciciosArray" />
+                <input type="hidden" name="ejercicioId" th:value="${ejercicioId}"/>
+                <input id="preguntasInput" type="hidden" name="preguntasArray" />
 
                 <div class="col-md-12">
                     <label class="form-label">Ejercicios</label>
-                    <select id="ejercicios-select" class="form-select" multiple name="ejs" aria-label="multiple select example" size="4">
-                        <option th:each="e: ${ejercicios}" th:value="${e.id}" th:text="${e.titulo}"></option>
+                    <select id="preguntas-select" class="form-select" multiple name="preguntas" aria-label="multiple select example" size="4">
+                        <option th:each="p: ${preguntas}" th:value="${p.id}" th:text="${p.id} + ' - ' + ${p.descripcion}"></option>
                     </select>
                 </div>
 
                 <div>
-                    <button id="editar-programa-btn" type="submit" class="btn btn-primary" onclick="showOptions()">Actualizar</button>
-                    <a th:href="@{'/programa?id=' + ${programaId}}" class="btn btn-danger">Cancelar</a>
+                    <button id="editar-ejercicio-btn" type="submit" class="btn btn-primary" onclick="showOptions()">Actualizar</button>
+                    <a th:href="@{'/ejercicio?id=' + ${ejercicioId}}" class="btn btn-danger">Cancelar</a>
                 </div>
                 
               </form><!-- End Profile Edit Form -->
@@ -170,11 +170,11 @@
   <script src="assets/js/main.js"></script>
   <script>
     function showOptions(){
-        var options = document.getElementById('ejercicios-select').selectedOptions;
+        var options = document.getElementById('preguntas-select').selectedOptions;
         console.log(options);
         var values = Array.from(options).map(({ value }) => value);
         console.log(values);
-        var input = document.getElementById('ejsInput').value = values;
+        var input = document.getElementById('preguntasInput').value = values;
     }
   </script>
 

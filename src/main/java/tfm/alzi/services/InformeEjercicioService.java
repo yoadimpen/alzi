@@ -41,4 +41,8 @@ public class InformeEjercicioService {
         return this.informeEjercicioRepository.findByProgramaIdEjercicioId(programaId, ejercicioId);
     }
 
+    public List<InformeEjercicio> findByEjercicioId(long ejercicioId) {
+        return this.informeEjercicioRepository.findByEjercicioId(ejercicioId);
+    }
+
 }

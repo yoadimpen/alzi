@@ -51,4 +51,14 @@ public class EjercicioService {
         this.ejercicioRepository.save(ejercicio);
     }
 
+    @Transactional
+    public void editarEjercicio(final Ejercicio ejercicio) {
+        this.ejercicioRepository.save(ejercicio);
+    }
+
+    @Transactional
+    public void eliminarEjercicio(long ejercicioId) {
+        this.ejercicioRepository.deleteById(ejercicioId);
+    }
+
 }

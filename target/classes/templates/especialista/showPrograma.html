@@ -64,7 +64,7 @@
               </a>
             </li>
             <li>
-              <a href="#">
+              <a th:href="@{/ejercicios}">
                 <i class="bi bi-circle"></i><span>Ejercicios</span>
               </a>
             </li>
@@ -129,8 +129,10 @@
                     </div>
                   </div>
                   <br>
-                  <a th:href="@{'/actualizar-ejercicios?programaId=' + ${programa.id}}" class="btn btn-primary">Actualizar Ejercicios</a>
-                  <br><br>
+                  <div th:if="${@programaService.soyCreador(programa.usuarioId)}">
+                    <a th:href="@{'/actualizar-ejercicios?programaId=' + ${programa.id}}" class="btn btn-primary">Actualizar Ejercicios</a>
+                  </div>
+                  <br>
                   <h6 th:text="'Administrado por: ' + ${@usuarioService.getNameSurnameById(programa.usuarioId)}"></h6>
                 </div>
               </div>

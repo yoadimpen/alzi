@@ -227,7 +227,7 @@ public class ProgramaController {
     }
 
     @GetMapping(value = "/editar-programa") 
-    public String crearProgramaForm(@RequestParam(value = "id") final long programaId,
+    public String editarProgramaForm(@RequestParam(value = "id") final long programaId,
     Model model, HttpServletRequest request){
         if(request.getUserPrincipal() != null){
             Programa p = this.programaService.getProgramaById(programaId);
@@ -260,7 +260,7 @@ public class ProgramaController {
 
             model.addAttribute("programas", this.programaService.getAllPublicProgramas());
             model.addAttribute("programasPriv", this.programaService.getMyPrivateProgramas(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
-            model.addAttribute("programaEditar", "Programa editado con éxito.");
+            model.addAttribute("programaEditado", "Programa editado con éxito.");
 
             return "programas";
         
@@ -323,7 +323,6 @@ public class ProgramaController {
             for (ProgramaEjercicio pe: ls){
                 ejerciciosCurrent.add(this.ejercicioService.getEjercicioById(pe.getEjercicioId()));
             }
-            model.addAttribute("ejercicios", ejercicios);
 
             model.addAttribute("ejerciciosCurrent", ejerciciosCurrent);
             model.addAttribute("ejercicios", ejercicios);
