@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class Pregunta {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "pregunta_id")
     private long id;
 
@@ -79,6 +79,10 @@ public class Pregunta {
 
     public Long getId(){
         return id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
     }
 
     public Boolean getPublico(){

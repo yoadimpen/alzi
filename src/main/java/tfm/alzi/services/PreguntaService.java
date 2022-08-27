@@ -2,6 +2,8 @@ package tfm.alzi.services;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,11 @@ public class PreguntaService {
     @Transactional
     public void editarPregunta(Pregunta p) {
         this.preguntaRepository.save(p);
+    }
+
+    @Transactional
+    public void crearPregunta(Pregunta pregunta) {
+        this.preguntaRepository.save(pregunta);
     }
 
 }

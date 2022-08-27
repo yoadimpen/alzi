@@ -105,14 +105,318 @@
 
             <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title"> Nueva Pregunta</h5>
-                  <form th:action="@{/crear-pregunta}" th:object="${pregunta}" method="post" class="row g-3">
+                  <h5 class="card-title">Nueva Pregunta</h5>
+                  
+
+                  <form th:action="@{'/crear-pregunta-' + ${ruta}}" th:object="${pregunta}" method="post" class="row g-3">
     
-                    <!--TO DO-->
+                    <input type="hidden" th:field="*{id}" />
+                    <input type="hidden" th:field="*{publico}" />
+                    <input type="hidden" th:field="*{usuarioId}" />
+                    <input type="hidden" th:field="*{tipo}" />
+
+                    <div th:if="${esCompleta}" class="row g-3">
+
+                      <div class="col-md-12">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <input th:field="*{descripcion}" name="descripcion" type="text" class="form-control col-6" id="descripcion">
+                        <div th:if="${#fields.hasErrors('descripcion')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{descripcion}"></div>
+                          </div>
+                      </div>
+                      <div class="col-md-8">
+                        <label for="question" class="form-label">Pregunta</label>
+                        <input th:field="*{question}" name="question" type="text" class="form-control col-6" id="question">
+                        <div th:if="${#fields.hasErrors('question')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{question}"></div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="answer" class="form-label">Respuesta</label>
+                        <input th:field="*{answer}" name="answer" type="text" class="form-control col-6" id="answer">
+                        <div th:if="${#fields.hasErrors('answer')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{answer}"></div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="linkQuestion" class="form-label">URL imagen</label>
+                        <input th:field="*{linkQuestion}" name="linkQuestion" type="text" class="form-control col-6" id="linkQuestion">
+                        <div th:if="${#fields.hasErrors('linkQuestion')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{linkQuestion}"></div>
+                          </div>
+                      </div>
+                    
+                      <input type="hidden" th:field="*{option1}" />
+                      <input type="hidden" th:field="*{isCorrect1}" />
+                      <input type="hidden" th:field="*{linkOption1}" />
+                      <input type="hidden" th:field="*{option2}" />
+                      <input type="hidden" th:field="*{isCorrect2}" />
+                      <input type="hidden" th:field="*{linkOption2}" />
+                      <input type="hidden" th:field="*{option3}" />
+                      <input type="hidden" th:field="*{isCorrect3}" />
+                      <input type="hidden" th:field="*{linkOption3}" />
+                      <input type="hidden" th:field="*{option4}" />
+                      <input type="hidden" th:field="*{isCorrect4}" />
+                      <input type="hidden" th:field="*{linkOption4}" />
+                    </div>
+
+
+
+
+
+                    <div th:if="${esUnique}" class="row g-3">
+
+                      <div class="col-md-12">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <input th:field="*{descripcion}" name="descripcion" type="text" class="form-control col-6" id="descripcion">
+                        <div th:if="${#fields.hasErrors('descripcion')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{descripcion}"></div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="question" class="form-label">Pregunta</label>
+                        <input th:field="*{question}" name="question" type="text" class="form-control col-6" id="question">
+                        <div th:if="${#fields.hasErrors('question')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{question}"></div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="linkQuestion" class="form-label">URL imagen</label>
+                        <input th:field="*{linkQuestion}" name="linkQuestion" type="text" class="form-control col-6" id="linkQuestion">
+                        <div th:if="${#fields.hasErrors('linkQuestion')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{linkQuestion}"></div>
+                        </div>
+                      </div>
+
+                        <div th:if="${#fields.hasErrors('isCorrect1')}">
+                          <br>
+                          <div class="alert alert-danger" role="alert" th:errors="*{isCorrect1}"></div>
+                        </div>
+                        <div class="col-md-12">
+                          <label for="option1" class="form-label">Opción 1</label>
+                          <input th:field="*{option1}" name="option1" type="text" class="form-control col-6" id="option1">
+                          <div th:if="${#fields.hasErrors('option1')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{option1}"></div>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <label for="isCorrect1" class="form-check-label">Solución</label>
+                          <input name="isCorrect1" type="checkbox" class="form-check-input" id="isCorrect1" onclick="blockAllOptionsButOne()"/>
+                        </div>
+                        <div class="col-md-12">
+                          <label for="linkOption1" class="form-label">URL imagen</label>
+                          <input th:field="*{linkOption1}" name="linkOption1" type="text" class="form-control col-6" id="linkOption1">
+                          <div th:if="${#fields.hasErrors('linkOption1')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{linkOption1}"></div>
+                          </div>
+                        </div>
+  
+                        <div class="col-md-12">
+                          <label for="option2" class="form-label">Opción 2</label>
+                          <input th:field="*{option2}" name="option2" type="text" class="form-control col-6" id="option2">
+                          <div th:if="${#fields.hasErrors('option2')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{option2}"></div>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <label for="isCorrect2" class="form-check-label">Solución</label>
+                          <input name="isCorrect2" type="checkbox" class="form-check-input" id="isCorrect2" onclick="blockAllOptionsButTwo()">
+                        </div>
+                        <div class="col-md-12">
+                          <label for="linkOption2" class="form-label">URL imagen</label>
+                          <input th:field="*{linkOption2}" name="linkOption2" type="text" class="form-control col-6" id="linkOption2">
+                          <div th:if="${#fields.hasErrors('linkOption2')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{linkOption2}"></div>
+                          </div>
+                        </div>
+  
+                        <div class="col-md-12">
+                          <label for="option3" class="form-label">Opción 3</label>
+                          <input th:field="*{option3}" name="option3" type="text" class="form-control col-6" id="option3">
+                          <div th:if="${#fields.hasErrors('option3')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{option3}"></div>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <label for="isCorrect3" class="form-check-label">Solución</label>
+                          <input name="isCorrect3" type="checkbox" class="form-check-input" id="isCorrect3" onclick="blockAllOptionsButThree()">
+                        </div>
+                        <div class="col-md-12">
+                          <label for="linkOption3" class="form-label">URL imagen</label>
+                          <input th:field="*{linkOption3}" name="linkOption3" type="text" class="form-control col-6" id="linkOption3">
+                          <div th:if="${#fields.hasErrors('linkOption3')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{linkOption3}"></div>
+                          </div>
+                        </div>
+  
+                        <div class="col-md-12">
+                          <label for="option4" class="form-label">Opción 4</label>
+                          <input th:field="*{option4}" name="option4" type="text" class="form-control col-6" id="option4">
+                          <div th:if="${#fields.hasErrors('option4')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{option4}"></div>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <label for="isCorrect4" class="form-check-label">Solución</label>
+                          <input name="isCorrect4" type="checkbox" class="form-check-input" id="isCorrect4" onclick="blockAllOptionsButFour()">
+                        </div>
+                        <div class="col-md-12">
+                          <label for="linkOption4" class="form-label">URL imagen</label>
+                          <input th:field="*{linkOption4}" name="linkOption4" type="text" class="form-control col-6" id="linkOption4">
+                          <div th:if="${#fields.hasErrors('linkOption4')}">
+                              <br>
+                              <div class="alert alert-danger" role="alert" th:errors="*{linkOption4}"></div>
+                          </div>
+                        </div>
+  
+                        <input id="correct1" type="hidden" name="correct1"/>
+                        <input id="correct2" type="hidden" name="correct2"/>
+                        <input id="correct3" type="hidden" name="correct3"/>
+                        <input id="correct4" type="hidden" name="correct4"/>
+                        <input type="hidden" name="answer"/>
+                    </div>
+
+
+
+
+
+                    <div th:if="${esMulti}" class="row g-3">
+
+                      <div class="col-md-12">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <input th:field="*{descripcion}" name="descripcion" type="text" class="form-control col-6" id="descripcion">
+                        <div th:if="${#fields.hasErrors('descripcion')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{descripcion}"></div>
+                          </div>
+                      </div>
+                      <div class="col-md-8">
+                        <label for="question" class="form-label">Pregunta</label>
+                        <input th:field="*{question}" name="question" type="text" class="form-control col-6" id="question">
+                        <div th:if="${#fields.hasErrors('question')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{question}"></div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="linkQuestion" class="form-label">URL imagen</label>
+                        <input th:field="*{linkQuestion}" name="linkQuestion" type="text" class="form-control col-6" id="linkQuestion">
+                        <div th:if="${#fields.hasErrors('linkQuestion')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{linkQuestion}"></div>
+                          </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <label for="option1" class="form-label">Opción 1</label>
+                        <input th:field="*{option1}" name="option1" type="text" class="form-control col-6" id="option1">
+                        <div th:if="${#fields.hasErrors('option1')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{option1}"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="isCorrect1" class="form-check-label">Solución</label>
+                        <input name="isCorrect1" type="checkbox" class="form-check-input" id="isCorrect1">
+                      </div>
+                      <div class="col-md-12">
+                        <label for="linkOption1" class="form-label">URL imagen</label>
+                        <input th:field="*{linkOption1}" name="linkOption1" type="text" class="form-control col-6" id="linkOption1">
+                        <div th:if="${#fields.hasErrors('linkOption1')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{linkOption1}"></div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <label for="option2" class="form-label">Opción 2</label>
+                        <input th:field="*{option2}" name="option2" type="text" class="form-control col-6" id="option2">
+                        <div th:if="${#fields.hasErrors('option2')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{option2}"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="isCorrect2" class="form-check-label">Solución</label>
+                        <input name="isCorrect2" type="checkbox" class="form-check-input" id="isCorrect2">
+                      </div>
+                      <div class="col-md-12">
+                        <label for="linkOption2" class="form-label">URL imagen</label>
+                        <input th:field="*{linkOption2}" name="linkOption2" type="text" class="form-control col-6" id="linkOption2">
+                        <div th:if="${#fields.hasErrors('linkOption2')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{linkOption2}"></div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <label for="option3" class="form-label">Opción 3</label>
+                        <input th:field="*{option3}" name="option3" type="text" class="form-control col-6" id="option3">
+                        <div th:if="${#fields.hasErrors('option3')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{option3}"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="isCorrect3" class="form-check-label">Solución</label>
+                        <input name="isCorrect3" type="checkbox" class="form-check-input" id="isCorrect3">
+                      </div>
+                      <div class="col-md-12">
+                        <label for="linkOption3" class="form-label">URL imagen</label>
+                        <input th:field="*{linkOption3}" name="linkOption3" type="text" class="form-control col-6" id="linkOption3">
+                        <div th:if="${#fields.hasErrors('linkOption3')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{linkOption3}"></div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <label for="option4" class="form-label">Opción 4</label>
+                        <input th:field="*{option4}" name="option4" type="text" class="form-control col-6" id="option4">
+                        <div th:if="${#fields.hasErrors('option4')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{option4}"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="isCorrect4" class="form-check-label">Solución</label>
+                        <input name="isCorrect4" type="checkbox" class="form-check-input" id="isCorrect4">
+                      </div>
+                      <div class="col-md-12">
+                        <label for="linkOption4" class="form-label">URL imagen</label>
+                        <input th:field="*{linkOption4}" name="linkOption4" type="text" class="form-control col-6" id="linkOption4">
+                        <div th:if="${#fields.hasErrors('linkOption4')}">
+                            <br>
+                            <div class="alert alert-danger" role="alert" th:errors="*{linkOption4}"></div>
+                        </div>
+                      </div>
+                      
+                      <input id="correct1" type="hidden" name="correct1"/>
+                      <input id="correct2" type="hidden" name="correct2"/>
+                      <input id="correct3" type="hidden" name="correct3"/>
+                      <input id="correct4" type="hidden" name="correct4"/>
+                      <input type="hidden" name="answer"/>
+
+                    </div>
     
                     <div>
-                        <button id="crear-ejercicio-btn" type="submit" class="btn btn-primary" onclick="showOptions()">Crear</button>
-                        <a th:href="@{/ejercicios}" class="btn btn-danger">Cancelar</a>
+                        <a th:href="@{/crear-pregunta}" class="btn btn-primary"><i class="bi bi-arrow-left"></i></a>
+                        <button id="crear-pregunta-btn" type="submit" class="btn btn-primary" onclick="passOptions()">Crear</button>
+                        <a th:href="@{/preguntas}" class="btn btn-danger">Cancelar</a>
                     </div>
                     
                   </form><!-- End Profile Edit Form -->
@@ -153,29 +457,142 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <script>
-    $("#tipo").change(function () {
-        var selected_option = $('#tipo').val();
 
-        if (selected_option === "COMPLETA") {
-            $('#divCompleta').removeClass("d-none");
-            $("#divUnique").addClass("d-none");
-            $("#divMulti").addClass("d-none");
-        }
-        if (selected_option === "UNIQUE") {
-            $('#divCompleta').addClass("d-none");
-            $("#divUnique").removeClass("d-none");
-            $("#divMulti").addClass("d-none");
-        }
-        if (selected_option === "MULTI") {
-            $('#divCompleta').addClass("d-none");
-            $("#divUnique").addClass("d-none");
-            $("#divMulti").removeClass("d-none");
-        }
-    })
+    function blockAllOptionsButOne() {
+        var selected_option = document.getElementById('isCorrect1').checked;
+        var tipo = $('#tipo').val();
 
-    $("#tipo").change();
-</script>
+        console.log(selected_option);
+        console.log(tipo);
+
+        if (selected_option & tipo === "UNIQUE") {
+            $('#isCorrect2').prop('disabled', true);
+            $('#isCorrect3').prop('disabled', true);
+            $('#isCorrect4').prop('disabled', true);
+        }
+
+        if (!selected_option & tipo === "UNIQUE") {
+            $('#isCorrect2').prop('disabled', false);
+            $('#isCorrect3').prop('disabled', false);
+            $('#isCorrect4').prop('disabled', false);
+        }
+    }
+
+    function blockAllOptionsButTwo() {
+        var selected_option = document.getElementById('isCorrect2').checked;
+        var tipo = $('#tipo').val();
+
+        if (selected_option & tipo === "UNIQUE") {
+            $('#isCorrect1').prop('disabled', true);
+            $('#isCorrect3').prop('disabled', true);
+            $('#isCorrect4').prop('disabled', true);
+        }
+
+        if (!selected_option & tipo === "UNIQUE") {
+            $('#isCorrect1').prop('disabled', false);
+            $('#isCorrect3').prop('disabled', false);
+            $('#isCorrect4').prop('disabled', false);
+        }
+    }
+
+    function blockAllOptionsButThree() {
+        var selected_option = document.getElementById('isCorrect3').checked;
+        var tipo = $('#tipo').val();
+
+        if (selected_option & tipo === "UNIQUE") {
+            $('#isCorrect1').prop('disabled', true);
+            $('#isCorrect2').prop('disabled', true);
+            $('#isCorrect4').prop('disabled', true);
+        }
+
+        if (!selected_option & tipo === "UNIQUE") {
+            $('#isCorrect1').prop('disabled', false);
+            $('#isCorrect2').prop('disabled', false);
+            $('#isCorrect4').prop('disabled', false);
+        }
+    }
+
+    function blockAllOptionsButFour() {
+        var selected_option = document.getElementById('isCorrect4').checked;
+        var tipo = $('#tipo').val();
+
+        if (selected_option & tipo === "UNIQUE") {
+            $('#isCorrect1').prop('disabled', true);
+            $('#isCorrect2').prop('disabled', true);
+            $('#isCorrect3').prop('disabled', true);
+        }
+
+        if (!selected_option & tipo === "UNIQUE") {
+            $('#isCorrect1').prop('disabled', false);
+            $('#isCorrect2').prop('disabled', false);
+            $('#isCorrect3').prop('disabled', false);
+        }
+    }
+
+    function passOptions(){
+      var op1 = document.getElementById('isCorrect1').checked;
+      if (op1) {
+        document.getElementById('correct1').value = "true";
+      } else {
+        document.getElementById('correct1').value = "false";
+      }
+
+      var op2 = document.getElementById('isCorrect2').checked;
+      if (op2) {
+        document.getElementById('correct2').value = "true";
+      } else {
+        document.getElementById('correct2').value = "false";
+      }
+
+      var op3 = document.getElementById('isCorrect3').checked;
+      if (op3) {
+        document.getElementById('correct3').value = "true";
+      } else {
+        document.getElementById('correct3').value = "false";
+      }
+
+      var op4 = document.getElementById('isCorrect4').checked;
+      if (op4) {
+        document.getElementById('correct4').value = "true";
+      } else {
+        document.getElementById('correct4').value = "false";
+      }
+
+      var op1M = document.getElementById('isCorrect1').checked;
+      if (op1M) {
+        document.getElementById('correct1').value = "true";
+      } else {
+        document.getElementById('correct1').value = "false";
+      }
+
+      var op2M = document.getElementById('isCorrect2').checked;
+      if (op2M) {
+        document.getElementById('correct2').value = "true";
+      } else {
+        document.getElementById('correct2').value = "false";
+      }
+
+      var op3M = document.getElementById('isCorrect3').checked;
+      if (op3M) {
+        document.getElementById('correct3').value = "true";
+      } else {
+        document.getElementById('correct3').value = "false";
+      }
+
+      var op4M = document.getElementById('isCorrect4').checked;
+      if (op4M) {
+        document.getElementById('correct4').value = "true";
+      } else {
+        document.getElementById('correct4').value = "false";
+      }
+      
+    }
+
+  </script>
 
 </body>
 

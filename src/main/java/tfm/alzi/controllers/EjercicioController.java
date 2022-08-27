@@ -23,7 +23,6 @@ import tfm.alzi.models.InformeEjercicio;
 import tfm.alzi.models.InformePregunta;
 import tfm.alzi.models.InformePrograma;
 import tfm.alzi.models.Pregunta;
-import tfm.alzi.models.ProgramaEjercicio;
 import tfm.alzi.models.Usuario;
 import tfm.alzi.services.EjercicioPreguntaService;
 import tfm.alzi.services.EjercicioService;

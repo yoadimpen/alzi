@@ -195,7 +195,6 @@
                   <br><br>
 
                   <div th:if="${@preguntaService.soyCreador(pregunta.usuarioId)}">
-                    <a th:href="@{'/editar-pregunta?id=' + ${pregunta.id}}" type="button" class="btn btn-secondary">Editar</a>
                     <a th:href="@{'/borrar-pregunta?id=' + ${pregunta.id}}" type="button" class="btn btn-danger">Borrar</a>
                   </div>
                   <br>

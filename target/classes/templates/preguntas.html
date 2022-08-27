@@ -188,7 +188,6 @@
                       <div th:if="${@preguntaService.soyCreador(p.usuarioId)}">
                         <a th:href="@{'/pregunta?id=' + ${p.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
                         <a th:href="@{'/ocultar-pregunta?id=' + ${p.id}}" type="button" class="btn btn-warning"><i class="bi bi-eye-slash"></i></a>
-                        <a th:href="@{'/editar-pregunta?id=' + ${p.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
                         <a th:href="@{'/borrar-pregunta?id=' + ${p.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
                       </div>
                       <div th:if="${!@preguntaService.soyCreador(p.usuarioId)}">
@@ -227,7 +226,6 @@
                       <div>
                         <a th:href="@{'/pregunta?id=' + ${pp.id}}" type="button" class="btn btn-primary"><i class="bi bi-info-lg"></i></a>
                         <a th:href="@{'/publicar-pregunta?id=' + ${pp.id}}" type="button" class="btn btn-success"><i class="bi bi-eye"></i></a>
-                        <a th:href="@{'/editar-pregunta?id=' + ${pp.id}}" type="button" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
                         <a th:href="@{'/borrar-pregunta?id=' + ${pp.id}}" type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></a>
                       </div>
                     </td>
