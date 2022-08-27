@@ -235,6 +235,10 @@
                         <div class="col-lg-3 col-md-4 label">Relación con el cuidador</div>
                         <div class="col-lg-9 col-md-8" th:text="${usuario.PRelacionCuidador}"></div>
                     </div>
+                    <div th:if="${hayCuidador}" class="row">
+                      <div class="col-lg-3 col-md-4 label">Cuidador</div>
+                      <div class="col-lg-9 col-md-8" th:text="${cuidador}"></div>
+                    </div>
                   </div>
                   <div th:if="${usuario.roles == 'CUIDADOR'}">
                     <div class="row">
@@ -254,6 +258,7 @@
                   </div>
 
                   <div class="text-start">
+                    <a th:if="!${hayCuidador}" th:href="@{/carer}" class="btn btn-primary">Añadir cuidador</a>
                     <a th:href="@{/editar-usuario}" class="btn btn-primary">Editar</a>
                   </div>
 

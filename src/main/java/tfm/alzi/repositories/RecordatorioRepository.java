@@ -14,7 +14,7 @@ public interface RecordatorioRepository extends JpaRepository<Recordatorio,Long>
     @Query("SELECT r FROM Recordatorio r WHERE r.usuarioId = ?1")
     List<Recordatorio> findByParticipanteID(Long id);
 
-    @Query("SELECT MAX(r) FROM Recordatorio r WHERE r.usuarioId = ?1 ORDER BY r.fecha")
+    @Query("SELECT MAX(r) FROM Recordatorio r WHERE r.usuarioId = ?1 GROUP BY r.fecha ORDER BY r.fecha")
     Recordatorio getMostRecent(long id);
 
 }

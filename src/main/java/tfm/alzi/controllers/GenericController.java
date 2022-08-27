@@ -15,10 +15,12 @@ import tfm.alzi.models.ParticipantePrograma;
 import tfm.alzi.models.Programa;
 import tfm.alzi.models.Recordatorio;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.models.UsuarioCuidador;
 import tfm.alzi.services.EjercicioService;
 import tfm.alzi.services.ParticipanteProgramaService;
 import tfm.alzi.services.ProgramaService;
 import tfm.alzi.services.RecordatorioService;
+import tfm.alzi.services.UsuarioCuidadorService;
 import tfm.alzi.services.UsuarioService;
 
 @Controller
@@ -38,6 +40,9 @@ public class GenericController {
 
     @Autowired
     private EjercicioService ejercicioService;
+
+    @Autowired
+    private UsuarioCuidadorService usuarioCuidadorService;
 
     @GetMapping(value = "/alzi")
     public String getAlzi(final Model model, final HttpServletRequest request) {
@@ -128,6 +133,14 @@ public class GenericController {
             Usuario usuario = this.usuarioService.getUsuarioByDNI(dni);
             model.addAttribute("usuario", usuario);
             model.addAttribute("isEdited", false);
+
+            UsuarioCuidador uc = this.usuarioCuidadorService.findByUsuarioId(usuario.getId());
+            if(uc != null){
+                model.addAttribute("hayCuidador", true);
+                Usuario cuidador = this.usuarioService.getUsuarioById(uc.getCuidadorId());
+                model.addAttribute("cuidador", cuidador.getNombre() + " " + cuidador.getApellidos());
+            }
+
 			return "perfil";
 		} else {
             return "login";

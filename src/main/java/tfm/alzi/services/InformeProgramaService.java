@@ -48,5 +48,10 @@ public class InformeProgramaService {
     public Integer getProgramProgressByUserId(long programaId, long usuarioId){
         return this.getInformeProgramaCustom(programaId, usuarioId).getProgreso();
     }
+
+    @Transactional
+    public void crearInforme(InformePrograma ipro) {
+        this.informeProgramaRepository.save(ipro);
+    }
     
 }

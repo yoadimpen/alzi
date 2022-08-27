@@ -120,5 +120,13 @@ public class UsuarioService implements UserDetailsService {
 
         return usuarios;
     }
+
+    public List<Usuario> getAllCuidadores() {
+        return this.usuarioRepository.findAllCuidadores();
+    }
+
+    public List<Usuario> getAllUsuarios() {
+        return this.usuarioRepository.findAllUsuarios();
+    }
     
 }

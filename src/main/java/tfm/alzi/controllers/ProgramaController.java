@@ -18,9 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import tfm.alzi.models.Ejercicio;
+import tfm.alzi.models.EjercicioPregunta;
+import tfm.alzi.models.InformeEjercicio;
+import tfm.alzi.models.InformePregunta;
+import tfm.alzi.models.InformePrograma;
+import tfm.alzi.models.ParticipantePrograma;
 import tfm.alzi.models.Programa;
 import tfm.alzi.models.ProgramaEjercicio;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.services.EjercicioPreguntaService;
 import tfm.alzi.services.EjercicioService;
 import tfm.alzi.services.InformeEjercicioService;
 import tfm.alzi.services.InformePreguntaService;
@@ -56,6 +62,9 @@ public class ProgramaController {
 
     @Autowired
     private ParticipanteProgramaService participanteProgramaService;
+
+    @Autowired
+    private EjercicioPreguntaService ejercicioPreguntaService;
 
     @GetMapping(value = "/show-programa") 
     public String showPrograma(@RequestParam(value = "id") final long programaId,
@@ -289,28 +298,6 @@ public class ProgramaController {
 		}
 	}
 
-    /*
-    @RequestMapping(value = "/eliminar-relacion-programa-ejercicio")
-    public String eliminarRelacionEjercicio(@RequestParam(value = "programaId") final long programaId,
-    @RequestParam(value = "ejercicioId") final long ejercicioId,
-    Model model, HttpServletRequest request) {
-		if (request.getUserPrincipal() != null) {
-			
-            this.informeEjercicioService.eliminarLista(this.informeEjercicioService.findByProgramaIdEjercicioId(programaId,ejercicioId));
-            this.informePreguntaService.eliminarLista(this.informePreguntaService.findByProgramaIdEjercicioId(programaId,ejercicioId));
-            ProgramaEjercicio pe = this.programaEjercicioService.findByProgramaIdEjercicioId(programaId, ejercicioId);
-            this.programaEjercicioService.eliminarRelacion(pe);
-
-            model.addAttribute("programas", this.programaService.getAllPublicProgramas());
-            model.addAttribute("programasPriv", this.programaService.getMyPrivateProgramas(this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()).getId()));
-			model.addAttribute("programaEliminado", "Programa eliminado éxito.");
-			return "redirect:/programa?id=" + programaId;
-		} else {
-			return "login";
-		}
-	}
-    */
-
     @GetMapping(value = "/actualizar-ejercicios") 
     public String actualizarEjerciciosForm(@RequestParam(value = "programaId") final long programaId,
     Model model, HttpServletRequest request){
@@ -387,6 +374,70 @@ public class ProgramaController {
         }
         return "login";
 		
+	}
+
+    @GetMapping(value = "/asignar")
+    public String asignarPrograma(@ModelAttribute("usuarioId") final Long usuarioId,
+    final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			List<Programa> programas = this.programaService.getAllPublicProgramas();
+			model.addAttribute("usuarioId", usuarioId);
+			model.addAttribute("programas", programas);
+			
+			return "especialista/assign";
+		} 
+	}
+
+	@PostMapping(value = "/asignar")
+    public String asignarPrograma(@ModelAttribute("usuarioId") Long usuarioId,
+	@ModelAttribute("programas") long programas,
+	final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			
+            ParticipantePrograma pp = new ParticipantePrograma();
+            pp.setProgramaId(programas);
+            pp.setUsuarioId(usuarioId);
+            this.participanteProgramaService.crearRel(pp);
+
+            InformePrograma ipro = new InformePrograma();
+            ipro.setUsuarioId(usuarioId);
+            ipro.setProgramaId(programas);
+            ipro.setProgreso(0);
+            ipro.setAciertos(0);
+            ipro.setFallos(0);
+            ipro.setObservaciones(null);
+            this.informeProgramaService.crearInforme(ipro);
+            List<ProgramaEjercicio> ejercicios = this.programaEjercicioService.getEjerciciosByProgramaID(programas);
+            for(ProgramaEjercicio pe: ejercicios){
+                InformeEjercicio ie = new InformeEjercicio();
+                ie.setUsuarioId(usuarioId);
+                ie.setProgramaId(programas);
+                ie.setEjercicioId(pe.getEjercicioId());
+                ie.setAciertos(0);
+                ie.setFallos(0);
+                ie.setObservaciones(null);
+                ie.esFinalizado(false);
+                this.informeEjercicioService.crearInforme(ie);
+
+                List<EjercicioPregunta> preguntas = this.ejercicioPreguntaService.findByEjercicioId(pe.getEjercicioId());
+                for (EjercicioPregunta ep: preguntas){
+                    InformePregunta ipre = new InformePregunta();
+                    ipre.setProgramaId(programas);
+                    ipre.setEjercicioId(pe.getEjercicioId());
+                    ipre.setPreguntaId(ep.getPreguntaId());
+                    ipre.setUsuarioId(usuarioId);
+                    ipre.setRespuesta(null);
+                    ipre.setResultado(false);
+                    this.informePreguntaService.crearInforme(ipre);
+                }
+            }
+			
+			return "redirect:/show-perfil?usuarioId=" + usuarioId;
+		} 
 	}
 
 }

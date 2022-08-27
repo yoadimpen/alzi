@@ -144,6 +144,9 @@
                   </div><!-- End List group Advanced Content -->
                   <br/>
                 </div>
+                <div th:if="${@usuarioService.getAuth() == 'ESPECIALISTA'}">
+                  <a th:href="@{'/asignar?usuarioId=' + ${usuario.id}}" type="button" class="btn btn-primary">Asignar Programa</a>
+                </div>
             </div>
           </div>
 

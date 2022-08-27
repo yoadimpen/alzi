@@ -49,4 +49,9 @@ public class InformePreguntaService {
         return this.informePreguntaRepository.findByPreguntaId(preguntaId);
     }
 
+    @Transactional
+    public void crearInforme(InformePregunta ipre) {
+        this.informePreguntaRepository.save(ipre);
+    }
+
 }

@@ -143,12 +143,14 @@
         </div>
         <div class="col-xl-8">
 
-          <div class="alert alert-info  alert-dismissible fade show" role="alert">
-            <div class="d-flex w-100 justify-content-between">
-              <h4 class="alert-heading" th:text="${@recordatorioService.getMyRecentRecordatorio().getEtiqueta()}"></h4>
-              <small th:text="${@recordatorioService.getMyRecentRecordatorio().getFecha()}"></small>
+          <div th:if="${@recordatorioService.getRecordatoriosBool()}">
+            <div class="alert alert-info  alert-dismissible fade show" role="alert">
+              <div class="d-flex w-100 justify-content-between">
+                <h4 class="alert-heading" th:text="${@recordatorioService.getMyRecentRecordatorio().getEtiqueta()}"></h4>
+                <small th:text="${@recordatorioService.getMyRecentRecordatorio().getFecha()}"></small>
+              </div>
+              <p class="mb-0" th:text="${@recordatorioService.getMyRecentRecordatorio().getDescripcion()}"></p>
             </div>
-            <p class="mb-0" th:text="${@recordatorioService.getMyRecentRecordatorio().getDescripcion()}"></p>
           </div>
 
           <div class="card">
@@ -223,6 +225,7 @@
           </a>
         </div>
       </div>
+      <a th:href="@{/usuario}" class="btn btn-primary">Añadir usuario</a>
     </section>
 
   </main><!-- End #main -->

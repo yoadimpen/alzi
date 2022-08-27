@@ -45,4 +45,9 @@ public class InformeEjercicioService {
         return this.informeEjercicioRepository.findByEjercicioId(ejercicioId);
     }
 
+    @Transactional
+    public void crearInforme(InformeEjercicio ie) {
+        this.informeEjercicioRepository.save(ie);
+    }
+
 }

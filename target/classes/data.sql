@@ -1,6 +1,7 @@
 -------------------------------------------------
 -- USUARIOS/CUIDADOR
 INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10001,STRINGTOUTF8 (U&'J\00e1hn'),'Doe','1999-04-04','Y1234567W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Plaza Remedy 6',600000001,'johndoe.cuidador@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.','CUIDADOR',NULL,'Informal',NULL,NULL);
+INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass, direccion, telefono, email, bio, roles, p_relacion_cuidador, c_tipo, e_especialidad, e_centro) VALUES (10007,'Julietta','Smurf','1995-04-04','Y1234573W','$2a$12$IIYwXMf22f/xdtrORCTq/uEETrsf727zqN6o8.3Z31F0VwR5SE.ky','Plaza Remedy 7',600000007,'juliettasmurf.cuidador@mail.com','Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.','CUIDADOR',NULL,'Formal',NULL,NULL);
 
 -------------------------------------------------
 -- USUARIOS/USUARIO
@@ -15,7 +16,7 @@ INSERT INTO usuario (usuario_id, nombre, apellidos, fecha_nacimiento, dni, pass,
 
 -------------------------------------------------
 -- PROGRAMAS
-INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10001,10006,'Memoria I','Memoria','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la memoria.',3,0,'false');
+INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10001,10006,'Memoria I','Memoria','Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la memoria.',3,0,'true');
 INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10002,10003,'Percepcion I',STRINGTOUTF8 (U&'Percepci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la percepcion.',3,0,'true');
 INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10003,10003,'Atencion I',STRINGTOUTF8 (U&'Atenci\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la atencion.',3,0,'false');
 INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duracion, puntuacion, publico) VALUES (10004,10003,'Comprension I',STRINGTOUTF8 (U&'Comprensi\00f3n'),'Este programa contiene ejercicios con preguntas relacionadas con la habilidad cognitiva de la comprension.',3,0,'false');
@@ -169,7 +170,6 @@ INSERT INTO ejercicio_pregunta (ejpre_id, ejercicio_id, pregunta_id) VALUES (100
 -- USUARIO/CUIDADOR
 
 INSERT INTO usuario_cuidador (usuario_cuidador_id, usuario_id, cuidador_id) VALUES (10001,10002,10001);
-INSERT INTO usuario_cuidador (usuario_cuidador_id, usuario_id, cuidador_id) VALUES (10002,10004,10001);
 INSERT INTO usuario_cuidador (usuario_cuidador_id, usuario_id, cuidador_id) VALUES (10003,10005,10001);
 
 --------------------------------------------------

@@ -27,8 +27,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import tfm.alzi.models.ParticipantePrograma;
 import tfm.alzi.models.Programa;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.models.UsuarioCuidador;
+import tfm.alzi.models.UsuarioEspecialista;
 import tfm.alzi.services.ParticipanteProgramaService;
 import tfm.alzi.services.ProgramaService;
+import tfm.alzi.services.UsuarioCuidadorService;
+import tfm.alzi.services.UsuarioEspecialistaService;
 import tfm.alzi.services.UsuarioService;
 
 @Controller
@@ -42,6 +46,12 @@ public class UsuarioController {
 
 	@Autowired
 	private ProgramaService programaService;
+
+	@Autowired
+	private UsuarioCuidadorService usuarioCuidadorService;
+
+	@Autowired
+	private UsuarioEspecialistaService usuarioEspecialistaService;
 
     @RequestMapping(value = "/login")
 	public String login(final Model model, final HttpServletRequest request) {
@@ -245,6 +255,64 @@ public class UsuarioController {
 			model.addAttribute("usuarioId", usuarioId);
 
 			return "showPerfil";
+		} 
+	}
+
+	@GetMapping(value = "/carer")
+    public String addCuidador(final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			List<Usuario> cuidadores = this.usuarioService.getAllCuidadores();
+			model.addAttribute("usuario", this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()));
+			model.addAttribute("cuidadores", cuidadores);
+			
+			return "usuario/carer";
+		} 
+	}
+
+	@PostMapping(value = "/carer")
+    public String addCuidadorPost(@ModelAttribute("usuarioId") long usuarioId,
+	@ModelAttribute("cuidadores") long cuidadores,
+	final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			UsuarioCuidador uc = new UsuarioCuidador();
+			uc.setUsuarioId(usuarioId);
+			uc.setCuidadorId(cuidadores);
+			this.usuarioCuidadorService.crearRel(uc);
+			
+			return "redirect:/perfil";
+		} 
+	}
+
+	@GetMapping(value = "/usuario")
+    public String addUsuario(final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			List<Usuario> usuarios = this.usuarioService.getAllUsuarios();
+			model.addAttribute("especialista", this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()));
+			model.addAttribute("usuarios", usuarios);
+			
+			return "especialista/usuario";
+		} 
+	}
+
+	@PostMapping(value = "/usuario")
+    public String addUsuarioPost(@ModelAttribute("especialistaId") long especialistaId,
+	@ModelAttribute("usuarios") long usuarios,
+	final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			UsuarioEspecialista ue = new UsuarioEspecialista();
+			ue.setEspecialidadId(especialistaId);
+			ue.setUsuarioId(usuarios);
+			this.usuarioEspecialistaService.crearRel(ue);
+			
+			return "redirect:/alzi";
 		} 
 	}
 

@@ -13,5 +13,8 @@ public interface UsuarioCuidadorRepository extends JpaRepository<UsuarioCuidador
 
     @Query("SELECT uc FROM UsuarioCuidador uc WHERE uc.cuidadorId = ?1")
     List<UsuarioCuidador> findByCuidadorId(Long cuidadorId);
+
+    @Query("SELECT uc FROM UsuarioCuidador uc WHERE uc.usuarioId = ?1")
+    UsuarioCuidador findByUsuarioId(Long usuarioId);
     
 }

@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class InformePregunta {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "informe_pregunta_id")
     private long id;
 

@@ -28,4 +28,9 @@ public class ParticipanteProgramaService {
         this.participanteProgramaRepository.deleteAll(ls);
     }
 
+    @Transactional
+    public void crearRel(ParticipantePrograma pp) {
+        this.participanteProgramaRepository.save(pp);
+    }
+
 }
