@@ -18,4 +18,8 @@ public class UsuarioEspecialistaService {
         this.usuarioEspecialistaRepository.save(ue);
     }
 
+    public UsuarioEspecialista findByBoth(long especialistaId, long usuarioId) {
+        return this.usuarioEspecialistaRepository.findByBoth(especialistaId, usuarioId);
+    }
+
 }

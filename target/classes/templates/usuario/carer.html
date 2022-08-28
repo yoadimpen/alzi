@@ -42,22 +42,40 @@
   <div id="header" th:replace="../static/includes/header :: header"></div>
 
     <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+    <aside id="sidebar" class="sidebar" th:if="${@usuarioService.getAuth() != 'USUARIO'}">
 
-      <ul class="sidebar-nav" id="sidebar-nav">
+      <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'CUIDADOR'}">
 
         <li class="nav-item">
-          <a class="nav-link collapsed" th:href="@{/alzi}">
+          <a class="nav-link" th:href="@{/alzi}">
             <i class="bi bi-chat"></i>
             <span>Usuarios</span>
           </a>
         </li><!-- End Usuarios Page Nav -->
 
         <li class="nav-item">
-          <a class="nav-link" data-bs-target="#forms-train" data-bs-toggle="collapse" href="#">
+          <a class="nav-link collapsed" th:href="@{/programas}">
+            <i class="bi bi-journal"></i>
+            <span>Programas</span>
+          </a>
+        </li><!-- End Área Personal Page Nav -->
+
+      </ul>
+
+      <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'ESPECIALISTA'}">
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/alzi}">
+            <i class="bi bi-chat"></i>
+            <span>Usuarios</span>
+          </a>
+        </li><!-- End Usuarios Page Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#forms-train" data-bs-toggle="collapse" href="#">
             <i class="bi bi-journal-text"></i><span>Entrenamiento</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-          <ul id="forms-train" class="nav-content" data-bs-parent="#sidebar-nav">
+          <ul id="forms-train" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
               <a th:href="@{/programas}">
                 <i class="bi bi-circle"></i><span>Programas</span>
@@ -87,13 +105,15 @@
 
     </aside><!-- End Sidebar-->
 
+    <input id="auth" type="hidden" th:value="${@usuarioService.getAuth()}">
+
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Entrenamiento</h1>
+      <h1>Cuidadores</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/alzi}">Programas</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/alzi}">Alzi</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -168,6 +188,13 @@
         var input = document.getElementById('ejsInput').value = values;
     }
   </script>
+
+<script>
+  var auth = document.getElementById('auth').value;
+  if(auth === 'USUARIO'){
+    document.getElementById('main').setAttribute("style","margin-left:0px;");
+  }
+</script>
 
 </body>
 

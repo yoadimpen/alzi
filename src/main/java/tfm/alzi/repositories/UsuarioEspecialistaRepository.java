@@ -14,4 +14,7 @@ public interface UsuarioEspecialistaRepository extends JpaRepository<UsuarioEspe
     @Query("SELECT ue FROM UsuarioEspecialista ue WHERE ue.especialistaId = ?1")
     List<UsuarioEspecialista> findByEspecialistaId(Long especialistaId);
 
+    @Query("SELECT ue FROM UsuarioEspecialista ue WHERE ue.especialistaId = ?1 AND ue.usuarioId = ?2")
+    UsuarioEspecialista findByBoth(long especialistaId, long usuarioId);
+
 }

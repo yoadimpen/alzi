@@ -44,7 +44,25 @@
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
 
-      <ul class="sidebar-nav" id="sidebar-nav">
+      <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'CUIDADOR'}">
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/alzi}">
+            <i class="bi bi-chat"></i>
+            <span>Usuarios</span>
+          </a>
+        </li><!-- End Usuarios Page Nav -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" th:href="@{/programas}">
+            <i class="bi bi-journal"></i>
+            <span>Programas</span>
+          </a>
+        </li><!-- End Área Personal Page Nav -->
+
+      </ul>
+
+      <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'ESPECIALISTA'}">
 
         <li class="nav-item">
           <a class="nav-link collapsed" th:href="@{/alzi}">
@@ -57,7 +75,7 @@
           <a class="nav-link" data-bs-target="#forms-train" data-bs-toggle="collapse" href="#">
             <i class="bi bi-journal-text"></i><span>Entrenamiento</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-          <ul id="forms-train" class="nav-content" data-bs-parent="#sidebar-nav">
+          <ul id="forms-train" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
               <a th:href="@{/programas}">
                 <i class="bi bi-circle"></i><span>Programas</span>
@@ -93,7 +111,7 @@
       <h1>Entrenamiento</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">Preguntas</li>
+          <li class="breadcrumb-item"><a th:href="@{/preguntas}">Preguntas</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

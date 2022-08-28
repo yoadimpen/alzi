@@ -278,10 +278,13 @@ public class UsuarioController {
 		if (request.getUserPrincipal() == null) {
 			return "login";
 		} else {
-			UsuarioCuidador uc = new UsuarioCuidador();
-			uc.setUsuarioId(usuarioId);
-			uc.setCuidadorId(cuidadores);
-			this.usuarioCuidadorService.crearRel(uc);
+			UsuarioCuidador possible = this.usuarioCuidadorService.findByUsuarioId(usuarioId);
+			if(possible == null){
+				UsuarioCuidador uc = new UsuarioCuidador();
+				uc.setUsuarioId(usuarioId);
+				uc.setCuidadorId(cuidadores);
+				this.usuarioCuidadorService.crearRel(uc);
+			}
 			
 			return "redirect:/perfil";
 		} 
@@ -307,10 +310,19 @@ public class UsuarioController {
 		if (request.getUserPrincipal() == null) {
 			return "login";
 		} else {
-			UsuarioEspecialista ue = new UsuarioEspecialista();
-			ue.setEspecialidadId(especialistaId);
-			ue.setUsuarioId(usuarios);
-			this.usuarioEspecialistaService.crearRel(ue);
+			UsuarioEspecialista possible = this.usuarioEspecialistaService.findByBoth(especialistaId,usuarios);
+			if(possible == null){
+				UsuarioEspecialista ue = new UsuarioEspecialista();
+				ue.setEspecialidadId(especialistaId);
+				ue.setUsuarioId(usuarios);
+				this.usuarioEspecialistaService.crearRel(ue);
+			} else {
+				List<Usuario> users = this.usuarioService.getAllUsuarios();
+				model.addAttribute("especialista", this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()));
+				model.addAttribute("usuarios", users);
+				model.addAttribute("existe", true);
+				return "especialista/usuario";
+			}
 			
 			return "redirect:/alzi";
 		} 

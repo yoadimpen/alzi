@@ -39,95 +39,60 @@
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
-
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
-
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown pe-3">
-
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-          </a><!-- End Profile Iamge Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" th:href="@{/perfil}">
-                <i class="bi bi-person"></i>
-                <span>Mi Perfil</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" th:href="@{/ajustes}">
-                <i class="bi bi-gear"></i>
-                <span>Ajustes</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Cerrar Sesión</span>
-              </a>
-            </li>
-
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
-
-      </ul>
-    </nav><!-- End Icons Navigation -->
-
-  </header><!-- End Header -->
+  <div id="header" th:replace="../static/includes/header :: header"></div>
 
   <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar" th:if="${@usuarioService.getAuth() != 'USUARIO'}">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+    <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'CUIDADOR'}">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" th:href="@{/alzi}">
+        <a class="nav-link" th:href="@{/alzi}">
           <i class="bi bi-chat"></i>
-          <span>Alzi</span>
+          <span>Usuarios</span>
         </a>
-      </li><!-- End Alzi Page Nav -->
+      </li><!-- End Usuarios Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" th:href="@{/programas}">
+          <i class="bi bi-journal"></i>
+          <span>Programas</span>
+        </a>
+      </li><!-- End Área Personal Page Nav -->
+
+    </ul>
+
+    <ul class="sidebar-nav" id="sidebar-nav" th:if="${@usuarioService.getAuth() == 'ESPECIALISTA'}">
+
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/alzi}">
+          <i class="bi bi-chat"></i>
+          <span>Usuarios</span>
+        </a>
+      </li><!-- End Usuarios Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-train" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Entrenamiento</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-train" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a th:href="@{/programas}">
+              <i class="bi bi-circle"></i><span>Programas</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/ejercicios}">
+              <i class="bi bi-circle"></i><span>Ejercicios</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/preguntas}">
+              <i class="bi bi-circle"></i><span>Preguntas</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" th:href="@{/area-personal}">
@@ -136,16 +101,11 @@
         </a>
       </li><!-- End Área Personal Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" th:href="@{/entrenamiento}">
-          <i class="bi bi-puzzle"></i>
-          <span>Entrenamiento</span>
-        </a>
-      </li><!-- End Entrenamiento Page Nav -->
-
     </ul>
 
   </aside><!-- End Sidebar-->
+
+  <input id="auth" type="hidden" th:value="${@usuarioService.getAuth()}">
 
   <main id="main" class="main">
 
@@ -258,7 +218,7 @@
                   </div>
 
                   <div class="text-start">
-                    <a th:if="!${hayCuidador}" th:href="@{/carer}" class="btn btn-primary">Añadir cuidador</a>
+                    <a th:if="!${hayCuidador} and ${usuario.roles == 'USUARIO'}" th:href="@{/carer}" class="btn btn-primary">Añadir cuidador</a>
                     <a th:href="@{/editar-usuario}" class="btn btn-primary">Editar</a>
                   </div>
 
@@ -303,6 +263,13 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+    var auth = document.getElementById('auth').value;
+    if(auth === 'USUARIO'){
+      document.getElementById('main').setAttribute("style","margin-left:0px;");
+    }
+  </script>
 
 </body>
 

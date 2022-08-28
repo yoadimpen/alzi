@@ -74,16 +74,32 @@
         </li><!-- End Usuarios Page Nav -->
 
         <li class="nav-item">
-          <a class="nav-link collapsed" th:href="@{/programas}">
-            <i class="bi bi-journal"></i>
-            <span>Programas</span>
+          <a class="nav-link collapsed" data-bs-target="#forms-train" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-journal-text"></i><span>Entrenamiento</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-        </li><!-- End Programas Page Nav -->
+          <ul id="forms-train" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+              <a th:href="@{/programas}">
+                <i class="bi bi-circle"></i><span>Programas</span>
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/ejercicios}">
+                <i class="bi bi-circle"></i><span>Ejercicios</span>
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/preguntas}">
+                <i class="bi bi-circle"></i><span>Preguntas</span>
+              </a>
+            </li>
+          </ul>
+        </li><!-- End Forms Nav -->
 
         <li class="nav-item">
           <a class="nav-link collapsed" th:href="@{/area-personal}">
             <i class="bi bi-journal"></i>
-            <span>Área Programas</span>
+            <span>Área Personal</span>
           </a>
         </li><!-- End Área Personal Page Nav -->
 
