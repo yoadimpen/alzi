@@ -14,4 +14,16 @@ public interface InformePreguntaRepository extends JpaRepository<InformePregunta
     @Query("SELECT ip FROM InformePregunta ip WHERE ip.programaId = ?1 AND ip.ejercicioId = ?2 AND ip.usuarioId = ?3")
     List<InformePregunta> findCustom(Long programaId, Long ejercicioId, Long usuarioId);
 
+    @Query("SELECT ip FROM InformePregunta ip WHERE ip.programaId = ?1")
+    List<InformePregunta> findByProgramaId(long programaId);
+    
+    @Query("SELECT ip FROM InformePregunta ip WHERE ip.programaId = ?1 AND ip.ejercicioId = ?2")
+    List<InformePregunta> findByProgramaIdEjercicioId(long programaId, long ejercicioId);
+
+    @Query("SELECT ip FROM InformePregunta ip WHERE ip.ejercicioId = ?1")
+    List<InformePregunta> findByEjercicioId(long ejercicioId);
+
+    @Query("SELECT ip FROM InformePregunta ip WHERE ip.preguntaId = ?1")
+    List<InformePregunta> findByPreguntaId(long preguntaId);
+
 }

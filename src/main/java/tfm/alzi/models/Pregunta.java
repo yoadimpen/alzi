@@ -10,9 +10,15 @@ import jakarta.persistence.Id;
 public class Pregunta {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "pregunta_id")
     private long id;
+
+    @Column(name = "publico")
+    private Boolean publico;
+
+    @Column(name = "usuario_id")
+    private Long usuarioId;
 
     @Column(name = "tipo")
     private String tipo;
@@ -73,6 +79,26 @@ public class Pregunta {
 
     public Long getId(){
         return id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public Boolean getPublico(){
+        return publico;
+    }
+
+    public void setPublico(Boolean publico){
+        this.publico = publico;
+    }
+
+    public Long getUsuarioId(){
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Long usuarioId){
+        this.usuarioId = usuarioId;
     }
 
     public String getTipo(){

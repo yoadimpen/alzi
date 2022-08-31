@@ -28,4 +28,26 @@ public class InformeEjercicioService {
         this.informeEjercicioRepository.save(informeEjercicio);
     }
 
+    @Transactional
+    public void eliminarLista(List<InformeEjercicio> ls) {
+        this.informeEjercicioRepository.deleteAll(ls);
+    }
+
+    public List<InformeEjercicio> findByProgramaId(long programaId){
+        return this.informeEjercicioRepository.findByProgramaId(programaId);
+    }
+
+    public List<InformeEjercicio> findByProgramaIdEjercicioId(long programaId, long ejercicioId) {
+        return this.informeEjercicioRepository.findByProgramaIdEjercicioId(programaId, ejercicioId);
+    }
+
+    public List<InformeEjercicio> findByEjercicioId(long ejercicioId) {
+        return this.informeEjercicioRepository.findByEjercicioId(ejercicioId);
+    }
+
+    @Transactional
+    public void crearInforme(InformeEjercicio ie) {
+        this.informeEjercicioRepository.save(ie);
+    }
+
 }

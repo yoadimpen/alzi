@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class UsuarioEspecialista {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "usuario_especialista_id")
     private long id;
 

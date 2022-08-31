@@ -38,6 +38,7 @@ CREATE TABLE programa (
     descripcion         VARCHAR(200) NOT NULL,
     duracion            INTEGER NOT NULL,
     puntuacion          INTEGER NOT NULL,
+    publico             BOOLEAN NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuario
     ON DELETE CASCADE
 );
@@ -46,7 +47,10 @@ CREATE TABLE ejercicio (
     ejercicio_id        INTEGER PRIMARY KEY,
     titulo              VARCHAR(50) NOT NULL,
     descripcion         VARCHAR NOT NULL,
-    duracion            INTEGER NOT NULL
+    duracion            INTEGER NOT NULL,
+    publico             BOOLEAN NOT NULL,
+    usuario_id          INTEGER NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuario
 );
 
 CREATE TABLE recordatorio (
@@ -81,6 +85,8 @@ CREATE TABLE programa_ejercicio (
 
 CREATE TABLE pregunta (
     pregunta_id         INTEGER PRIMARY KEY,
+    publico             BOOLEAN NOT NULL,
+    usuario_id          INTEGER NOT NULL,
     tipo                VARCHAR NOT NULL,
     descripcion         VARCHAR,
     question            VARCHAR NOT NULL,

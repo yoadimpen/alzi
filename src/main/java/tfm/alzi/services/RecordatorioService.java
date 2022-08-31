@@ -48,4 +48,8 @@ public class RecordatorioService {
         return this.recordatorioRepository.getMostRecent(this.usuarioRepository.findByDNI(SecurityContextHolder.getContext().getAuthentication().getName()).getId());
     }
 
+    public Boolean getRecordatoriosBool(){
+        return this.recordatorioRepository.findByParticipanteID(this.usuarioRepository.findByDNI(SecurityContextHolder.getContext().getAuthentication().getName()).getId()).size() != 0;
+    }
+
 }

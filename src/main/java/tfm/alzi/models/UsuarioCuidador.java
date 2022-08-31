@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class UsuarioCuidador {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "usuario_cuidador_id")
     private long id;
 

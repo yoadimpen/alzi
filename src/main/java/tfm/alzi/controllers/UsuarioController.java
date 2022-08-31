@@ -1,9 +1,10 @@
 package tfm.alzi.controllers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -23,14 +24,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import tfm.alzi.models.ParticipantePrograma;
+import tfm.alzi.models.Programa;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.models.UsuarioCuidador;
+import tfm.alzi.models.UsuarioEspecialista;
+import tfm.alzi.services.ParticipanteProgramaService;
+import tfm.alzi.services.ProgramaService;
+import tfm.alzi.services.UsuarioCuidadorService;
+import tfm.alzi.services.UsuarioEspecialistaService;
 import tfm.alzi.services.UsuarioService;
 
 @Controller
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService; 
+    private UsuarioService usuarioService;
+
+	@Autowired
+	private ParticipanteProgramaService participanteProgramaService;
+
+	@Autowired
+	private ProgramaService programaService;
+
+	@Autowired
+	private UsuarioCuidadorService usuarioCuidadorService;
+
+	@Autowired
+	private UsuarioEspecialistaService usuarioEspecialistaService;
 
     @RequestMapping(value = "/login")
 	public String login(final Model model, final HttpServletRequest request) {
@@ -213,6 +234,98 @@ public class UsuarioController {
 		} else {
 			return "index";
 		}
+	}
+
+	@GetMapping(value = "/show-perfil")
+    public String showPerfilProgramas(final Model model,
+	@RequestParam(value = "usuarioId") long usuarioId,final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "index";
+		} else {
+			model.addAttribute("usuario", this.usuarioService.getUsuarioById(usuarioId));
+
+			List<ParticipantePrograma> ls = this.participanteProgramaService.getSuscripcionesByID(usuarioId);
+			List<Programa> programas = new ArrayList<>();
+
+			for(ParticipantePrograma p:ls){
+				programas.add(this.programaService.getProgramaById(p.getProgramaId()));
+			}
+
+			model.addAttribute("programas", programas);
+			model.addAttribute("usuarioId", usuarioId);
+
+			return "showPerfil";
+		} 
+	}
+
+	@GetMapping(value = "/carer")
+    public String addCuidador(final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			List<Usuario> cuidadores = this.usuarioService.getAllCuidadores();
+			model.addAttribute("usuario", this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()));
+			model.addAttribute("cuidadores", cuidadores);
+			
+			return "usuario/carer";
+		} 
+	}
+
+	@PostMapping(value = "/carer")
+    public String addCuidadorPost(@ModelAttribute("usuarioId") long usuarioId,
+	@ModelAttribute("cuidadores") long cuidadores,
+	final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			UsuarioCuidador possible = this.usuarioCuidadorService.findByUsuarioId(usuarioId);
+			if(possible == null){
+				UsuarioCuidador uc = new UsuarioCuidador();
+				uc.setUsuarioId(usuarioId);
+				uc.setCuidadorId(cuidadores);
+				this.usuarioCuidadorService.crearRel(uc);
+			}
+			
+			return "redirect:/perfil";
+		} 
+	}
+
+	@GetMapping(value = "/usuario")
+    public String addUsuario(final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			List<Usuario> usuarios = this.usuarioService.getAllUsuarios();
+			model.addAttribute("especialista", this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()));
+			model.addAttribute("usuarios", usuarios);
+			
+			return "especialista/usuario";
+		} 
+	}
+
+	@PostMapping(value = "/usuario")
+    public String addUsuarioPost(@ModelAttribute("especialistaId") long especialistaId,
+	@ModelAttribute("usuarios") long usuarios,
+	final Model model, final HttpServletRequest request) {
+		if (request.getUserPrincipal() == null) {
+			return "login";
+		} else {
+			UsuarioEspecialista possible = this.usuarioEspecialistaService.findByBoth(especialistaId,usuarios);
+			if(possible == null){
+				UsuarioEspecialista ue = new UsuarioEspecialista();
+				ue.setEspecialidadId(especialistaId);
+				ue.setUsuarioId(usuarios);
+				this.usuarioEspecialistaService.crearRel(ue);
+			} else {
+				List<Usuario> users = this.usuarioService.getAllUsuarios();
+				model.addAttribute("especialista", this.usuarioService.getUsuarioByDNI(request.getUserPrincipal().getName()));
+				model.addAttribute("usuarios", users);
+				model.addAttribute("existe", true);
+				return "especialista/usuario";
+			}
+			
+			return "redirect:/alzi";
+		} 
 	}
 
     public Usuario getUsuario() {

@@ -23,9 +23,35 @@ public class InformePreguntaService {
         return this.informePreguntaRepository.findCustom(programaId, ejercicioId, usuarioId);
     }
 
+    public List<InformePregunta> findByProgramaId(long programaId){
+        return this.informePreguntaRepository.findByProgramaId(programaId);
+    }
+
     @Transactional
     public void editarInformePregunta(final InformePregunta informePregunta) {
         this.informePreguntaRepository.save(informePregunta);
+    }
+
+    @Transactional
+    public void eliminarLista(List<InformePregunta> ls) {
+        this.informePreguntaRepository.deleteAll(ls);
+    }
+
+    public List<InformePregunta> findByProgramaIdEjercicioId(long programaId, long ejercicioId) {
+        return this.informePreguntaRepository.findByProgramaIdEjercicioId(programaId, ejercicioId);
+    }
+
+    public List<InformePregunta> findByEjercicioId(long ejercicioId) {
+        return this.informePreguntaRepository.findByEjercicioId(ejercicioId);
+    }
+
+    public List<InformePregunta> getInformePreguntaByPreguntaId(long preguntaId) {
+        return this.informePreguntaRepository.findByPreguntaId(preguntaId);
+    }
+
+    @Transactional
+    public void crearInforme(InformePregunta ipre) {
+        this.informePreguntaRepository.save(ipre);
     }
 
 }

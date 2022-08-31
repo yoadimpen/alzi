@@ -14,4 +14,10 @@ public interface EjercicioPreguntaRepository extends JpaRepository<EjercicioPreg
     @Query("SELECT ep FROM EjercicioPregunta ep WHERE ep.ejercicioId = ?1")
     List<EjercicioPregunta> findByEjercicioId(Long ejercicioId);
 
+    @Query("SELECT ep FROM EjercicioPregunta ep WHERE ep.ejercicioId = ?1 AND ep.preguntaId = ?2")
+    EjercicioPregunta findByEjercicioIdPreguntaId(long ejercicioId, Long preguntaId);
+
+    @Query("SELECT ep FROM EjercicioPregunta ep WHERE ep.preguntaId = ?1")
+    List<EjercicioPregunta> findByPreguntaId(long preguntaId);
+
 }

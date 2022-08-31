@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class ParticipantePrograma {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "partpro_id")
     private long id;
 
