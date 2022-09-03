@@ -256,8 +256,9 @@ public class EjercicioController {
             model.addAttribute("preguntas", preguntas);
 
             return "especialista/formNewEjercicio";
+        } else {
+            return "login";
         }
-        return "login";
     }
 
     @GetMapping(value = "/ejercicio") 
