@@ -27,6 +27,7 @@ INSERT INTO programa (programa_id, usuario_id, titulo, area, descripcion, duraci
 -- EJERCICIOS
 INSERT INTO ejercicio (ejercicio_id, titulo, descripcion, duracion, publico, usuario_id) VALUES (10001,'Identifica I','En este ejercicio tendras que responder a varias preguntas para entrenar tu percepcion.', 5, 'true', 10003);
 INSERT INTO ejercicio (ejercicio_id, titulo, descripcion, duracion, publico, usuario_id) VALUES (10002,'Identifica II','En este ejercicio tendras que responder a varias preguntas para entrenar tu percepcion.', 5, 'true', 10006);
+INSERT INTO ejercicio (ejercicio_id, titulo, descripcion, duracion, publico, usuario_id) VALUES (10003,'Identifica III','En este ejercicio tendras que responder a varias preguntas para entrenar tu percepcion.', 5, 'false', 10006);
 
 -------------------------------------------------
 -- PREGUNTAS 

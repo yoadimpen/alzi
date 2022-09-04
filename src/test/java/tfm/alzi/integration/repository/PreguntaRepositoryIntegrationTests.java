@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.security.config.annotation.web.configurers.SecurityContextConfigurer;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,10 +28,8 @@ public class PreguntaRepositoryIntegrationTests {
     @Test
     public void shouldFindAllPublicPreguntas() {
 
-        // when
         List<Pregunta> found = preguntaRepository.findAllPublicPreguntas();
 
-        // then
         assertEquals(12, found.size());
     }
 
@@ -41,10 +37,8 @@ public class PreguntaRepositoryIntegrationTests {
     @Test
     public void shouldFindAllPrivatePreguntas() {
 
-        // when
         List<Pregunta> found = preguntaRepository.findMyPrivatePreguntas(Long.valueOf("10003"));
 
-        // then
         assertEquals(39, found.size());
     }
     
