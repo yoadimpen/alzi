@@ -93,7 +93,7 @@ public class ProgramaEjercicioServiceTests {
 
     @Test
     @Transactional
-    public void shouldInsertInformePregunta(){
+    public void shouldInsertRelacion(){
         ProgramaEjercicio pe1 = new ProgramaEjercicio();
         pe1.setProgramaId(Long.valueOf("10001"));
         pe1.setEjercicioId(Long.valueOf("10001"));

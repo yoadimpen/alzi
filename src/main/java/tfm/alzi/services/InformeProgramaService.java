@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import tfm.alzi.models.InformePrograma;
 import tfm.alzi.models.Usuario;
+import tfm.alzi.repositories.InformeEjercicioRepository;
+import tfm.alzi.repositories.InformePreguntaRepository;
 import tfm.alzi.repositories.InformeProgramaRepository;
 import tfm.alzi.repositories.UsuarioRepository;
 
@@ -18,6 +20,12 @@ public class InformeProgramaService {
 
     @Autowired
     private InformeProgramaRepository informeProgramaRepository;
+
+    @Autowired
+    private InformeEjercicioRepository informeEjercicioRepository;
+
+    @Autowired
+    private InformePreguntaRepository informePreguntaRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -52,6 +60,12 @@ public class InformeProgramaService {
     @Transactional
     public void crearInforme(InformePrograma ipro) {
         this.informeProgramaRepository.save(ipro);
+    }
+
+    public Integer getNumInformesTotales(){
+        return this.informeProgramaRepository.findAll().size() +
+                this.informeEjercicioRepository.findAll().size() + 
+                this.informePreguntaRepository.findAll().size();
     }
     
 }

@@ -72,7 +72,7 @@ public class ProgramaServiceTests {
     }
 
     @Test
-    public void shouldFindProgramaWithIncorrectId(){
+    public void shouldNotFindProgramaWithIncorrectId(){
 
         Programa found = this.programaService.getProgramaById(-1);
 

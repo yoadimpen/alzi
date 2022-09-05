@@ -55,4 +55,8 @@ public class PreguntaService {
         this.preguntaRepository.save(pregunta);
     }
 
+    public Integer getNumPreguntas(){
+        return this.preguntaRepository.findAll().size();
+    }
+
 }
