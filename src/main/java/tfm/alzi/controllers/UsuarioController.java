@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -342,8 +343,9 @@ public class UsuarioController {
 	public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
 	Map<String, String> errors = new HashMap<>();
 	
-	ex.getBindingResult().getFieldErrors().forEach(error ->
-			errors.put(error.getField(), error.getDefaultMessage()));
+	for (FieldError error:ex.getBindingResult().getFieldErrors()){
+		errors.put(error.getField(), error.getDefaultMessage());
+	}
 	
 	System.out.println("-----------------------------------------------------------------" + errors);
 	return errors;
