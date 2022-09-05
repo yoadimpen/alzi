@@ -342,8 +342,9 @@ public class UsuarioController {
 	public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
 	Map<String, String> errors = new HashMap<>();
 	
-	ex.getBindingResult().getFieldErrors().forEach(error ->
-			errors.put(error.getField(), error.getDefaultMessage()));
+	for (FieldError error:ex.getBindingResult().getFieldErrors()){
+		errors.put(error.getField(), error.getDefaultMessage());
+	}
 	
 	System.out.println("-----------------------------------------------------------------" + errors);
 	return errors;
