@@ -78,4 +78,28 @@ public class ProgramaService {
         this.programaRepository.deleteById(programaId);
     }
 
+    public Integer getNumProgramasMemoria() {
+        return this.programaRepository.findAllProgramasMemoria().size();
+    }
+
+    public Integer getNumProgramasPercepcion() {
+        return this.programaRepository.findAllProgramasPercepcion().size();
+    }
+
+    public Integer getNumProgramasAtencion() {
+        return this.programaRepository.findAllProgramasAtencion().size();
+    }
+
+    public Integer getNumProgramasComprension() {
+        return this.programaRepository.findAllProgramasComprension().size();
+    }
+
+    public Integer getNumProgramasLenguaje() {
+        return this.programaRepository.findAllProgramasLenguaje().size();
+    }
+
+    public Integer getNumProgramasRazonamiento() {
+        return this.programaRepository.findAllProgramasRazonamiento().size();
+    }
+
 }

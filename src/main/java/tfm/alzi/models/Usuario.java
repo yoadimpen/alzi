@@ -27,6 +27,10 @@ public class Usuario implements UserDetails{
         return this.id;
     }
 
+    public void setId(Long id){
+        this.id = id;
+    }
+
     @Column(name = "nombre")
     private String nombre;
 

@@ -147,13 +147,4 @@ public class GenericController {
         }
     }
 
-    @RequestMapping("/ajustes")
-    public String goToAjustes(final Model model, final HttpServletRequest request) {
-        if (request.getUserPrincipal() != null) {
-			return "ajustes";
-		} else {
-            return "login";
-        } 
-    }
-
 }

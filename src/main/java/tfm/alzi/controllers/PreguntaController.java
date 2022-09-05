@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
-import tfm.alzi.models.InformePregunta;
 import tfm.alzi.models.Pregunta;
 import tfm.alzi.models.Usuario;
 import tfm.alzi.services.EjercicioPreguntaService;
@@ -136,8 +135,10 @@ public class PreguntaController {
                 pregunta.setCorrect3(null);
                 pregunta.setCorrect4(null);
 
-                if(pregunta.getLinkQuestion().isEmpty() || pregunta.getLinkQuestion().isBlank()){
-                    pregunta.setLinkQuestion(null);
+                if(pregunta.getLinkQuestion() != null){
+                    if(pregunta.getLinkQuestion().isEmpty() || pregunta.getLinkQuestion().isBlank()){
+                        pregunta.setLinkQuestion(null);
+                    }
                 }
 
                 this.preguntaService.crearPregunta(pregunta);
@@ -359,10 +360,12 @@ public class PreguntaController {
 			result.rejectValue("question","question","Introduzca una pregunta.");
 		}
 
-        if(!pregunta.getLinkQuestion().isEmpty() || !pregunta.getLinkQuestion().isBlank()){
-            if(!pregunta.getLinkQuestion().matches(urlPattern)) {
-			result.rejectValue("linkQuestion", "linkQuestion", "El enlace debe ser válido.");
-		    }
+        if(pregunta.getLinkQuestion() != null){
+            if(!pregunta.getLinkQuestion().isEmpty() || !pregunta.getLinkQuestion().isBlank()){
+                if(!pregunta.getLinkQuestion().matches(urlPattern)) {
+                result.rejectValue("linkQuestion", "linkQuestion", "El enlace debe ser válido.");
+                }
+            }
         }
 
         if(pregunta.getTipo().contains("COMPLETA")){

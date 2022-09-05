@@ -18,4 +18,7 @@ public interface EjercicioRepository extends JpaRepository<Ejercicio,Long>{
     @Query("SELECT e FROM Ejercicio e WHERE e.usuarioId = ?1 AND e.publico = false")
     List<Ejercicio> findMyPrivateEjercicios(long usuarioId);
 
+    @Query("SELECT e FROM Ejercicio e")
+    List<Ejercicio> findAllEjercicios();
+
 }

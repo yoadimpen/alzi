@@ -41,7 +41,7 @@
 
   <div id="header" th:replace="../static/includes/header :: header"></div>
 
-  <div th:if="${@usuarioService.getAuth() != 'USUARIO'}">
+  <div th:if="${@usuarioService.getAuth() != 'USUARIO' and @usuarioService.getAuth() != 'ADMIN'}">
 
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
@@ -188,7 +188,145 @@
 
   </main><!-- End #main -->
 
-  <main id="main" class="main" th:if="${@usuarioService.getAuth() != 'USUARIO'}">
+  <main id="main" class="main" style="margin-left: 0px;" th:if="${@usuarioService.getAuth() == 'ADMIN'}">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/alzi}">Gestión</a></li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section>
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Usuarios por tipo</h5>
+              <input id="num-usuarios" type="hidden" th:value="${@usuarioService.getNumUsuarios()}"/>
+              <input id="num-cuidadores" type="hidden" th:value="${@usuarioService.getNumCuidadores()}"/>
+              <input id="num-especialistas" type="hidden" th:value="${@usuarioService.getNumEspecialistas()}"/>
+              <!-- Pie Chart -->
+              <canvas id="pieChart" style="max-height: 250px;"></canvas>
+              <script>
+                var numUsuarios = document.getElementById('num-usuarios').value;
+                var numCuidadores = document.getElementById('num-cuidadores').value;
+                var numEspecialistas = document.getElementById('num-especialistas').value;
+                document.addEventListener("DOMContentLoaded", () => {
+                  new Chart(document.querySelector('#pieChart'), {
+                    type: 'pie',
+                    data: {
+                      labels: [
+                        'Usuarios',
+                        'Cuidadores',
+                        'Especialistas'
+                      ],
+                      datasets: [{
+                        label: 'Usuarios por tipo',
+                        data: [numUsuarios, numCuidadores, numEspecialistas],
+                        backgroundColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(54, 162, 235)',
+                          'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 4
+                      }]
+                    }
+                  });
+                });
+              </script>
+              <!-- End Pie CHart -->
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Programas por tipo</h5>
+              <input id="num-memoria" type="hidden" th:value="${@programaService.getNumProgramasMemoria()}"/>
+              <input id="num-percepcion" type="hidden" th:value="${@programaService.getNumProgramasPercepcion()}"/>
+              <input id="num-atencion" type="hidden" th:value="${@programaService.getNumProgramasAtencion()}"/>
+              <input id="num-comprension" type="hidden" th:value="${@programaService.getNumProgramasComprension()}"/>
+              <input id="num-lenguaje" type="hidden" th:value="${@programaService.getNumProgramasLenguaje()}"/>
+              <input id="num-razonamiento" type="hidden" th:value="${@programaService.getNumProgramasRazonamiento()}"/>
+              <!-- Bar Chart -->
+              <canvas id="barChart" style="max-height: 250px;"></canvas>
+              <script>
+                var numMemoria = document.getElementById('num-memoria').value;
+                var numPercepcion = document.getElementById('num-percepcion').value;
+                var numAtencion = document.getElementById('num-atencion').value;
+                var numComprension = document.getElementById('num-comprension').value;
+                var numLenguaje = document.getElementById('num-lenguaje').value;
+                var numRazonamiento = document.getElementById('num-razonamiento').value;
+                document.addEventListener("DOMContentLoaded", () => {
+                  new Chart(document.querySelector('#barChart'), {
+                    type: 'bar',
+                    data: {
+                      labels: ['Memoria', 'Percepción', 'Atención', 'Comprensión', 'Lenguaje', 'Razonamiento'],
+                      datasets: [{
+                        label: ['Áreas'],
+                        data: [numMemoria, numPercepcion, numAtencion, numComprension, numLenguaje, numRazonamiento],
+                        backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(255, 159, 64, 0.2)',
+                          'rgba(255, 205, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(255, 159, 64)',
+                          'rgb(255, 205, 86)',
+                          'rgb(75, 192, 192)',
+                          'rgb(54, 162, 235)',
+                          'rgb(153, 102, 255)'
+                        ],
+                        borderWidth: 1
+                      }]
+                    },
+                    options: {
+                      scales: {
+                        y: {
+                          beginAtZero: true
+                        }
+                      }
+                    }
+                  });
+                });
+              </script>
+              <!-- End Bar CHart -->
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Nº Ejercicios</h5>
+              <text th:text="${@ejercicioService.getNumEjercicios()}"></text>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Nº Preguntas</h5>
+              <text th:text="${@preguntaService.getNumPreguntas()}"></text>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Nº Informes</h5>
+              <text th:text="${@informeProgramaService.getNumInformesTotales()}"></text>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <main id="main" class="main" th:if="${@usuarioService.getAuth() == 'CUIDADOR' or @usuarioService.getAuth() == 'ESPECIALISTA'}">
 
     <div class="pagetitle">
       <h1>Ocupaciones</h1>
@@ -229,20 +367,6 @@
     </section>
 
   </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-    </div>
-  </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

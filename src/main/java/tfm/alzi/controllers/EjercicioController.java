@@ -256,8 +256,9 @@ public class EjercicioController {
             model.addAttribute("preguntas", preguntas);
 
             return "especialista/formNewEjercicio";
+        } else {
+            return "login";
         }
-        return "login";
     }
 
     @GetMapping(value = "/ejercicio") 
@@ -295,15 +296,22 @@ public class EjercicioController {
 
                 return "especialista/formNewEjercicio";
             } else {
-                String[] arrayPreguntas = preguntas.split(",");
-                if(arrayPreguntas.length >= 2){
-                    ejercicio.setPublico(true);
-                }
-                this.ejercicioService.crearEjercicio(ejercicio);
-                for (String e:arrayPreguntas){
+                if(preguntas.contains(",")){
+                    String[] arrayPreguntas = preguntas.split(",");
+                    if(arrayPreguntas.length >= 2){
+                        ejercicio.setPublico(true);
+                    }
+                    this.ejercicioService.crearEjercicio(ejercicio);
+                    for (String e:arrayPreguntas){
+                        EjercicioPregunta rel = new EjercicioPregunta();
+                        rel.setEjercicioId(ejercicio.getId());
+                        rel.setPreguntaId(Long.valueOf(e));
+                        this.ejercicioPreguntaService.crearRelacion(rel);
+                    }
+                } else {
                     EjercicioPregunta rel = new EjercicioPregunta();
                     rel.setEjercicioId(ejercicio.getId());
-                    rel.setPreguntaId(Long.valueOf(e));
+                    rel.setPreguntaId(Long.valueOf(preguntas));
                     this.ejercicioPreguntaService.crearRelacion(rel);
                 }
             }

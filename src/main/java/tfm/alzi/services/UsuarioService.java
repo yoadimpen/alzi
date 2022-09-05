@@ -128,5 +128,21 @@ public class UsuarioService implements UserDetailsService {
     public List<Usuario> getAllUsuarios() {
         return this.usuarioRepository.findAllUsuarios();
     }
+
+    public List<Usuario> getAllEspecialistas(){
+        return this.usuarioRepository.findAllEspecialistas();
+    }
+
+    public Integer getNumUsuarios(){
+        return getAllUsuarios().size();
+    }
+
+    public Integer getNumCuidadores(){
+        return getAllCuidadores().size();
+    }
+
+    public Integer getNumEspecialistas(){
+        return getAllEspecialistas().size();
+    }
     
 }

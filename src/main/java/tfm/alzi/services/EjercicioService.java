@@ -61,4 +61,8 @@ public class EjercicioService {
         this.ejercicioRepository.deleteById(ejercicioId);
     }
 
+    public Integer getNumEjercicios(){
+        return this.ejercicioRepository.findAllEjercicios().size();
+    }
+
 }
